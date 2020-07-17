@@ -96,15 +96,13 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
-/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/browser.js");
-/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(node_fetch__WEBPACK_IMPORTED_MODULE_0__);
-
-// change to class, so it can be imported in index.js
-// const { default: fetch } = require("node-fetch");
+//import {fetch} from "node-fetch"
+// // change to class, so it can be imported in index.js
+// // const { default: fetch } = require("node-fetch");
 
 
-// // this function takes zipcode(user input) and returns 
-// // weather data in json format.
+// // // this function takes zipcode(user input) and returns 
+// // // weather data in json format.
 class Weather {
     constructor(zipcode) {
         this.zipcode = zipcode;
@@ -112,92 +110,89 @@ class Weather {
         this.COUNTRY = ",us";
         this.CONVERT = "&units=imperial";
         this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
-        this.temperatureDegree = document.getElementsByClassName("temp-degree");// 
-        this.temperatureDescription = document.getElementsByClassName("temp-description");
-        this.locationTimezone = document.getElementsByClassName("location-timezone");
+        this.temperatureDegree = document.querySelector(".temp-degree");// 
+        this.temperatureDescription = document.querySelector(".temp-description");
+        this.locationTimezone = document.querySelector(".location-timezone");
     }
 
     getData(){
+        
         const url = this.ADDRESS
                     + this.zipcode.toString()
                     + this.COUNTRY
                     + this.CONVERT
                     + this.MYKEY;
-               
-        Object(node_fetch__WEBPACK_IMPORTED_MODULE_0__["fetch"])(url).then(res => {
-            return res.json()
+         
+        fetch(url)
+            .then(res => {
+                return res.json()
         })
             .then(data => {
+                
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name
+                //debugger
                 //Set DOM Elements frm the API
                 this.temperatureDegree.textContent = temperature;
-                this.temperatureDescription.textContect = description;
+                this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
-
             })
     } 
 
     render() {
-        
-        this.getData()
         this.getData().then(res => {
             return res.json() })
             .then(data => {
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name
-                // console.log(description)
-                // console.log(temperature)
-                // console.log(location)
+                console.log(description)
+                console.log(temperature)
+                console.log(location)
                 //Set DOM Elements frm the API
+
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContect = description;
-                this.locationTimezone.textContent = location;
-                
+                this.locationTimezone.textContent = location;    
             })
 
     }
 
 }
 
+//     ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
+//     COUNTRY = ",us";
+//     CONVERT = "&units=imperial";
+//     MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
 
-// export {Weahter}
+// const url = ADDRESS
+//     + '94041'
+//     + COUNTRY
+//     + CONVERT
+//     + MYKEY;
 
-/***/ }),
+// fetch(url).then(res => {
+//     return res.json()
+// })
+//     .then(data => {
+//         const description = data.weather[0].description
+//         const temperature = data.main.temp
+//         const location = data.name
+//         //Set DOM Elements frm the API
+//         console.log(description)
+//         console.log(temperature)
+//         console.log(location)
 
-/***/ "./node_modules/node-fetch/browser.js":
-/*!********************************************!*\
-  !*** ./node_modules/node-fetch/browser.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+//     })
+
+//     fetch()
 
 
-// ref: https://github.com/tc39/proposal-global
-var getGlobal = function () {
-	// the only reliable means to get the global object is
-	// `Function('return this')()`
-	// However, this causes CSP violations in Chrome apps.
-	if (typeof self !== 'undefined') { return self; }
-	if (typeof window !== 'undefined') { return window; }
-	if (typeof global !== 'undefined') { return global; }
-	throw new Error('unable to locate global object');
-}
 
-var global = getGlobal();
 
-module.exports = exports = global.fetch;
-
-// Needed for TypeScript and Webpack.
-exports.default = global.fetch.bind(global);
-
-exports.Headers = global.Headers;
-exports.Request = global.Request;
-exports.Response = global.Response;
+// // export {Weather}
 
 /***/ }),
 
@@ -216,6 +211,7 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener("DOMContentLoaded", function() {
     const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](94041);
     weather.getData();
+    //weather.render();
 });
 
 /***/ })

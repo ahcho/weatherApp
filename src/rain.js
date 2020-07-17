@@ -1,9 +1,14 @@
+//import utils from './utils'
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
+function randomIntFromRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 // cloud
 // c.fillStyle = 'rgba(0, 0, 255, 0.1)'; 
 // c.fillRect(100, 100, 400, 100);context.beginPath();
@@ -11,7 +16,7 @@ const startX = 100
 const startY = 100
 
 class Rain {
-    constructor(x, y, color) {
+    constructor(x, y, width, color) {
         this.x = x
         this.y = y
         this.color = color
@@ -20,17 +25,19 @@ class Rain {
             y: 1
         }
         this.friction = 0.8
-        this.gravity = 0.1
+        this.gravity = 0.05
         this.opacity = 1
+        this.lineWidth = width
+        this.miniRains = []
     }
     // how rain will look like
     draw() {
         c.save()
         c.beginPath()
-        c.moveTo(100, 10 + this.y);
-        c.lineTo(100, 50 + this.y);
-        c.lineWidth = 5;
-        c.strokeStyle = '#808000';
+        c.moveTo(this.x, 10 + this.y);
+        c.lineTo(this.x, 30 + this.y);
+        c.lineWidth = this.lineWidth;
+        c.strokeStyle = 'white';
         c.stroke();
         c.closePath()
         c.restore()
@@ -40,8 +47,9 @@ class Rain {
     update() {
         this.draw()
         //when rain hits bottom of screen
-        if (this.y + this.radius + this.velocity.y > canvas.height) {
+        if (this.y + this.velocity.y + 20 > canvas.height) {
             //this.velocity.y = -this.velocity.y * this.friction;
+            this.shatter();
         } else {
             this.velocity.y += this.gravity;
         }
@@ -49,10 +57,65 @@ class Rain {
         this.y += this.velocity.y;
     }
 
-    //when rain is clicked it changes shape
-    click() {
+    destroy() {
 
     }
+
+    shatter() {
+        
+        const radius  = 2
+        for (let i = 0; i < 5; i++) {
+            this.miniRains.push(new MiniRain(this.x, this.y, radius, 'red'))
+        }
+    }
+}
+
+class MiniRain {
+    constructor(x, y, radius, color) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.color = color
+        this.velocity = {
+            x: randomIntFromRange(-5, 5),
+            y: randomIntFromRange(-15, 15)
+        }
+        this.friction = 0.8
+        this.gravity = 0.1
+        this.ttl = 100// they live 100 frame
+        this.opacity = 1
+    }
+
+    draw() {
+        c.save()// to prevent glowing mountain 
+        c.beginPath()
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
+        c.shadowColor = 'white'
+        c.shadowBlur = 20
+        c.fill()
+        c.closePath()
+        c.restore()
+        //debugger;
+    }
+
+    update() {
+        this.draw()
+        //debugger;
+        // when ball hits bottom of screen
+        if (this.y + this.radius + this.velocity.y > canvas.height) {
+            this.velocity.y = -this.velocity.y * this.friction;
+        } else {
+            this.velocity.y += this.gravity;
+        }
+
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.ttl -= 1
+        this.opacity -= 1 / this.ttl
+    }
+
+    
 }
 
 
@@ -73,8 +136,15 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     rains.forEach((rain, index) => {
         rain.update();
+        rain.miniRains.forEach((miniRain, index) => {
+            miniRain.update();
+            if (miniRain.ttl === 0) {
+                rain.miniRains.splice(index, 1)// get rid of mini rain
+            }
+        })
+        
     });
-    
+    //draw a cloud
     c.beginPath()
     c.moveTo(startX, startY);
     c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
@@ -97,11 +167,11 @@ function animate() {
     c.stroke();
     ticker++;
 
-    if (ticker % 75 === 0) {
-        //Math.random() * (max - min) + min;
-        const x = Math.random() * (400 - 150) + 150;
+    if (ticker % 40 === 0) {
+        const x = Math.random() * (400 - 100) + 100;;
         const y = 150;
-        rains.push(new Rain(x, y, 'white'))
+        const w = Math.random() * 5;
+        rains.push(new Rain(x, y, w, 'white'))
     }
 
 }
