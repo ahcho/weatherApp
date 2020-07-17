@@ -11,10 +11,9 @@ const startX = 100
 const startY = 100
 
 class Rain {
-    constructor(x, y, radius, color) {
+    constructor(x, y, color) {
         this.x = x
         this.y = y
-        this.radius = radius
         this.color = color
         this.velocity = {
             x: 0,
@@ -28,12 +27,11 @@ class Rain {
     draw() {
         c.save()
         c.beginPath()
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-        //c.fillStyle = this.color
-        c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
-        c.shadowColor = '#E3EAEF'
-        c.shadowBlur = 20
-        c.fill()
+        c.moveTo(100, 10 + this.y);
+        c.lineTo(100, 50 + this.y);
+        c.lineWidth = 5;
+        c.strokeStyle = '#808000';
+        c.stroke();
         c.closePath()
         c.restore()
     }
@@ -76,8 +74,7 @@ function animate() {
     rains.forEach((rain, index) => {
         rain.update();
     });
-    // c.fillStyle = 'white';
-    // c.fillRect(100, 100, 400, 100);
+    
     c.beginPath()
     c.moveTo(startX, startY);
     c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
@@ -104,7 +101,7 @@ function animate() {
         //Math.random() * (max - min) + min;
         const x = Math.random() * (400 - 150) + 150;
         const y = 150;
-        rains.push(new Rain(x, y, 10, 'white'))
+        rains.push(new Rain(x, y, 'white'))
     }
 
 }

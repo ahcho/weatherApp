@@ -21,15 +21,15 @@ class Snow {
             y: 1
         }
         this.friction = 0.8
-        this.gravity = 0.1
+        this.gravity = 0.01
         this.opacity = 1
     }
+
     // how snow will look like
     draw() {
         c.save()
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-        //c.fillStyle = this.color
         c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
         c.shadowColor = '#E3EAEF'
         c.shadowBlur = 20
@@ -52,8 +52,24 @@ class Snow {
     }
 
     //when snow is clicked it changes shape
-    click() {
+    clicked() {
+        let d = dist(mouseX, mouseY, this.x, this.y)
+    }
 
+    renderSnowFlake(width, height) {
+        c.lineWidth = 20;
+        c.lineCap = 'round';
+        c.fillStyle = "#162D50";
+        c.strokeStyle = "#FFFFFF";
+        c.fillRect(0, 0, width, height);
+        c.translate(width / 2, height / 2);
+        for (var count = 0; count < 6; count++) {
+            c.beginPath();
+            c.moveTo(0, 0);
+            c.lineTo(300, 0);
+            c.stroke();
+            c.rotate(Math.PI / 3);
+        }
     }
 }
 
@@ -100,7 +116,7 @@ function animate() {
     c.stroke();
     ticker++;
 
-    if (ticker % 75 === 0) {
+    if (ticker % 50 === 0) {
         //Math.random() * (max - min) + min;
         const x = Math.random() * (400 - 150) + 150;
         const y = 150;

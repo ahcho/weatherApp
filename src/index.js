@@ -1,4 +1,6 @@
+import Weather from '../lib/getWeatherData'
+
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("testing")
-    //get User's current location
+    const weather = new Weather(94041);
+    weather.getData();
 });
