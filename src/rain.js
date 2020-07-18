@@ -1,4 +1,3 @@
-//import utils from './utils'
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -9,9 +8,7 @@ canvas.height = window.innerHeight;
 function randomIntFromRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
-// cloud
-// c.fillStyle = 'rgba(0, 0, 255, 0.1)'; 
-// c.fillRect(100, 100, 400, 100);context.beginPath();
+
 const startX = 100
 const startY = 100
 
@@ -62,32 +59,32 @@ class Rain {
     }
 
     shatter() {
-        
-        const radius  = 2
-        for (let i = 0; i < 5; i++) {
-            this.miniRains.push(new MiniRain(this.x, this.y, radius, 'red'))
+        const num = randomIntFromRange(1,3)
+        const radius  = randomIntFromRange(1,2)
+        for (let i = 0; i < num; i++) {
+            this.miniRains.push(new MiniRain(this.x, this.y, radius))
         }
     }
 }
 
 class MiniRain {
-    constructor(x, y, radius, color) {
+    constructor(x, y, radius) {
         this.x = x
         this.y = y
         this.radius = radius
-        this.color = color
+        this.color = 'white'
         this.velocity = {
             x: randomIntFromRange(-5, 5),
             y: randomIntFromRange(-15, 15)
         }
-        this.friction = 0.8
-        this.gravity = 0.1
-        this.ttl = 100// they live 100 frame
+        this.friction = 0.2
+        this.gravity = 0.05
+        this.ttl = 50// they live 100 frame
         this.opacity = 1
     }
 
     draw() {
-        c.save()// to prevent glowing mountain 
+        c.save()
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
         c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
@@ -96,12 +93,10 @@ class MiniRain {
         c.fill()
         c.closePath()
         c.restore()
-        //debugger;
     }
 
     update() {
         this.draw()
-        //debugger;
         // when ball hits bottom of screen
         if (this.y + this.radius + this.velocity.y > canvas.height) {
             this.velocity.y = -this.velocity.y * this.friction;
@@ -171,7 +166,7 @@ function animate() {
         const x = Math.random() * (400 - 100) + 100;;
         const y = 150;
         const w = Math.random() * 5;
-        rains.push(new Rain(x, y, w, 'white'))
+        rains.push(new Rain(x, y, w))
     }
 
 }

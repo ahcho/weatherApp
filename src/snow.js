@@ -54,6 +54,7 @@ class Snow {
     //when snow is clicked it changes shape
     clicked() {
         let d = dist(mouseX, mouseY, this.x, this.y)
+        this.renderSnowFlake(this.radius, this.radius)
     }
 
     renderSnowFlake(width, height) {
@@ -92,8 +93,7 @@ function animate() {
     snows.forEach((snow, index) => {
         snow.update();
     });
-    // c.fillStyle = 'white';
-    // c.fillRect(100, 100, 400, 100);
+    
     c.beginPath()
     c.moveTo(startX, startY);
     c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
