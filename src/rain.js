@@ -1,9 +1,10 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+canvas.width = 500;
+canvas.height = 600;
 
 function randomIntFromRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)

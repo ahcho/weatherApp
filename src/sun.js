@@ -3,7 +3,7 @@ var canvas = document.querySelector('canvas');
 // canvas.width = window.innerWidth;
 // canvas.height = window.innerHeight;
 canvas.width = 500;
-canvas.height = 500;
+canvas.height = 600;
 var c = canvas.getContext('2d');
 
 
@@ -29,22 +29,16 @@ function animate() {
     c.fillStyle = backgroundGradient;
     c.fillRect(0, 0, canvas.width, canvas.height)
     c.beginPath();
-    c.arc(300, 300, 50, 0, Math.PI * 2, false);
+    c.arc(250, 250, 50, 0, Math.PI * 2, false);
     c.fillStyle = 'yellow';
     c.fill();
     
-
-    
-    let x = 360;
-    let y = 300;
-    
-  
     for (let i = 0; i < 8; i++) {
         const len = 30;
         c.beginPath();
         c.lineCap = 'round';
-        x = 300 + Math.cos(Math.PI * degree / 180) * 65;
-        y = 300 - Math.sin(Math.PI * degree / 180) * 65;
+        x = 250 + Math.cos(Math.PI * degree / 180) * 65;
+        y = 250 - Math.sin(Math.PI * degree / 180) * 65;
         c.moveTo(x, y);
         c.lineTo(x + (len * Math.cos(Math.PI * degree / 180)), 
         y - (len * Math.sin(Math.PI * degree / 180)));
@@ -59,7 +53,7 @@ function animate() {
 
 function draw() {
     c.beginPath();
-    c.arc(300, 300, 40, 0, Math.PI * 2, false);
+    c.arc(250, 250, 40, 0, Math.PI * 2, false);
     c.strokeStyle = 'green';
     c.stroke();
 }
