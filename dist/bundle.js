@@ -110,7 +110,7 @@ class Weather {
         this.COUNTRY = ",us";
         this.CONVERT = "&units=imperial";
         this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
-        this.temperatureDegree = document.querySelector(".temp-degree");// 
+        this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
     }
@@ -209,9 +209,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](94041);
-    weather.getData();
+    // const weather = new Weather(94041);
+    // weather.getData();
     //weather.render();
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log(position);
+        })
+
+    } else {
+        h1.textContent = "error"
+    }
 });
 
 /***/ })

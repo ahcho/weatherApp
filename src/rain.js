@@ -163,7 +163,7 @@ function animate() {
     ticker++;
 
     if (ticker % 40 === 0) {
-        const x = Math.random() * (400 - 100) + 100;;
+        const x = Math.random() * (400 - 100) + 100;
         const y = 150;
         const w = Math.random() * 5;
         rains.push(new Rain(x, y, w))
