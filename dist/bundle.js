@@ -96,49 +96,73 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
-//import {fetch} from "node-fetch"
-// // change to class, so it can be imported in index.js
-// // const { default: fetch } = require("node-fetch");
-
-
-// // // this function takes zipcode(user input) and returns 
-// // // weather data in json format.
+// this function takes zipcode(user input) and returns 
+// weather data in json format.
 class Weather {
-    constructor(zipcode) {
-        this.zipcode = zipcode;
-        this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
-        this.COUNTRY = ",us";
-        this.CONVERT = "&units=imperial";
-        this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
+    constructor(api) {
+        this.api = api;
         this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
+        this.degreeSection = document.querySelector('.temperature');
+        this.degreeSpan = document.querySelector('.temperature span'); 
+        this.weatherAnimation = document.querySelector('.animation');  
     }
+
+    // constructor(zipcode) {
+    //     this.zipcode = zipcode;
+    //     this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
+    //     this.COUNTRY = ",us";
+    //     this.CONVERT = "&units=imperial";
+    //     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
+    //     this.temperatureDegree = document.querySelector(".temp-degree");
+    //     this.temperatureDescription = document.querySelector(".temp-description");
+    //     this.locationTimezone = document.querySelector(".location-timezone");
+    // }
 
     getData(){
         
-        const url = this.ADDRESS
-                    + this.zipcode.toString()
-                    + this.COUNTRY
-                    + this.CONVERT
-                    + this.MYKEY;
-         
-        fetch(url)
-            .then(res => {
+        // const url = this.ADDRESS
+        //             + this.zipcode.toString()
+        //             + this.COUNTRY
+        //             + this.CONVERT
+        //             + this.MYKEY;
+       
+        fetch(this.api)
+            .then(res => {    
                 return res.json()
         })
             .then(data => {
-                
                 const description = data.weather[0].description
-                const temperature = data.main.temp
+                const temperature = Math.floor(data.main.temp)
                 const location = data.name
-                //debugger
-                //Set DOM Elements frm the API
+                
+                //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
+                //render animation here
+                // change f -> c or c -> f
+                let celsius = (temperature - 32) * (5 / 9);
+
+                this.degreeSection.addEventListener('click', () => {
+
+                    if (this.degreeSpan.textContent === 'F') {
+                        //console.log('hello anna')
+                        this.degreeSpan.textContent = 'C'
+                        this.temperatureDegree.textContent = Math.floor(celsius);
+                    } else {
+                        this.degreeSpan.textContent = 'F'
+                        this.temperatureDegree.textContent = temperature;
+                    }
+                })
+                
+
             })
     } 
+    renderAnimation() {
+        this.weatherAnimation.textContent = '<script src="../src/sun.js"></script> '
+    }
 
     render() {
         this.getData().then(res => {
@@ -161,38 +185,6 @@ class Weather {
 
 }
 
-//     ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
-//     COUNTRY = ",us";
-//     CONVERT = "&units=imperial";
-//     MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
-
-// const url = ADDRESS
-//     + '94041'
-//     + COUNTRY
-//     + CONVERT
-//     + MYKEY;
-
-// fetch(url).then(res => {
-//     return res.json()
-// })
-//     .then(data => {
-//         const description = data.weather[0].description
-//         const temperature = data.main.temp
-//         const location = data.name
-//         //Set DOM Elements frm the API
-//         console.log(description)
-//         console.log(temperature)
-//         console.log(location)
-
-
-//     })
-
-//     fetch()
-
-
-
-
-// // export {Weather}
 
 /***/ }),
 
@@ -209,16 +201,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    // const weather = new Weather(94041);
-    // weather.getData();
-    //weather.render();
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            console.log(position);
-        })
 
-    } else {
-        h1.textContent = "error"
+    if(navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(position => {    
+            const lon = position.coords.longitude;
+            const lat = position.coords.latitude;
+            const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
+            
+            const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
+            weather.getData();
+    })} else {
+        const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](94041);
+        weather.getData();
     }
 });
 

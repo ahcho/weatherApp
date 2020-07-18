@@ -1,8 +1,9 @@
 var canvas = document.querySelector('canvas'); 
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+canvas.width = 500;
+canvas.height = 500;
 var c = canvas.getContext('2d');
 
 
@@ -37,32 +38,18 @@ function animate() {
     let x = 360;
     let y = 300;
     
-    let angle = [2, 4, -1, 2, 2, 4, -1, 4 ]
-    let color = ['red', 'orange', 'yellow', 'green', 'blue', 'pink', 'white', 'black']
+  
     for (let i = 0; i < 8; i++) {
-        // degree -= 45;
-        // c.beginPath();
-
-        // c.ellipse(x, y, 5, 30, Math.PI / angle[i], 0, 2 * Math.PI);
-        // c.fillStyle = color[i];
-        // c.fill();
-        // c.beginPath();
-        // c.moveTo(x, y);
-        // c.lineTo(x + 1, y + 1);
-        // c.strokeStyle = 'black';
-        // c.stroke();
-        // x += Math.cos(Math.PI * degree / 180) * 60;
-        // y -= Math.sin(Math.PI * degree / 180) * 60;
-        //const len = Math.random() * (50 - 20) + 20;
         const len = 30;
         c.beginPath();
-        x = 300 + Math.cos(Math.PI * degree / 180) * 60;
-        y = 300 - Math.sin(Math.PI * degree / 180) * 60;
+        c.lineCap = 'round';
+        x = 300 + Math.cos(Math.PI * degree / 180) * 65;
+        y = 300 - Math.sin(Math.PI * degree / 180) * 65;
         c.moveTo(x, y);
         c.lineTo(x + (len * Math.cos(Math.PI * degree / 180)), 
         y - (len * Math.sin(Math.PI * degree / 180)));
         
-        c.lineWidth = 5;
+        c.lineWidth = 9;
         c.strokeStyle = 'yellow';
         c.stroke();
         degree += 45;
@@ -71,7 +58,6 @@ function animate() {
 }
 
 function draw() {
-    debugger
     c.beginPath();
     c.arc(300, 300, 40, 0, Math.PI * 2, false);
     c.strokeStyle = 'green';

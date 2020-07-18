@@ -7,15 +7,18 @@ body {
     background: linear-gradient(rgb(47, 150, 163), rgb(48, 62,143));
     font-family: sans-serif;
     color: white;
+    font-family: 'Cinzel';
 } 
 
 .location,
 .temperature {
-    height: 30vh;
+    /* height: 30vh; */
     width: 50%;
     display: flex;
-    /* justify-content: space-around; */
     align-items: center;
+}
+.location {
+    margin-left: 20%;
 }
 
 .temperature {
