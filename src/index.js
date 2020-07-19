@@ -47,3 +47,16 @@ document.addEventListener("DOMContentLoaded", function () {
 //         weather.getData();
 //     }
 // });
+
+
+
+// constructor(zipcode) {
+//     this.zipcode = zipcode;
+//     this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
+//     this.COUNTRY = ",us";
+//     this.CONVERT = "&units=imperial";
+//     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
+//     this.temperatureDegree = document.querySelector(".temp-degree");
+//     this.temperatureDescription = document.querySelector(".temp-description");
+//     this.locationTimezone = document.querySelector(".location-timezone");
+// }

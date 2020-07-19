@@ -108,25 +108,12 @@ class Weather {
         this.iconSection = document.getElementById('temp-icon');
     }
 
-    // constructor(zipcode) {
-    //     this.zipcode = zipcode;
-    //     this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
-    //     this.COUNTRY = ",us";
-    //     this.CONVERT = "&units=imperial";
-    //     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
-    //     this.temperatureDegree = document.querySelector(".temp-degree");
-    //     this.temperatureDescription = document.querySelector(".temp-description");
-    //     this.locationTimezone = document.querySelector(".location-timezone");
-    // }
-
     getData() {
         fetch(this.api)
             .then(res => {
                 return res.json()
             })
             .then(data => {
-                // console.log(data.weather[0].icon)
-                // debugger;
                 const description = data.weather[0].description
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
@@ -138,24 +125,25 @@ class Weather {
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
+                this.changeMetric(temperature);
+                this.renderAnimation(iconId);
 
                 //render animation here
-                // change f -> c or c -> f
-                let celsius = (temperature - 32) * (5 / 9);
-
-                this.degreeSection.addEventListener('click', () => {
-
-                    if (this.degreeSpan.textContent === '°F') {
-                        this.degreeSpan.textContent = '°C'
-                        this.temperatureDegree.textContent = Math.floor(celsius);
-                    } else {
-                        this.degreeSpan.textContent = '°F'
-                        this.temperatureDegree.textContent = temperature;
-                    }
-                })
-
-
+               
             })
+    }
+
+    changeMetric(temperature) {
+        let celsius = (temperature - 32) * (5 / 9);
+        this.degreeSection.addEventListener('click', () => {
+            if (this.degreeSpan.textContent === '°F') {
+                this.degreeSpan.textContent = '°C'
+                this.temperatureDegree.textContent = Math.floor(celsius);
+            } else {
+                this.degreeSpan.textContent = '°F'
+                this.temperatureDegree.textContent = temperature;
+            }
+        })
     }
 
     renderCanvasBackground() {
@@ -168,14 +156,12 @@ class Weather {
         }
         this.c.beginPath();
         if (hour > 7 && hour < 18) {
-            // console.log('render morning')
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
             backgroundGradient.addColorStop(1, '#B7F8DB')
             backgroundGradient.addColorStop(0, '#50A7C2')
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         } else {
-            // console.log('render night')
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
             backgroundGradient.addColorStop(0, '#171e26')
             backgroundGradient.addColorStop(1, '#3f586b')
@@ -187,28 +173,28 @@ class Weather {
         this.c.fillText(`${hour}:${minutes}`, 190, 60);
         this.c.font = '20px Cinzel'
         this.c.fillText(midDay, 300, 40)
-        this.c.fill();
-
-        
+        this.c.fill();        
     }
 
-    renderAnimation() {
-        const canvas = document.querySelector('canvas');
-        const c = canvas.getContext('2d');
-
-        canvas.width = 500;
-        canvas.height = 600;
-
-        const rain = new Rain(c);
-        rain.animate();
+    renderAnimation(iconId) {
+        const sun = ['01d', '02d', '03d']
+        const rain = ['04d', '09d', '10d', '11d']
+        const snow = ['13d', '50d']
+        console.log(iconId)
+        if (sun.includes(iconId)) {
+            console.log('call sunny animation')
+        } else if (rain.includes(iconId)) {
+            console.log('call rainy animation')
+        } else {
+            console.log('call snowy animation')
+        }
     }
 
     render() {
         this.getData().then(res => {
             return res.json()
         })
-            .then(data => {
-                
+            .then(data => {    
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name
@@ -223,11 +209,6 @@ class Weather {
 }
 
 
-///sun///
-
-///cloud///
-
-///rain///
 
 /***/ }),
 
@@ -290,6 +271,19 @@ document.addEventListener("DOMContentLoaded", function () {
 //         weather.getData();
 //     }
 // });
+
+
+
+// constructor(zipcode) {
+//     this.zipcode = zipcode;
+//     this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
+//     this.COUNTRY = ",us";
+//     this.CONVERT = "&units=imperial";
+//     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
+//     this.temperatureDegree = document.querySelector(".temp-degree");
+//     this.temperatureDescription = document.querySelector(".temp-description");
+//     this.locationTimezone = document.querySelector(".location-timezone");
+// }
 
 /***/ })
 
