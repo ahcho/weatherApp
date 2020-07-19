@@ -96,17 +96,14 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
-//import Rain from './rain'
-// this function takes zipcode(user input) and returns 
-// weather data in json format.
 class Weather {
     constructor(api) {
         this.api = api;
         this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
-        this.degreeSection = document.querySelector('.temperature');
-        this.degreeSpan = document.querySelector('.temperature span');  
+        this.degreeSection = document.querySelector('.weather-info-bottom');
+        this.degreeSpan = document.querySelector('.weather-info-bottom span');
     }
 
     // constructor(zipcode) {
@@ -120,16 +117,16 @@ class Weather {
     //     this.locationTimezone = document.querySelector(".location-timezone");
     // }
 
-    getData(){
+    getData() {
         fetch(this.api)
-            .then(res => {    
+            .then(res => {
                 return res.json()
-        })
+            })
             .then(data => {
                 const description = data.weather[0].description
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
-                
+
                 //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContent = description;
@@ -148,10 +145,10 @@ class Weather {
                         this.temperatureDegree.textContent = temperature;
                     }
                 })
-                
+
 
             })
-    } 
+    }
     renderAnimation() {
         const canvas = document.querySelector('canvas');
         const c = canvas.getContext('2d');
@@ -165,7 +162,8 @@ class Weather {
 
     render() {
         this.getData().then(res => {
-            return res.json() })
+            return res.json()
+        })
             .then(data => {
                 const description = data.weather[0].description
                 const temperature = data.main.temp
@@ -173,7 +171,7 @@ class Weather {
                 //Set DOM Elements frm the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContect = description;
-                this.locationTimezone.textContent = location;    
+                this.locationTimezone.textContent = location;
             })
 
     }
@@ -196,11 +194,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function success(position){
+    const canvas = document.querySelector('canvas')
+    const c = canvas.getContext('2d')
+    canvas.width = 500
+    canvas.height = 600
 
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
     const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`
-    const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
+    console.log(api)
+    const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c);
     weather.getData();
 
 }
@@ -210,6 +213,7 @@ function error(err) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+
     navigator.geolocation.getCurrentPosition(success, error);
 });
 

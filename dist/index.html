@@ -6,27 +6,35 @@
     <title>Document</title>
     <script src='./main.js'></script>
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel">
     <script src='./bundle.js'></script>
 </head>
 <body>
-    <script src="../src/night.js"></script>
-    <div class="temperature">
-        
-        <div class="degree-section">
-            <div class="temp-degree"></div>
-            <span>°F</span>
+    <div class="weather-container">
+        <div class="weather-info">
+            <div class="location">
+                <h1 class="location-timezone"></h1>
+            </div>
+            <div class="weather-info-bottom">
+                <div class="degree-section">
+                    <div class="temp-degree"></div>
+                    <span>°F</span>
+                </div>
+                <div class="weather-info-bottom-left">
+                    <div class="temp-icon">icon</div>
+                    <div class="temp-description"></div>
+                    
+                </div>
+            </div>
         </div>
-        <div class="location">
-            <h1 class="location-timezone"></h1>
-        </div>
-        <div class="temp-description"></div>
         <canvas class="animation"></canvas>
     </div>
     <!-- <script src="../src/sun.js"></script> -->
     <!-- <script src="../src/snow.js"></script>  -->
     <!-- <script src="../src/rain.js"></script> -->
     <!-- <script src="../src/cloud.js"></script> -->
+    <script src="../src/night.js"></script>
     
 
         

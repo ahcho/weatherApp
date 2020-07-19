@@ -1,14 +1,11 @@
-//import Rain from './rain'
-// this function takes zipcode(user input) and returns 
-// weather data in json format.
 export default class Weather {
     constructor(api) {
         this.api = api;
         this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
-        this.degreeSection = document.querySelector('.temperature');
-        this.degreeSpan = document.querySelector('.temperature span');  
+        this.degreeSection = document.querySelector('.weather-info-bottom');
+        this.degreeSpan = document.querySelector('.weather-info-bottom span');
     }
 
     // constructor(zipcode) {
@@ -22,16 +19,16 @@ export default class Weather {
     //     this.locationTimezone = document.querySelector(".location-timezone");
     // }
 
-    getData(){
+    getData() {
         fetch(this.api)
-            .then(res => {    
+            .then(res => {
                 return res.json()
-        })
+            })
             .then(data => {
                 const description = data.weather[0].description
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
-                
+
                 //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContent = description;
@@ -50,10 +47,10 @@ export default class Weather {
                         this.temperatureDegree.textContent = temperature;
                     }
                 })
-                
+
 
             })
-    } 
+    }
     renderAnimation() {
         const canvas = document.querySelector('canvas');
         const c = canvas.getContext('2d');
@@ -67,7 +64,8 @@ export default class Weather {
 
     render() {
         this.getData().then(res => {
-            return res.json() })
+            return res.json()
+        })
             .then(data => {
                 const description = data.weather[0].description
                 const temperature = data.main.temp
@@ -75,7 +73,7 @@ export default class Weather {
                 //Set DOM Elements frm the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContect = description;
-                this.locationTimezone.textContent = location;    
+                this.locationTimezone.textContent = location;
             })
 
     }

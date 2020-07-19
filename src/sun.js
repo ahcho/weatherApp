@@ -4,11 +4,21 @@ const c = canvas.getContext('2d')
 canvas.width = 500
 canvas.height = 600
 
-
-
 addEventListener('click', (event) => {
-
+    mouse.x = event.clientX
+    mouse.y = event.clientY
 })
+
+addEventListener('resize', () => {
+    canvas.width = 500
+    canvas.height = 600
+
+    init()
+})
+
+function randomIntFromRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
 class Sun {
     // constructor(x, y, radius, color) {
@@ -57,7 +67,44 @@ class Sun {
         this.draw()
     }
 }
+////////////////
+class Particle {
+    constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.radians = Math.random() * Math.PI * 2;
+        this.velocity = 0.02;// speed of particle
+        this.distanceFromCenter = randomIntFromRange(50, 120)
+    }
 
+    draw(startPoint) {
+
+        c.beginPath()
+        c.strokeStyle = this.color;
+        c.lineWidth = this.radius;
+        c.moveTo(startPoint.x, startPoint.y);
+        c.lineTo(this.x, this.y);
+        c.stroke();
+        // c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        // c.fillStyle = this.color
+        // c.fill()
+        c.closePath()
+    }
+
+    update() {
+        const lastPoint = { x: this.x, y: this.y }
+        // move points over time
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        this.radians += this.velocity;
+        this.x = x + Math.cos(this.radians) * this.distanceFromCenter;
+        this.y = y + Math.sin(this.radians) * this.distanceFromCenter;
+        this.draw(lastPoint)
+    }
+}
+//////////////////////
 class Bar {
     constructor(x, y, degree) {
         this.x = 250;
@@ -95,26 +142,30 @@ class Bar {
     
 }
 
-let bars = [];
+let particles = [];
 function init() {
     const backgroundGradient = c.createLinearGradient(0, 0, 0, canvas.height)
     backgroundGradient.addColorStop(0, '#171e26')
     backgroundGradient.addColorStop(1, '#3f586b')
-    // let degree = 0;
-    // for (let i = 0; i < 8; i++) {
-    //     bars.push(new Bar(250, 250, degree))
-    //     degree += 45;
-    // }   
     const sun = new Sun();
     sun.update();
+
+
+    particles = [];
+    const colors = ["#FCB033", "#FFE469", "#FECC51", "#FA8607", "#FA961B"]
+    for (let i = 0; i < 200; i++) {
+        const rand = Math.floor(Math.random() * colors.length)
+        const radius = Math.ceil(Math.random() * 2);
+        particles.push(new Particle(canvas.width / 2, canvas.height / 2, radius, colors[rand]))
+    }
 }
 
 
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
-    // // c.fillStyle = backgroundGradient;
-    // // c.fillRect(0, 0, canvas.width, canvas.height)
+    // c.fillStyle = backgroundGradient;
+    // c.fillRect(0, 0, canvas.width, canvas.height)
     // bars.forEach(bar => {
     //     bar.update()
     // })
@@ -124,7 +175,7 @@ function animate() {
 }
 
 init()
-//animate()
+animate()
 
 
 // const canvas = document.querySelector('canvas')
