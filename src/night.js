@@ -1,17 +1,14 @@
 const width = 500,
-    height = 600,
-    stars = createStars(width, height, 30),
-    moon = {
-        x: 0,
-        y: height / 2,
-        r: 45
-    },
-    canvas = document.querySelector('canvas'),
-    c = canvas.getContext("2d");
-canvas.width = width;
-canvas.height = height;
+      height = 600,
+      stars = createStars(width, height, 30),
+      canvas = document.querySelector('canvas'),
+      c = canvas.getContext("2d");
+
 let counter = 0,
     time = 0;
+
+canvas.width = width;
+canvas.height = height;
 
 function random(max) {
     return Math.floor(Math.random() * max);
@@ -33,13 +30,20 @@ function createStars(width, height, spacing) {
     return stars;
 }
 
-function renderStar(ctx, x, y, r, fillStyle) {
+function renderStar(c, x, y, r, fillStyle) {
     c.beginPath(),
-        c.fillStyle = fillStyle,
-        c.arc(x, y, r, 0, Math.PI * 2),
-        c.fill();
+    c.fillStyle = fillStyle,
+    c.arc(x, y, r, 0, Math.PI * 2),
+    c.fill();
 }
 
+function renderMoon() {
+    c.beginPath(),
+    c.fillStyle = '#F5F3CE',
+    c.arc(250, 250, 50, 0, Math.PI * 2),
+    c.fill();
+
+}
 function getOpacity(factor) {
     const opacityIncrement = 0.6 * Math.abs(Math.sin(factor));
     const opacity = 0.1 + opacityIncrement;
@@ -48,9 +52,13 @@ function getOpacity(factor) {
 
 function render() {
     const gradient = c.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, "#00111e");
-    gradient.addColorStop(1, "#0a2342");
+    gradient.addColorStop(0, "#070B34");
+    gradient.addColorStop(0.3, "#141852");
+    gradient.addColorStop(0.5, "#2B2F77");
+    gradient.addColorStop(1, "#483475");
+    
 
+    //stars
     c.fillStyle = gradient;
     c.fillRect(0, 0, width, height);
     stars.forEach(function (star, i) {
@@ -62,6 +70,9 @@ function render() {
             
         //render stars
         renderStar(c, x, y, star.r, `hsla(${randomColor}, 30%, 80%, ${opacity})`); 
+    
+        //moon
+        renderMoon()
     });
 
 
@@ -69,9 +80,6 @@ function render() {
     requestAnimationFrame(render);
 }
 
-function newY(x) {
-    return Math.pow(x - width / 2, 2) / 9000 + height / 2 + 1
-}
 
 
 render();

@@ -59,8 +59,8 @@ class Rain {
     }
 
     shatter() {
-        const num = randomIntFromRange(1,3)
-        const radius  = randomIntFromRange(1,2)
+        const num = randomIntFromRange(1, 3)
+        const radius = randomIntFromRange(1, 2)
         for (let i = 0; i < num; i++) {
             this.miniRains.push(new MiniRain(this.x, this.y, radius))
         }
@@ -110,7 +110,7 @@ class MiniRain {
         this.opacity -= 1 / this.ttl
     }
 
-    
+
 }
 
 
@@ -137,7 +137,7 @@ function animate() {
                 rain.miniRains.splice(index, 1)// get rid of mini rain
             }
         })
-        
+
     });
     //draw a cloud
     c.beginPath()

@@ -1,3 +1,4 @@
+//import Rain from './rain'
 // this function takes zipcode(user input) and returns 
 // weather data in json format.
 export default class Weather {
@@ -7,8 +8,7 @@ export default class Weather {
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
         this.degreeSection = document.querySelector('.temperature');
-        this.degreeSpan = document.querySelector('.temperature span'); 
-        this.weatherAnimation = document.querySelector('.animation');  
+        this.degreeSpan = document.querySelector('.temperature span');  
     }
 
     // constructor(zipcode) {
@@ -23,13 +23,6 @@ export default class Weather {
     // }
 
     getData(){
-        
-        // const url = this.ADDRESS
-        //             + this.zipcode.toString()
-        //             + this.COUNTRY
-        //             + this.CONVERT
-        //             + this.MYKEY;
-       
         fetch(this.api)
             .then(res => {    
                 return res.json()
@@ -62,7 +55,14 @@ export default class Weather {
             })
     } 
     renderAnimation() {
-        this.weatherAnimation.textContent = '<script src="../src/sun.js"></script> '
+        const canvas = document.querySelector('canvas');
+        const c = canvas.getContext('2d');
+
+        canvas.width = 500;
+        canvas.height = 600;
+
+        const rain = new Rain(c);
+        rain.animate();
     }
 
     render() {
@@ -72,11 +72,7 @@ export default class Weather {
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name
-                console.log(description)
-                console.log(temperature)
-                console.log(location)
                 //Set DOM Elements frm the API
-
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContect = description;
                 this.locationTimezone.textContent = location;    

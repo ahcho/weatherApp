@@ -1,4 +1,5 @@
-import Weather from '../lib/getWeatherData'
+import Weather from './getWeatherData'
+
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -11,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const weather = new Weather(api);
             weather.getData();
-    })} else {
-        const weather = new Weather(94041);
-        weather.getData();
-    }
+     })}// else {
+    //     const weather = new Weather();
+    //     weather.getData();
+    // }
 });

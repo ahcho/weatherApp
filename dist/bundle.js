@@ -86,9 +86,9 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./lib/getWeatherData.js":
+/***/ "./src/getWeatherData.js":
 /*!*******************************!*\
-  !*** ./lib/getWeatherData.js ***!
+  !*** ./src/getWeatherData.js ***!
   \*******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -96,6 +96,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
+//import Rain from './rain'
 // this function takes zipcode(user input) and returns 
 // weather data in json format.
 class Weather {
@@ -105,8 +106,7 @@ class Weather {
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
         this.degreeSection = document.querySelector('.temperature');
-        this.degreeSpan = document.querySelector('.temperature span'); 
-        this.weatherAnimation = document.querySelector('.animation');  
+        this.degreeSpan = document.querySelector('.temperature span');  
     }
 
     // constructor(zipcode) {
@@ -121,13 +121,6 @@ class Weather {
     // }
 
     getData(){
-        
-        // const url = this.ADDRESS
-        //             + this.zipcode.toString()
-        //             + this.COUNTRY
-        //             + this.CONVERT
-        //             + this.MYKEY;
-       
         fetch(this.api)
             .then(res => {    
                 return res.json()
@@ -147,12 +140,11 @@ class Weather {
 
                 this.degreeSection.addEventListener('click', () => {
 
-                    if (this.degreeSpan.textContent === 'F') {
-                        //console.log('hello anna')
-                        this.degreeSpan.textContent = 'C'
+                    if (this.degreeSpan.textContent === '°F') {
+                        this.degreeSpan.textContent = '°C'
                         this.temperatureDegree.textContent = Math.floor(celsius);
                     } else {
-                        this.degreeSpan.textContent = 'F'
+                        this.degreeSpan.textContent = '°F'
                         this.temperatureDegree.textContent = temperature;
                     }
                 })
@@ -161,7 +153,14 @@ class Weather {
             })
     } 
     renderAnimation() {
-        this.weatherAnimation.textContent = '<script src="../src/sun.js"></script> '
+        const canvas = document.querySelector('canvas');
+        const c = canvas.getContext('2d');
+
+        canvas.width = 500;
+        canvas.height = 600;
+
+        const rain = new Rain(c);
+        rain.animate();
     }
 
     render() {
@@ -171,11 +170,7 @@ class Weather {
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name
-                console.log(description)
-                console.log(temperature)
-                console.log(location)
                 //Set DOM Elements frm the API
-
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContect = description;
                 this.locationTimezone.textContent = location;    
@@ -197,7 +192,8 @@ class Weather {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/getWeatherData */ "./lib/getWeatherData.js");
+/* harmony import */ var _getWeatherData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherData */ "./src/getWeatherData.js");
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -209,12 +205,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const lat = position.coords.latitude;
             const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
             
-            const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
+            const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
             weather.getData();
-    })} else {
-        const weather = new _lib_getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](94041);
-        weather.getData();
-    }
+     })}// else {
+    //     const weather = new Weather();
+    //     weather.getData();
+    // }
 });
 
 /***/ })
