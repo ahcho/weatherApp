@@ -163,9 +163,12 @@ function init() {
 
 function animate() {
     requestAnimationFrame(animate)
+    const backgroundGradient = c.createLinearGradient(0, 0, 0, canvas.height)
+    backgroundGradient.addColorStop(0, '#171e26')
+    backgroundGradient.addColorStop(1, '#3f586b')
     c.clearRect(0, 0, canvas.width, canvas.height)
-    // c.fillStyle = backgroundGradient;
-    // c.fillRect(0, 0, canvas.width, canvas.height)
+    c.fillStyle = backgroundGradient;
+    c.fillRect(0, 0, canvas.width, canvas.height)
     // bars.forEach(bar => {
     //     bar.update()
     // })

@@ -115,7 +115,7 @@ function animate() {
 
     if (ticker % 50 === 0) {
         //Math.random() * (max - min) + min;
-        const x = Math.random() * (400 - 150) + 150;
+        const x = Math.random() * (380 - 100) + 100;
         const y = 150;
         snows.push(new Snow(x, y, 10, 'white'))
     }

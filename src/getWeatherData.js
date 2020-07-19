@@ -1,11 +1,13 @@
 export default class Weather {
-    constructor(api) {
+    constructor(api, c) {
+        this.c = c;
         this.api = api;
         this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
         this.locationTimezone = document.querySelector(".location-timezone");
         this.degreeSection = document.querySelector('.weather-info-bottom');
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
+        this.iconSection = document.getElementById('temp-icon');
     }
 
     // constructor(zipcode) {
@@ -25,14 +27,20 @@ export default class Weather {
                 return res.json()
             })
             .then(data => {
+                // console.log(data.weather[0].icon)
+                // debugger;
                 const description = data.weather[0].description
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
+                const iconId = data.weather[0].icon
+                const iconAdd = `http://openweathermap.org/img/wn/${iconId}@2x.png`
 
                 //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
+                this.iconSection.src = iconAdd;
+
                 //render animation here
                 // change f -> c or c -> f
                 let celsius = (temperature - 32) * (5 / 9);
@@ -51,6 +59,22 @@ export default class Weather {
 
             })
     }
+    renderCanvasBackground() {
+        const today = new Date();
+        const hour = today.getHours();
+        const minutes = today.getMinutes();
+        const midDay = 'AM';
+        if (hour > 12) {
+            midDay = 'PM'
+        }
+        if (hour > 7 && hour < 18) {
+            console.log('render morning')
+        } else {
+            console.log('render night')
+        }
+
+    }
+
     renderAnimation() {
         const canvas = document.querySelector('canvas');
         const c = canvas.getContext('2d');
@@ -67,6 +91,7 @@ export default class Weather {
             return res.json()
         })
             .then(data => {
+                
                 const description = data.weather[0].description
                 const temperature = data.main.temp
                 const location = data.name

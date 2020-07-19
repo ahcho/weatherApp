@@ -8,6 +8,7 @@ body {
     font-family: sans-serif;
     color: white;
     font-family: 'Cinzel';
+    /* border: solid black 1px; */
 } 
 
 .weather-container {
@@ -16,15 +17,19 @@ body {
     max-width: 500px;
     display: flex;
     align-items: center;
+    border: solid black 2px;
+    background-color: black;
+    padding: 10px 10px 0 10px;
+    
 }
 
 .weather-info {
-    min-height: 200px;
-    /* border: solid red 1px; */
+    min-height: 160px;
     width: 100%;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
+    /* border: solid red 1px; */
 }
 
 .weather-info-bottom {
@@ -40,16 +45,17 @@ canvas {
     /* background: transparent; */
     width: 500px;
     min-height: 600px;
-    border: solid black 1px;
+    border: solid red 1px;
 }
 
 .degree-section {
     display: flex;
     align-items: center;
     cursor: pointer;
-    font-size: 60px;
-    /* border: 1px solid yellow; */
+    font-size: 85px;
     float: right;
+    padding-top: 20px;
+    /* border: 1px solid yellow; */
 }
 
 .degree-section span {
@@ -62,8 +68,15 @@ canvas {
     display: flex;
     float: right;
     /* border: 1px solid yellow; */
+    font-size: 20px;
+    padding-right: 10px;
 }
 
 .temp-description {
+    font: 10px;
     /* border: 1px solid yellow; */
+}
+
+#temp-icon {
+    /* border: 1px solid black; */
 }
