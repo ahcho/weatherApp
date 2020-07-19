@@ -214,17 +214,11 @@ class Rain {
         this.draw()
         //when rain hits bottom of screen
         if (this.y + this.velocity.y + 20 > canvas.height) {
-            //this.velocity.y = -this.velocity.y * this.friction;
             this.shatter();
         } else {
             this.velocity.y += this.gravity;
         }
-
         this.y += this.velocity.y;
-    }
-
-    destroy() {
-
     }
 
     shatter() {

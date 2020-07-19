@@ -55,7 +55,15 @@ export default class Weather {
         let midDay = 'AM';
         if (hour > 12) {
             midDay = 'PM'
+            hour -= 12;
         }
+        if (hour < 10) {
+            hour = `0${hour}`
+        }
+        if (minutes < 10) {
+            minutes = `0${minutes}`
+        }
+        
         this.c.beginPath();
         if (hour > 7 && hour < 18) {
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
