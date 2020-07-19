@@ -4,9 +4,6 @@ const c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// cloud
-// c.fillStyle = 'rgba(0, 0, 255, 0.1)'; 
-// c.fillRect(100, 100, 400, 100);context.beginPath();
 const startX = 100
 const startY = 100
 
@@ -107,8 +104,8 @@ function animate() {
     var grdCenterX = 260;
     var grdCenterY = 80;
     var grd = c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-    grd.addColorStop(0, "white"); // light blue
-    grd.addColorStop(1, "white"); // dark blue
+    grd.addColorStop(0, "white"); 
+    grd.addColorStop(1, "white"); 
     c.fillStyle = grd;
     c.fill();
     c.lineWidth = 5;

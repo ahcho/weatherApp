@@ -38,10 +38,22 @@ function renderStar(c, x, y, r, fillStyle) {
 }
 
 function renderMoon() {
-    c.beginPath(),
-    c.fillStyle = '#F5F3CE',
-    c.arc(250, 250, 50, 0, Math.PI * 2),
-    c.fill();
+    // c.beginPath(),
+    // c.fillStyle = '#F5F3CE',
+    // c.arc(250, 200, 50, 0, Math.PI * 2),
+    // c.shadowColor = '#E3EAEF',
+    // c.shadowBlur = 20,
+    // c.fill();
+
+    c.save()
+    c.beginPath()
+    c.arc(250, 200, 50, 0, Math.PI * 2)    
+    c.fillStyle = `rgba(227, 234, 239, 1)`
+    // c.shadowColor = 'white'
+    // c.shadowBlur = 100
+    c.fill()
+    c.closePath()
+    c.restore()
 
 }
 function getOpacity(factor) {

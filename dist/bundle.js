@@ -195,23 +195,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getWeatherData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWeatherData */ "./src/getWeatherData.js");
 
 
+function success(position){
 
-document.addEventListener("DOMContentLoaded", function() {
+    const lon = position.coords.longitude;
+    const lat = position.coords.latitude;
+    const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`
+    const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
+    weather.getData();
 
-    if(navigator.geolocation) {
+}
 
-        navigator.geolocation.getCurrentPosition(position => {    
-            const lon = position.coords.longitude;
-            const lat = position.coords.latitude;
-            const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
-            
-            const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api);
-            weather.getData();
-     })}// else {
-    //     const weather = new Weather();
-    //     weather.getData();
-    // }
+function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    navigator.geolocation.getCurrentPosition(success, error);
 });
+
+
+
+// import Weather from './getWeatherData'
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+  
+    
+//     if(navigator.geolocation) {
+       
+        
+//             navigator.geolocation.getCurrentPosition(position => { 
+             
+//             const lon = position.coords.longitude;
+//             const lat = position.coords.latitude;
+//             const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
+            
+//             const weather = new Weather(api);
+//             weather.getData();
+//      })} else {
+//         const weather = new Weather();
+//         weather.getData();
+//     }
+// });
 
 /***/ })
 
