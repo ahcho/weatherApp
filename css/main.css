@@ -4,7 +4,8 @@ body {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(rgb(47, 150, 163), rgb(48, 62,143));
+    /* background: linear-gradient(rgb(47, 150, 163), rgb(48, 62,143)); */
+    background: #d9d9d9;
     font-family: sans-serif;
     color: white;
     font-family: 'Cinzel';
@@ -17,9 +18,11 @@ body {
     max-width: 500px;
     display: flex;
     align-items: center;
-    border: solid black 2px;
-    background-color: black;
+    /* border: solid black 2px; */
+    background-color: white;
     padding: 10px 10px 0 10px;
+    box-shadow: 8px 8px 5px #a6a6a6;
+    border-radius: 4px;
     
 }
 
@@ -28,6 +31,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
+    color: gray;
     /* align-items: center; */
     /* border: solid red 1px; */
 }
@@ -42,10 +46,10 @@ body {
 }
 canvas {
     z-index: 2;
-    /* background: transparent; */
+    background: transparent;
     width: 500px;
     min-height: 600px;
-    border: solid red 1px;
+    /* border: solid red 1px; */
 }
 
 .degree-section {

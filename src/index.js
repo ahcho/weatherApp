@@ -11,6 +11,7 @@ function success(position){
     const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`
     const weather = new Weather(api, c);
     weather.getData();
+    weather.renderCanvasBackground();
 
 }
 

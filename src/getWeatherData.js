@@ -59,20 +59,39 @@ export default class Weather {
 
             })
     }
+
     renderCanvasBackground() {
         const today = new Date();
         const hour = today.getHours();
         const minutes = today.getMinutes();
-        const midDay = 'AM';
+        let midDay = 'AM';
         if (hour > 12) {
             midDay = 'PM'
         }
+        this.c.beginPath();
         if (hour > 7 && hour < 18) {
-            console.log('render morning')
+            // console.log('render morning')
+            const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
+            backgroundGradient.addColorStop(1, '#B7F8DB')
+            backgroundGradient.addColorStop(0, '#50A7C2')
+            this.c.fillStyle = backgroundGradient;
+            this.c.fillRect(0, 0, 500, 600)
         } else {
-            console.log('render night')
+            // console.log('render night')
+            const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
+            backgroundGradient.addColorStop(0, '#171e26')
+            backgroundGradient.addColorStop(1, '#3f586b')
+            this.c.fillStyle = backgroundGradient;
+            this.c.fillRect(0, 0, 500, 600)
         }
+        this.c.font = '50px Cinzel'
+        this.c.fillStyle = '#555555';
+        this.c.fillText(`${hour}:${minutes}`, 190, 60);
+        this.c.font = '20px Cinzel'
+        this.c.fillText(midDay, 300, 40)
+        this.c.fill();
 
+        
     }
 
     renderAnimation() {
@@ -104,3 +123,10 @@ export default class Weather {
     }
 
 }
+
+
+///sun///
+
+///cloud///
+
+///rain///
