@@ -13,11 +13,9 @@ time, weather of the user's current location. In the bottom half of the applicat
 Javascript, CSS, OpenWeatherMap API
 
 ## Features
-In the rainy day animation shows rain splash, when a rain drop hits the ground
+In the rainy day animation shows rain splash, when a rain drop hits the ground,
+it generates an array of mini rains to show splash animation
 ```js
-When rain hits a ground, it generates an array of mini rains to show 
-splash animation
-...
 shatter() {
     const num = randomIntFromRange(1,3)
     const radius  = randomIntFromRange(1,2)
@@ -25,7 +23,6 @@ shatter() {
         this.miniRains.push(new MiniRain(this.x, this.y, radius))
         }
     }
-...
 ```
 
 ### To-dos
