@@ -215,56 +215,6 @@ export default class Weather {
     sunAnimate() {
         requestAnimationFrame(this.sunAnimate)
     }
-
-    createRain() {
-        const x = Math.random() * (400 - 100) + 100;
-        const y = 150;
-        const w = Math.random() * 5;
-        this.rains.push(new Rain(x, y, w, this.c))
-    }
-
-    rainAnimate(rains, ticker) {
-        // debugger;
-        // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
-        this.rains.forEach((rain, index) => {
-            rain.update();
-            rain.miniRains.forEach((miniRain, index) => {
-                miniRain.update();
-                if (miniRain.ttl === 0) {
-                    rain.miniRains.splice(index, 1)// get rid of mini rain
-                }
-            })
-        });
-        //draw a cloud
-        // this.renderCloud();
-        // add a radial gradient
-        var grdCenterX = 260;
-        var grdCenterY = 80;
-        var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-        grd.addColorStop(0, "white"); // light blue
-        grd.addColorStop(1, "white"); // dark blue
-        this.c.fillStyle = grd;
-        this.c.fill();
-        this.c.lineWidth = 5;
-        this.c.strokeStyle = "white";
-        this.c.stroke();
-        
-        
-        if (ticker % 40 === 0) {
-            //debugger;
-            this.createRain();
-            // const x = Math.random() * (400 - 100) + 100;
-            // const y = 150;
-            // const w = Math.random() * 5;
-            // rains.push(new Rain(x, y, w, this.c))
-        }
-        ticker++;
-
-        requestAnimationFrame(this.rainAnimate.bind(this));
-
-    }
-
-
 }
 
 
