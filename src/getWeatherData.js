@@ -24,7 +24,7 @@ export default class Weather {
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
                 const iconId = data.weather[0].icon
-                const iconAdd = `http://openweathermap.org/img/wn/${iconId}@2x.png`
+                const iconAdd = `https://openweathermap.org/img/wn/${iconId}@2x.png`
 
                 //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
