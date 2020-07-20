@@ -99,6 +99,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _rain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rain */ "./src/rain.js");
 /* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sun */ "./src/sun.js");
 /* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_sun__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _snow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./snow */ "./src/snow.js");
+
 
 
 
@@ -115,6 +117,7 @@ class Weather {
         this.iconSection = document.getElementById('temp-icon');
         this.stars = [];
         this.rains =[];
+        this.snows = [];
         this.ticker = 0;
     }
 
@@ -205,7 +208,8 @@ class Weather {
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-     
+    
+        
         if (iconId === sun) {
             this.renderSun();
         } else if (iconId === fewClouds){
@@ -216,7 +220,7 @@ class Weather {
         } else if (rain.includes(iconId)) {
             this.animateRain();
         } else {
-            this.animateRain();
+            this.animateSnow();
             //console.log('call snowy animation')
         }
         this.renderTime();  
@@ -238,17 +242,7 @@ class Weather {
         });
         //draw a cloud
         this.renderCloud()
-        // add a radial gradient
-        // var grdCenterX = 260;
-        // var grdCenterY = 80;
-        // var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-        // grd.addColorStop(0, "white"); // light blue
-        // grd.addColorStop(1, "white"); // dark blue
-        // this.c.fillStyle = grd;
-        // this.c.fill();
-        // this.c.lineWidth = 5;
-        // this.c.strokeStyle = "white";
-        // this.c.stroke();
+        
         this.ticker++;
 
         if (this.ticker % 40 === 0) {
@@ -258,6 +252,24 @@ class Weather {
             this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas))
         }
         this.renderTime();  
+    }
+
+    animateSnow() {
+        requestAnimationFrame(this.animateSnow.bind(this))
+        this.renderCanvasBackground();
+
+        this.snows.forEach((snow) => {
+            snow.update();
+        });
+
+        this.renderCloud();
+        this.ticker++;
+
+        if (this.ticker % 50 === 0) {
+            const x = Math.random() * (380 - 100) + 100;
+            const y = 150;
+            this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas))
+        }
     }
 
     render() {
@@ -296,8 +308,7 @@ class Weather {
             const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
             this.c.moveTo(x, y);
             this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
-                y - (this.len * Math.sin(Math.PI * this.degree / 180)));
-
+                          y - (this.len * Math.sin(Math.PI * this.degree / 180)));
             this.c.lineWidth = 9;
             this.c.strokeStyle = '#FDB813';
             this.c.stroke();
@@ -321,8 +332,8 @@ class Weather {
         var grdCenterX = 260;
         var grdCenterY = 80;
         var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-        grd.addColorStop(0, "white"); // light blue
-        grd.addColorStop(1, "white"); // dark blue
+        grd.addColorStop(0, "white"); 
+        grd.addColorStop(1, "white"); 
         this.c.fillStyle = grd;
         this.c.fill();
         this.c.lineWidth = 5;
@@ -366,7 +377,6 @@ function success(position){
     const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
     weather.getData();
     weather.renderCanvasBackground();
-
 }
 
 function error(err) {
@@ -387,44 +397,6 @@ function error(err) {
 document.addEventListener("DOMContentLoaded", function () {
     navigator.geolocation.getCurrentPosition(success, error);
 });
-
-
-
-// import Weather from './getWeatherData'
-
-
-// document.addEventListener("DOMContentLoaded", function() {
-  
-    
-//     if(navigator.geolocation) {
-       
-        
-//             navigator.geolocation.getCurrentPosition(position => { 
-             
-//             const lon = position.coords.longitude;
-//             const lat = position.coords.latitude;
-//             const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
-            
-//             const weather = new Weather(api);
-//             weather.getData();
-//      })} else {
-//         const weather = new Weather();
-//         weather.getData();
-//     }
-// });
-
-
-
-// constructor(zipcode) {
-//     this.zipcode = zipcode;
-//     this.ADDRESS = "https://api.openweathermap.org/data/2.5/weather?zip=";
-//     this.COUNTRY = ",us";
-//     this.CONVERT = "&units=imperial";
-//     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
-//     this.temperatureDegree = document.querySelector(".temp-degree");
-//     this.temperatureDescription = document.querySelector(".temp-description");
-//     this.locationTimezone = document.querySelector(".location-timezone");
-// }
 
 /***/ }),
 
@@ -539,6 +511,85 @@ class MiniRain {
         this.opacity -= 1 / this.ttl
     }
 }
+
+
+/***/ }),
+
+/***/ "./src/snow.js":
+/*!*********************!*\
+  !*** ./src/snow.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Snow; });
+class Snow {
+    constructor(x, y,radius, color, c, canvas) {
+        this.c = c
+        this.canvas = canvas
+        this.x = x
+        this.y = y
+        this.radius = radius 
+        this.color = color
+        this.velocity = {
+            x: 0,
+            y: 1
+        }
+        this.friction = 0.8
+        this.gravity = 0.01
+        this.opacity = 1
+    }
+
+    draw() {
+        this.c.save()
+        this.c.beginPath()
+        this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        this.c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
+        this.c.shadowColor = '#E3EAEF'
+        this.c.shadowBlur = 20
+        this.c.fill()
+        this.c.closePath()
+        this.c.restore()
+    }
+
+    // call draw function
+    update() {
+        this.draw()
+        //when snow hits bottom of screen
+        if (this.y + this.radius + this.velocity.y > this.canvas.height) {
+            //this.velocity.y = -this.velocity.y * this.friction;
+        } else {
+            this.velocity.y += this.gravity;
+        }
+
+        this.y += this.velocity.y;
+    }
+
+    //when snow is clicked it changes shape
+    clicked() {
+        let d = dist(mouseX, mouseY, this.x, this.y)
+        this.renderSnowFlake(this.radius, this.radius)
+    }
+
+    renderSnowFlake(width, height) {
+        this.c.lineWidth = 20;
+        this.c.lineCap = 'round';
+        this.c.fillStyle = "#162D50";
+        this.c.strokeStyle = "#FFFFFF";
+        this.c.fillRect(0, 0, width, height);
+        this.c.translate(width / 2, height / 2);
+        for (let count = 0; count < 6; count++) {
+            this.c.beginPath();
+            this.c.moveTo(0, 0);
+            this.c.lineTo(300, 0);
+            this.c.stroke();
+            this.c.rotate(Math.PI / 3);
+        }
+    }
+}
+
 
 
 /***/ }),

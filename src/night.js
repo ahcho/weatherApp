@@ -45,8 +45,8 @@ function renderMoon() {
     c.fill()
     c.closePath()
     c.restore()
-
 }
+
 function getOpacity(factor) {
     const opacityIncrement = 0.6 * Math.abs(Math.sin(factor));
     const opacity = 0.1 + opacityIncrement;
