@@ -104,16 +104,14 @@ export default class Weather {
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-        
-         
+     
         if (iconId === sun) {
             this.renderSun();
         } else if (iconId === fewClouds){
             this.renderSun();
             this.renderCloud();
         } else if (iconId === scatteredClouds) {
-            this.animateRain();
-            //this.renderCloud();
+            this.renderCloud();
         } else if (rain.includes(iconId)) {
             this.animateRain();
         } else {
@@ -140,16 +138,16 @@ export default class Weather {
         //draw a cloud
         this.renderCloud()
         // add a radial gradient
-        var grdCenterX = 260;
-        var grdCenterY = 80;
-        var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-        grd.addColorStop(0, "white"); // light blue
-        grd.addColorStop(1, "white"); // dark blue
-        this.c.fillStyle = grd;
-        this.c.fill();
-        this.c.lineWidth = 5;
-        this.c.strokeStyle = "white";
-        this.c.stroke();
+        // var grdCenterX = 260;
+        // var grdCenterY = 80;
+        // var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
+        // grd.addColorStop(0, "white"); // light blue
+        // grd.addColorStop(1, "white"); // dark blue
+        // this.c.fillStyle = grd;
+        // this.c.fill();
+        // this.c.lineWidth = 5;
+        // this.c.strokeStyle = "white";
+        // this.c.stroke();
         this.ticker++;
 
         if (this.ticker % 40 === 0) {
@@ -219,6 +217,16 @@ export default class Weather {
         this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
         this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
         this.c.closePath();
+        var grdCenterX = 260;
+        var grdCenterY = 80;
+        var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
+        grd.addColorStop(0, "white"); // light blue
+        grd.addColorStop(1, "white"); // dark blue
+        this.c.fillStyle = grd;
+        this.c.fill();
+        this.c.lineWidth = 5;
+        this.c.strokeStyle = "white";
+        this.c.stroke();
     }
 
     sunAnimate() {
