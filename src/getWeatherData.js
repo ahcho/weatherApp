@@ -1,6 +1,7 @@
 import Rain from './rain';
 import Sun from './sun';
 import Snow from './snow';
+import Star from './night';
 
 export default class Weather {
     constructor(api, c, canvas) {
@@ -17,6 +18,7 @@ export default class Weather {
         this.rains =[];
         this.snows = [];
         this.ticker = 0;
+        this.counter = 0;
     }
 
     getData() {
@@ -106,12 +108,14 @@ export default class Weather {
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-    
+        
+        // this.createStars(this.canvas.width, this.canvas.height, 30);
+        // this.animateNightSky();
         
         if (iconId === sun) {
-            this.renderSun();
+            this.renderSun(250, 250);
         } else if (iconId === fewClouds){
-            this.renderSun();
+            this.renderSun(250, 80);
             this.renderCloud();
         } else if (iconId === scatteredClouds) {
             this.renderCloud();
@@ -185,10 +189,10 @@ export default class Weather {
             })
     }
 
-    renderSun() {
+    renderSun(x, y) {
         this.degree = 0;
-        this.x = 250;
-        this.y = 250;
+        this.x = x;
+        this.y = y;
         this.radius = 50;
         this.sAngle = 0;
         this.eAngle = Math.PI * 2;
@@ -199,19 +203,21 @@ export default class Weather {
         this.c.fillStyle = '#FDB813';
         this.c.fill();
 
-        for (let i = 0; i < 8; i++) {
-            this.c.beginPath();
-            this.c.lineCap = 'round';
-            const x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
-            const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
-            this.c.moveTo(x, y);
-            this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
-                          y - (this.len * Math.sin(Math.PI * this.degree / 180)));
-            this.c.lineWidth = 9;
-            this.c.strokeStyle = '#FDB813';
-            this.c.stroke();
-            this.degree += 45;
-        }   
+        if (y === 250){
+            for (let i = 0; i < 8; i++) {
+                this.c.beginPath();
+                this.c.lineCap = 'round';
+                const x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
+                const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
+                this.c.moveTo(x, y);
+                this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
+                            y - (this.len * Math.sin(Math.PI * this.degree / 180)));
+                this.c.lineWidth = 9;
+                this.c.strokeStyle = '#FDB813';
+                this.c.stroke();
+                this.degree += 45;
+            }   
+        }
         this.c.closePath();
    }
 
@@ -241,6 +247,44 @@ export default class Weather {
 
     sunAnimate() {
         requestAnimationFrame(this.sunAnimate)
+    }
+
+    //////////
+
+    maxRandom(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    createStars(width, height, spacing) {
+    
+        for (let x = 0; x < width; x += spacing) {
+            for (let y = 0; y < height; y += spacing) {
+                x = x + this.maxRandom(spacing);
+                y = y + this.maxRandom(spacing);
+                let r = Math.random() * 1.5;
+                const star = new Star(x, y, r, this.c, this.canvas);
+                this.stars.push(star);
+            }
+        }
+  
+    }
+
+    animateNightSky() {
+        //debugger;
+        this.stars.forEach((star, i) => {
+            const 
+                factor = this.counter * i,
+                x = star.x,
+                y = star.y,
+                opacity = star.getOpacity(factor),
+                randomColor = Math.floor((Math.random() * 360) + 1);
+
+            //render stars
+            star.renderStar(`hsla(${randomColor}, 30%, 80%, ${opacity})`);
+         });
+
+        this.counter++;
+        requestAnimationFrame(this.animateNightSky.bind(this));
     }
 }
 
