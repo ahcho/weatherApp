@@ -26,6 +26,8 @@ body {
     padding: 0 10px 0 10px;
     box-shadow: 8px 8px 5px #a6a6a6;
     border-radius: 4px;
+    overflow-y: auto;
+    
 }
 
 .weather-info {

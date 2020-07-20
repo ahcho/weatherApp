@@ -97,7 +97,6 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
 /* harmony import */ var _rain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rain */ "./src/rain.js");
-/* harmony import */ var _rain__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_rain__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sun */ "./src/sun.js");
 /* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_sun__WEBPACK_IMPORTED_MODULE_1__);
 
@@ -114,6 +113,7 @@ class Weather {
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
         this.iconSection = document.getElementById('temp-icon');
         this.stars = [];
+        this.rains =[];
     }
 
     getData() {
@@ -203,21 +203,27 @@ class Weather {
         const sun = ['01d', '02d', '03d']
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-        
-        if (sun.includes(iconId)) {
-            this.renderSun()
-            //this.renderCloud();
-        } else if (rain.includes(iconId)) {
-            //console.log('call rainy animation')
-            let rains = [];
-            let ticker = 0;
-            this.rainAnimate(rains, ticker);
-        } else {
-            //console.log('call snowy animation')
-            let rains = [];
-            let ticker = 0;
-            this.rainAnimate(rains, ticker);
-        }
+        let rains = [];
+        let ticker = 0;
+        // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
+        this.renderSun()
+        //this.rainAnimate(rains, ticker);
+        // if (sun.includes(iconId)) {
+        //     this.renderSun()
+        //     //this.renderCloud();
+        // } else if (rain.includes(iconId)) {
+        //     //console.log('call rainy animation')
+        //     //this.renderSun()
+        //     // let rains = [];
+        //     // let ticker = 0;
+        //     this.rainAnimate(rains, ticker);
+        // } else {
+        //     //console.log('call snowy animation')
+        //     this.renderSun()
+        //     // let rains = [];
+        //     // let ticker = 0;
+        //     // /this.rainAnimate(rains, ticker);
+        // }
         this.renderTime();  
     }
 
@@ -286,12 +292,17 @@ class Weather {
         requestAnimationFrame(this.sunAnimate)
     }
 
+    createRain() {
+        const x = Math.random() * (400 - 100) + 100;
+        const y = 150;
+        const w = Math.random() * 5;
+        this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, this.c))
+    }
+
     rainAnimate(rains, ticker) {
         // debugger;
-        //requestAnimationFrame(this.rainAnimate)
         // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
-
-        rains.forEach((rain, index) => {
+        this.rains.forEach((rain, index) => {
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
@@ -299,7 +310,6 @@ class Weather {
                     rain.miniRains.splice(index, 1)// get rid of mini rain
                 }
             })
-
         });
         //draw a cloud
         // this.renderCloud();
@@ -314,14 +324,19 @@ class Weather {
         this.c.lineWidth = 5;
         this.c.strokeStyle = "white";
         this.c.stroke();
+        
+        
+        if (ticker % 40 === 0) {
+            //debugger;
+            this.createRain();
+            // const x = Math.random() * (400 - 100) + 100;
+            // const y = 150;
+            // const w = Math.random() * 5;
+            // rains.push(new Rain(x, y, w, this.c))
+        }
         ticker++;
 
-        if (ticker % 40 === 0) {
-            const x = Math.random() * (400 - 100) + 100;
-            const y = 150;
-            const w = Math.random() * 5;
-            rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0___default.a(x, y, w, this.c))
-        }
+        requestAnimationFrame(this.rainAnimate.bind(this));
 
     }
 
@@ -425,9 +440,12 @@ document.addEventListener("DOMContentLoaded", function () {
 /*!*********************!*\
   !*** ./src/rain.js ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Rain; });
 // //util function
 // function randomIntFromRange(min, max) {
 //     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -628,22 +646,22 @@ class Rain {
     }
     // how rain will look like
     draw() {
-        c.save()
-        c.beginPath()
-        c.moveTo(this.x, 10 + this.y);
-        c.lineTo(this.x, 30 + this.y);
-        c.lineWidth = this.lineWidth;
-        c.strokeStyle = 'white';
-        c.stroke();
-        c.closePath()
-        c.restore()
+        this.c.save()
+        this.c.beginPath()
+        this.c.moveTo(this.x, 10 + this.y);
+        this.c.lineTo(this.x, 30 + this.y);
+        this.c.lineWidth = this.lineWidth;
+        this.c.strokeStyle = 'white';
+        this.c.stroke();
+        this.c.closePath()
+        this.c.restore()
     }
 
     // call draw function
     update() {
         this.draw()
         //when rain hits bottom of screen
-        if (this.y + this.velocity.y + 20 > canvas.height) {
+        if (this.y + this.velocity.y + 20 > 500) {
             this.shatter();
         } else {
             this.velocity.y += this.gravity;
@@ -655,13 +673,14 @@ class Rain {
         const num = randomIntFromRange(1,3)
         const radius  = randomIntFromRange(1,2)
         for (let i = 0; i < num; i++) {
-            this.miniRains.push(new MiniRain(this.x, this.y, radius))
+            this.miniRains.push(new MiniRain(this.x, this.y, radius, this.c))
         }
     }
 }
 
 class MiniRain {
-    constructor(x, y, radius) {
+    constructor(x, y, radius, c) {
+        this.c = c;
         this.x = x
         this.y = y
         this.radius = radius
@@ -677,21 +696,21 @@ class MiniRain {
     }
 
     draw() {
-        c.save()
-        c.beginPath()
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-        c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
-        c.shadowColor = 'white'
-        c.shadowBlur = 20
-        c.fill()
-        c.closePath()
-        c.restore()
+        this.c.save()
+        this.c.beginPath()
+        this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        this.c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
+        this.c.shadowColor = 'white'
+        this.c.shadowBlur = 20
+        this.c.fill()
+        this.c.closePath()
+        this.c.restore()
     }
 
     update() {
         this.draw()
         // when ball hits bottom of screen
-        if (this.y + this.radius + this.velocity.y > canvas.height) {
+        if (this.y + this.radius + this.velocity.y > 500) {
             this.velocity.y = -this.velocity.y * this.friction;
         } else {
             this.velocity.y += this.gravity;

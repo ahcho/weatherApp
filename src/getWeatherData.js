@@ -12,6 +12,7 @@ export default class Weather {
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
         this.iconSection = document.getElementById('temp-icon');
         this.stars = [];
+        this.rains =[];
     }
 
     getData() {
@@ -101,21 +102,27 @@ export default class Weather {
         const sun = ['01d', '02d', '03d']
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-        
-        if (sun.includes(iconId)) {
-            this.renderSun()
-            //this.renderCloud();
-        } else if (rain.includes(iconId)) {
-            //console.log('call rainy animation')
-            let rains = [];
-            let ticker = 0;
-            this.rainAnimate(rains, ticker);
-        } else {
-            //console.log('call snowy animation')
-            let rains = [];
-            let ticker = 0;
-            this.rainAnimate(rains, ticker);
-        }
+        let rains = [];
+        let ticker = 0;
+        // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
+        this.renderSun()
+        //this.rainAnimate(rains, ticker);
+        // if (sun.includes(iconId)) {
+        //     this.renderSun()
+        //     //this.renderCloud();
+        // } else if (rain.includes(iconId)) {
+        //     //console.log('call rainy animation')
+        //     //this.renderSun()
+        //     // let rains = [];
+        //     // let ticker = 0;
+        //     this.rainAnimate(rains, ticker);
+        // } else {
+        //     //console.log('call snowy animation')
+        //     this.renderSun()
+        //     // let rains = [];
+        //     // let ticker = 0;
+        //     // /this.rainAnimate(rains, ticker);
+        // }
         this.renderTime();  
     }
 
@@ -184,12 +191,17 @@ export default class Weather {
         requestAnimationFrame(this.sunAnimate)
     }
 
+    createRain() {
+        const x = Math.random() * (400 - 100) + 100;
+        const y = 150;
+        const w = Math.random() * 5;
+        this.rains.push(new Rain(x, y, w, this.c))
+    }
+
     rainAnimate(rains, ticker) {
         // debugger;
-        //requestAnimationFrame(this.rainAnimate)
         // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
-
-        rains.forEach((rain, index) => {
+        this.rains.forEach((rain, index) => {
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
@@ -197,7 +209,6 @@ export default class Weather {
                     rain.miniRains.splice(index, 1)// get rid of mini rain
                 }
             })
-
         });
         //draw a cloud
         // this.renderCloud();
@@ -212,14 +223,19 @@ export default class Weather {
         this.c.lineWidth = 5;
         this.c.strokeStyle = "white";
         this.c.stroke();
+        
+        
+        if (ticker % 40 === 0) {
+            //debugger;
+            this.createRain();
+            // const x = Math.random() * (400 - 100) + 100;
+            // const y = 150;
+            // const w = Math.random() * 5;
+            // rains.push(new Rain(x, y, w, this.c))
+        }
         ticker++;
 
-        if (ticker % 40 === 0) {
-            const x = Math.random() * (400 - 100) + 100;
-            const y = 150;
-            const w = Math.random() * 5;
-            rains.push(new Rain(x, y, w, this.c))
-        }
+        requestAnimationFrame(this.rainAnimate.bind(this));
 
     }
 

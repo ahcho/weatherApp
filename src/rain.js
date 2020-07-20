@@ -180,7 +180,7 @@ function randomIntFromRange(min, max) {
 const startX = 100
 const startY = 100
 
-class Rain {
+export default class Rain {
     constructor(x, y, width, c) {
         this.c = c
         this.x = x
@@ -198,22 +198,22 @@ class Rain {
     }
     // how rain will look like
     draw() {
-        c.save()
-        c.beginPath()
-        c.moveTo(this.x, 10 + this.y);
-        c.lineTo(this.x, 30 + this.y);
-        c.lineWidth = this.lineWidth;
-        c.strokeStyle = 'white';
-        c.stroke();
-        c.closePath()
-        c.restore()
+        this.c.save()
+        this.c.beginPath()
+        this.c.moveTo(this.x, 10 + this.y);
+        this.c.lineTo(this.x, 30 + this.y);
+        this.c.lineWidth = this.lineWidth;
+        this.c.strokeStyle = 'white';
+        this.c.stroke();
+        this.c.closePath()
+        this.c.restore()
     }
 
     // call draw function
     update() {
         this.draw()
         //when rain hits bottom of screen
-        if (this.y + this.velocity.y + 20 > canvas.height) {
+        if (this.y + this.velocity.y + 20 > 500) {
             this.shatter();
         } else {
             this.velocity.y += this.gravity;
@@ -225,13 +225,14 @@ class Rain {
         const num = randomIntFromRange(1,3)
         const radius  = randomIntFromRange(1,2)
         for (let i = 0; i < num; i++) {
-            this.miniRains.push(new MiniRain(this.x, this.y, radius))
+            this.miniRains.push(new MiniRain(this.x, this.y, radius, this.c))
         }
     }
 }
 
 class MiniRain {
-    constructor(x, y, radius) {
+    constructor(x, y, radius, c) {
+        this.c = c;
         this.x = x
         this.y = y
         this.radius = radius
@@ -247,21 +248,21 @@ class MiniRain {
     }
 
     draw() {
-        c.save()
-        c.beginPath()
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-        c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
-        c.shadowColor = 'white'
-        c.shadowBlur = 20
-        c.fill()
-        c.closePath()
-        c.restore()
+        this.c.save()
+        this.c.beginPath()
+        this.c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        this.c.fillStyle = `rgba(227, 234, 239, ${this.opacity})`
+        this.c.shadowColor = 'white'
+        this.c.shadowBlur = 20
+        this.c.fill()
+        this.c.closePath()
+        this.c.restore()
     }
 
     update() {
         this.draw()
         // when ball hits bottom of screen
-        if (this.y + this.radius + this.velocity.y > canvas.height) {
+        if (this.y + this.radius + this.velocity.y > 500) {
             this.velocity.y = -this.velocity.y * this.friction;
         } else {
             this.velocity.y += this.gravity;
