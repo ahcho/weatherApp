@@ -355,7 +355,7 @@ function success(position){
 
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
-    const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`
+    const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`
     const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c);
     weather.getData();
     weather.renderCanvasBackground();
@@ -370,7 +370,7 @@ function error(err) {
     const c = canvas.getContext('2d')
     canvas.width = 500
     canvas.height = 600
-    const api = "http://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=867ade8c61095ff3201107594fa6ff3e"
+    const api = "https://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=867ade8c61095ff3201107594fa6ff3e"
 
     const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c);
     weather.getData();
@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
              
 //             const lon = position.coords.longitude;
 //             const lat = position.coords.latitude;
-//             const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
+//             const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${"867ade8c61095ff3201107594fa6ff3e"}`           
             
 //             const weather = new Weather(api);
 //             weather.getData();
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // constructor(zipcode) {
 //     this.zipcode = zipcode;
-//     this.ADDRESS = "http://api.openweathermap.org/data/2.5/weather?zip=";
+//     this.ADDRESS = "https://api.openweathermap.org/data/2.5/weather?zip=";
 //     this.COUNTRY = ",us";
 //     this.CONVERT = "&units=imperial";
 //     this.MYKEY = "&APPID=867ade8c61095ff3201107594fa6ff3e";
