@@ -101,17 +101,16 @@ export default class Weather {
         const sun = ['01d', '02d', '03d']
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-        this.animateRain()
-        // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
-        //this.renderSun()
         
-        // if (sun.includes(iconId)) {
-        //     this.renderSun()
-        // } else if (rain.includes(iconId)) {
-        //     //console.log('call rainy animation')
-        // } else {
-        //     //console.log('call snowy animation')
-        // }
+            
+        if (sun.includes(iconId)) {
+            this.renderSun();
+        } else if (rain.includes(iconId)) {
+            this.animateRain();
+        } else {
+            this.animateRain();
+            //console.log('call snowy animation')
+        }
         this.renderTime();  
     }
 
@@ -130,17 +129,7 @@ export default class Weather {
 
         });
         //draw a cloud
-        const startX = 100
-        const startY = 100
-        this.c.beginPath()
-        this.c.moveTo(startX, startY);
-        this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
-        this.c.bezierCurveTo(startX + 80, startY + 100, startX + 150, startY + 100, startX + 170, startY + 70);
-        this.c.bezierCurveTo(startX + 300, startY + 70, startX + 300, startY + 40, startX + 250, startY + 20);
-        this.c.bezierCurveTo(startX + 260, startY - 40, startX + 200, startY - 50, startX + 170, startY - 30);
-        this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
-        this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
-        this.c.closePath();
+        this.renderCloud()
         // add a radial gradient
         var grdCenterX = 260;
         var grdCenterY = 80;
@@ -160,6 +149,7 @@ export default class Weather {
             const w = Math.random() * 5;
             this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
         }
+        this.renderTime();  
     }
 
     render() {
@@ -219,7 +209,6 @@ export default class Weather {
         this.c.bezierCurveTo(startX + 260, startY - 40, startX + 200, startY - 50, startX + 170, startY - 30);
         this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
         this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
-        this.c.fillStyle = 'red';
         this.c.closePath();
     }
 
