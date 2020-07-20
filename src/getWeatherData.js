@@ -2,8 +2,9 @@ import Rain from './rain';
 import Sun from './sun';
 
 export default class Weather {
-    constructor(api, c) {
+    constructor(api, c, canvas) {
         this.c = c;
+        this.canvas = canvas;
         this.api = api;
         this.temperatureDegree = document.querySelector(".temp-degree");
         this.temperatureDescription = document.querySelector(".temp-description");
@@ -13,6 +14,7 @@ export default class Weather {
         this.iconSection = document.getElementById('temp-icon');
         this.stars = [];
         this.rains =[];
+        this.ticker = 0;
     }
 
     getData() {
@@ -33,10 +35,7 @@ export default class Weather {
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
                 this.changeMetric(temperature);
-                this.renderAnimation(iconId);
-
-                //render animation here
-               
+                this.renderAnimation(iconId);             
             })
     }
 
@@ -55,8 +54,8 @@ export default class Weather {
 
     renderCanvasBackground() {
         const today = new Date();
-        this.hour = today.getHours();
         const time = today.getHours();
+        this.hour = today.getHours();
         this.minutes = today.getMinutes();
         this.midDay = 'AM';
         if (this.hour > 12) {
@@ -102,28 +101,65 @@ export default class Weather {
         const sun = ['01d', '02d', '03d']
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
-        let rains = [];
-        let ticker = 0;
+        this.animateRain()
         // requestAnimationFrame(this.rainAnimate(rains, ticker).bind(this))
-        this.renderSun()
-        //this.rainAnimate(rains, ticker);
+        //this.renderSun()
+        
         // if (sun.includes(iconId)) {
         //     this.renderSun()
-        //     //this.renderCloud();
         // } else if (rain.includes(iconId)) {
         //     //console.log('call rainy animation')
-        //     //this.renderSun()
-        //     // let rains = [];
-        //     // let ticker = 0;
-        //     this.rainAnimate(rains, ticker);
         // } else {
         //     //console.log('call snowy animation')
-        //     this.renderSun()
-        //     // let rains = [];
-        //     // let ticker = 0;
-        //     // /this.rainAnimate(rains, ticker);
         // }
         this.renderTime();  
+    }
+
+    animateRain() {
+        requestAnimationFrame(this.animateRain.bind(this))
+    
+        this.renderCanvasBackground();
+        this.rains.forEach((rain) => {
+            rain.update();
+            rain.miniRains.forEach((miniRain, index) => {
+                miniRain.update();
+                if (miniRain.ttl === 0) {
+                    rain.miniRains.splice(index, 1)// get rid of mini rain
+                }
+            })
+
+        });
+        //draw a cloud
+        const startX = 100
+        const startY = 100
+        this.c.beginPath()
+        this.c.moveTo(startX, startY);
+        this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
+        this.c.bezierCurveTo(startX + 80, startY + 100, startX + 150, startY + 100, startX + 170, startY + 70);
+        this.c.bezierCurveTo(startX + 300, startY + 70, startX + 300, startY + 40, startX + 250, startY + 20);
+        this.c.bezierCurveTo(startX + 260, startY - 40, startX + 200, startY - 50, startX + 170, startY - 30);
+        this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
+        this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
+        this.c.closePath();
+        // add a radial gradient
+        var grdCenterX = 260;
+        var grdCenterY = 80;
+        var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
+        grd.addColorStop(0, "white"); // light blue
+        grd.addColorStop(1, "white"); // dark blue
+        this.c.fillStyle = grd;
+        this.c.fill();
+        this.c.lineWidth = 5;
+        this.c.strokeStyle = "white";
+        this.c.stroke();
+        this.ticker++;
+
+        if (this.ticker % 40 === 0) {
+            const x = Math.random() * (400 - 100) + 100;
+            const y = 150;
+            const w = Math.random() * 5;
+            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
+        }
     }
 
     render() {
