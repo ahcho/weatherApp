@@ -159,9 +159,10 @@ class Weather {
         this.hour = today.getHours();
         this.minutes = today.getMinutes();
         this.midDay = 'AM';
-        if (this.hour > 12) {
+        
+        if (this.hour >= 12) {
             this.midDay = 'PM'
-            this.hour -= 12;
+            if (this.hour > 12) this.hour -= 12;
         }
         if (this.hour < 10) {
             this.hour = `0${this.hour}`
@@ -169,7 +170,7 @@ class Weather {
         if (this.minutes < 10) {
             this.minutes = `0${this.minutes}`
         }
-
+    
         this.c.beginPath();
         if (time > 7 && time < 18) {
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
@@ -199,13 +200,21 @@ class Weather {
     }
 
     renderAnimation(iconId) {
-        const sun = ['01d', '02d', '03d']
+        const sun = '01d'
+        const fewClouds = '02d';
+        const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
         
-            
-        if (sun.includes(iconId)) {
+         
+        if (iconId === sun) {
             this.renderSun();
+        } else if (iconId === fewClouds){
+            this.renderSun();
+            this.renderCloud();
+        } else if (iconId === scatteredClouds) {
+            this.animateRain();
+            //this.renderCloud();
         } else if (rain.includes(iconId)) {
             this.animateRain();
         } else {
@@ -297,7 +306,7 @@ class Weather {
             this.degree += 45;
         }   
         this.c.closePath();
-    }
+   }
 
     renderCloud() {
         const startX = 100;
