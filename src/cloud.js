@@ -50,6 +50,5 @@ function cloud(ctx, t, cx, cy, cw, s, color) {
 
     ctx.globalCompositeOperation = 'destination-out';
     puffs(ctx, t, cx, cy, a, b, c - s, d - s);
-    //ctx.globalCompositeOperation = 'source-over';
 }
 cloud(ctx, t, w * 0.375, h * 0.625, s * 0.75, s * STROKE, color);

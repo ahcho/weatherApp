@@ -13,17 +13,19 @@ body {
 } 
 
 .weather-container {
+    margin-top: 100px;
     flex-direction: column;
-    max-height: 100%;
+    min-height: 100vh;
+    /* max-height: 100%; */
+    height: auto;
     max-width: 500px;
     display: flex;
     align-items: center;
     /* border: solid black 2px; */
     background-color: white;
-    padding: 10px 10px 0 10px;
+    padding: 0 10px 0 10px;
     box-shadow: 8px 8px 5px #a6a6a6;
     border-radius: 4px;
-    
 }
 
 .weather-info {
@@ -32,6 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     color: gray;
+    padding-top: 15px;
     /* align-items: center; */
     /* border: solid red 1px; */
 }
@@ -44,12 +47,13 @@ body {
     /* border: solid black 1px; */
 
 }
+
 canvas {
     z-index: 2;
     background: transparent;
     width: 500px;
-    min-height: 600px;
-    /* border: solid red 1px; */
+    padding-top: 10px;
+    height: 100%;
 }
 
 .degree-section {
@@ -79,4 +83,32 @@ canvas {
 .temp-description {
     font: 10px;
     /* border: 1px solid yellow; */
+}
+
+
+/**/
+.topnav {
+  /* overflow: hidden; */
+  background-color: gray;
+  width: 520px;
+  border-radius: 4px;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #50A7C2;
+  color: white;
+}
+
+.topnav a.active {
+  background-color: #50A7C2;
+  color: white;
 }

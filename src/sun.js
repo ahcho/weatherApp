@@ -1,20 +1,14 @@
-const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
+// addEventListener('click', (event) => {
+//     mouse.x = event.clientX
+//     mouse.y = event.clientY
+// })
 
-canvas.width = 500
-canvas.height = 600
+// addEventListener('resize', () => {
+//     canvas.width = 500
+//     canvas.height = 600
 
-addEventListener('click', (event) => {
-    mouse.x = event.clientX
-    mouse.y = event.clientY
-})
-
-addEventListener('resize', () => {
-    canvas.width = 500
-    canvas.height = 600
-
-    init()
-})
+//     init()
+// })
 
 function randomIntFromRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -22,7 +16,8 @@ function randomIntFromRange(min, max) {
 
 class Sun {
     // constructor(x, y, radius, color) {
-    constructor() {
+    constructor(c) {
+        this.c = c
         this.x = 250
         this.y = 250
         this.radius = 50
@@ -37,24 +32,24 @@ class Sun {
 
     draw() {
         //main sun
-        c.beginPath();
-        c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
-        c.fillStyle = this.color;
-        c.fill();
+        this.c.beginPath();
+        this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
+        this.c.fillStyle = this.color;
+        this.c.fill();
 
         for (let i = 0; i < 8; i++) {
             const len = 30;
-            c.beginPath();
-            c.lineCap = 'round';
+            this.c.beginPath();
+            this.c.lineCap = 'round';
             const x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
             const y = 250- Math.sin(Math.PI * this.degree / 180) * 65;
-            c.moveTo(x, y);
-            c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
+            this.c.moveTo(x, y);
+            this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
                 y - (this.len * Math.sin(Math.PI * this.degree / 180)));
 
-            c.lineWidth = 9;
-            c.strokeStyle = '#FDB813';
-            c.stroke();
+            this.c.lineWidth = 9;
+            this.c.strokeStyle = '#FDB813';
+            this.c.stroke();
             this.degree += 45;
         }   
     }
@@ -177,8 +172,8 @@ function animate() {
   
 }
 
-init()
-animate()
+// init()
+// animate()
 
 
 // const canvas = document.querySelector('canvas')
