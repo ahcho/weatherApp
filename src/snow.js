@@ -8,10 +8,10 @@ export default class Snow {
         this.color = color
         this.velocity = {
             x: 0,
-            y: 1
+            y: 0.1
         }
-        this.friction = 0.8
-        this.gravity = 0.01
+        this.friction = 0.08
+        this.gravity = 0.001
         this.opacity = 1
     }
 

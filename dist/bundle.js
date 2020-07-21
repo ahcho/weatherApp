@@ -213,35 +213,31 @@ class Weather {
     renderAnimation() {
         const sun = '01d';
         const fewClouds = '02d';
-        const scatteredClouds = '03d';
+        const scatteredClouds = ['03d', '04d'];
         const rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n']
         const snow = ['13d', '50d', '13n', '50n']
         const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
-
-       
+        
         if (this.iconId[2] === 'n') {
             this.createStars(this.canvas.width, this.canvas.height, 30);
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
-      
+    
         if (this.iconId === sun) {
             this.renderSun(250, 250);
         } else if (this.iconId === fewClouds){
             this.renderCloud(300, 150, 'lightgray');
             this.renderSun(250, 80);
             this.renderCloud(100, 100, 'white');
-        } else if (this.iconId === scatteredClouds) {
+        } else if (scatteredClouds.includes(this.iconId)) {
             this.renderCloud(50, 130, '	#dde7ee');
             this.renderCloud(300, 150, '#f0efef');
-            this.renderCloud(100, 100, 'white');
+            this.renderCloud(100, 200, 'white');
         } else if (rain.includes(this.iconId)) {
             this.animateRain();
         } else {
-            this.renderCloud(50, 130, 'red');
-            this.renderCloud(300, 150, 'lightgray');
-            this.renderCloud(100, 100);
-            // this.animateSnow();
+            this.animateSnow();
         }
         let color = '#555555'
         if (this.iconId[2] === 'n')  color = 'white'
@@ -265,8 +261,9 @@ class Weather {
         });
         
         //draw a cloud
-        this.renderCloud(300, 150, 'lightgray');
-        this.renderCloud(100, 100, 'white')
+        this.renderCloud(50, 130, '	#dde7ee');
+        this.renderCloud(300, 150, '#f0efef');
+        this.renderCloud(100, 200, 'white');
         
         this.ticker++;
    
@@ -287,7 +284,9 @@ class Weather {
             snow.update();
         });
 
-        this.renderCloud(100, 100);
+        this.renderCloud(50, 130, '	#dde7ee');
+        this.renderCloud(300, 150, '#f0efef');
+        this.renderCloud(100, 200, 'white');
         this.ticker++;
 
         if (this.ticker % 50 === 0) {
@@ -295,21 +294,6 @@ class Weather {
             const y = 150;
             this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas))
         }
-    }
-
-    render() {
-        this.getData().then(res => {
-            return res.json()
-        })
-            .then(data => {    
-                const description = data.weather[0].description
-                const temperature = data.main.temp
-                const location = data.name
-                //Set DOM Elements frm the API
-                this.temperatureDegree.textContent = temperature;
-                this.temperatureDescription.textContect = description;
-                this.locationTimezone.textContent = location;
-            })
     }
 
     renderSun(x, y) {
@@ -454,7 +438,6 @@ function success(position){
 }
 
 function error(err) {
-    console.log('enter your zipcode')
     //console.warn(`ERROR(${err.code}): ${err.message}`);
     // later will get zipcode from user, currently just showing default location
     // (standford) weather 
@@ -698,10 +681,10 @@ class Snow {
         this.color = color
         this.velocity = {
             x: 0,
-            y: 1
+            y: 0.1
         }
-        this.friction = 0.8
-        this.gravity = 0.01
+        this.friction = 0.08
+        this.gravity = 0.001
         this.opacity = 1
     }
 

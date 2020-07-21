@@ -15,7 +15,6 @@ function success(position){
 }
 
 function error(err) {
-    console.log('enter your zipcode')
     //console.warn(`ERROR(${err.code}): ${err.message}`);
     // later will get zipcode from user, currently just showing default location
     // (standford) weather 
