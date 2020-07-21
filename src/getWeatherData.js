@@ -62,7 +62,6 @@ export default class Weather {
     }
 
     renderCanvasBackground() {
-        this.getData();
         const today = new Date();
         const time = today.getHours();
         this.hour = today.getHours();
@@ -114,7 +113,8 @@ export default class Weather {
         const scatteredClouds = ['03d', '04d'];
         const rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n']
         const snow = ['13d', '50d', '13n', '50n']
-        const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
+        const night =
+          ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
         
         if (this.iconId[2] === 'n') {
             this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -146,9 +146,10 @@ export default class Weather {
         requestAnimationFrame(this.animateRain.bind(this))
     
         this.renderCanvasBackground();
+        
         this.rains.forEach((rain) => {
+            
             rain.update();
-            // rain.thunders[0].update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
                 if (miniRain.ttl === 0) {

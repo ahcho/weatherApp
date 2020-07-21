@@ -191,7 +191,6 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "renderCanvasBackground",
     value: function renderCanvasBackground() {
-      this.getData();
       var today = new Date();
       var time = today.getHours();
       this.hour = today.getHours();
@@ -250,7 +249,7 @@ var Weather = /*#__PURE__*/function () {
       var scatteredClouds = ['03d', '04d'];
       var rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n'];
       var snow = ['13d', '50d', '13n', '50n'];
-      var night = ['01n', '02n', '03n', '04n', '09n', '10n', '11n', '13n', '50n'];
+      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
 
       if (this.iconId[2] === 'n') {
         this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -284,8 +283,7 @@ var Weather = /*#__PURE__*/function () {
       requestAnimationFrame(this.animateRain.bind(this));
       this.renderCanvasBackground();
       this.rains.forEach(function (rain) {
-        rain.update(); // rain.thunders[0].update();
-
+        rain.update();
         rain.miniRains.forEach(function (miniRain, index) {
           miniRain.update();
 
