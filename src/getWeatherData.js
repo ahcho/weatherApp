@@ -116,64 +116,64 @@ export default class Weather {
         const snow = ['13d', '50d', '13n', '50n']
         const night =
           ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
-          this.animateThunder();
-    //     if (this.iconId[2] === 'n') {
-    //         this.createStars(this.canvas.width, this.canvas.height, 30);
-    //         this.animateNightSky();
-    //         this.renderCloud(300, 150, 'lightgray');
-    //     }
+        //   this.animateThunder();
+        if (this.iconId[2] === 'n') {
+            this.createStars(this.canvas.width, this.canvas.height, 30);
+            this.animateNightSky();
+            this.renderCloud(300, 150, 'lightgray');
+        }
     
-    //     if (this.iconId === sun) {
-    //         this.renderSun(250, 250);
-    //     } else if (this.iconId === fewClouds){
-    //         this.renderCloud(300, 150, 'lightgray');
-    //         this.renderSun(250, 80);
-    //         this.renderCloud(100, 100, 'white');
-    //     } else if (scatteredClouds.includes(this.iconId)) {
-    //         this.renderCloud(50, 130, '	#dde7ee');
-    //         this.renderCloud(300, 150, '#f0efef');
-    //         this.renderCloud(100, 200, 'white');
-    //     } else if (rain.includes(this.iconId)) {
-    //         this.animateRain();
-    //     } else {
-    //         this.animateSnow();
-    //     }
-    //     let color = '#555555'
-    //     if (this.iconId[2] === 'n')  color = 'white'
-    //     this.renderTime(color);  
-    // }
+        if (this.iconId === sun) {
+            this.renderSun(250, 250);
+        } else if (this.iconId === fewClouds){
+            this.renderCloud(300, 150, 'lightgray');
+            this.renderSun(250, 80);
+            this.renderCloud(100, 100, 'white');
+        } else if (scatteredClouds.includes(this.iconId)) {
+            this.renderCloud(50, 130, '	#dde7ee');
+            this.renderCloud(300, 150, '#f0efef');
+            this.renderCloud(100, 200, 'white');
+        } else if (rain.includes(this.iconId)) {
+            this.animateRain();
+        } else {
+            this.animateSnow();
+        }
+        let color = '#555555'
+        if (this.iconId[2] === 'n')  color = 'white'
+        this.renderTime(color);  
+    }
 
-    // animateRain() {
-    //     requestAnimationFrame(this.animateRain.bind(this))
+    animateRain() {
+        requestAnimationFrame(this.animateRain.bind(this))
     
-    //     this.renderCanvasBackground();
+        this.renderCanvasBackground();
         
-    //     this.rains.forEach((rain) => {
+        this.rains.forEach((rain) => {
             
-    //         rain.update();
-    //         rain.miniRains.forEach((miniRain, index) => {
-    //             miniRain.update();
-    //             if (miniRain.ttl === 0) {
-    //                 rain.miniRains.splice(index, 1)// get rid of mini rain
-    //             }
-    //         })
+            rain.update();
+            rain.miniRains.forEach((miniRain, index) => {
+                miniRain.update();
+                if (miniRain.ttl === 0) {
+                    rain.miniRains.splice(index, 1)// get rid of mini rain
+                }
+            })
 
-    //     });
+        });
         
-    //     //draw a cloud
-    //     this.renderCloud(50, 130, '	#dde7ee');
-    //     this.renderCloud(300, 150, '#f0efef');
-    //     this.renderCloud(100, 200, 'white');
+        //draw a cloud
+        this.renderCloud(50, 130, '	#dde7ee');
+        this.renderCloud(300, 150, '#f0efef');
+        this.renderCloud(100, 200, 'white');
         
-    //     this.ticker++;
+        this.ticker++;
    
-    //     if (this.ticker % 40 === 0) {
-    //         const x = Math.random() * (400 - 100) + 100;
-    //         const y = 150;
-    //         const w = Math.random() * 5;
-    //         this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
-    //     }
-    //     this.renderTime();  
+        if (this.ticker % 40 === 0) {
+            const x = Math.random() * (400 - 100) + 100;
+            const y = 150;
+            const w = Math.random() * 5;
+            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
+        }
+        this.renderTime();  
     }
 
     animateThunder() {
