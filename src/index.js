@@ -15,6 +15,7 @@ function success(position){
 }
 
 function error(err) {
+    console.log('enter your zipcode')
     //console.warn(`ERROR(${err.code}): ${err.message}`);
     // later will get zipcode from user, currently just showing default location
     // (standford) weather 
@@ -25,7 +26,6 @@ function error(err) {
     const api = "https://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=867ade8c61095ff3201107594fa6ff3e"
 
     const weather = new Weather(api, c, canvas);
-    weather.getData();
     weather.renderCanvasBackground();
 }
 

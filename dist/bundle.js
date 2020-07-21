@@ -108,6 +108,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class Weather {
     constructor(api, c, canvas) {
+
         this.c = c;
         this.canvas = canvas;
         this.api = api;
@@ -125,6 +126,7 @@ class Weather {
     }
 
     getData() {
+       
         fetch(this.api)
             .then(res => {
                 return res.json()
@@ -133,8 +135,8 @@ class Weather {
                 const description = data.weather[0].description
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
-                const iconId = data.weather[0].icon
-                const iconAdd = `https://openweathermap.org/img/wn/${iconId}@2x.png`
+                this.iconId = data.weather[0].icon
+                const iconAdd = `https://openweathermap.org/img/wn/${this.iconId}@2x.png`
 
                 //Set DOM Elements from the API
                 this.temperatureDegree.textContent = temperature;
@@ -142,8 +144,10 @@ class Weather {
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
                 this.changeMetric(temperature);
-                this.renderAnimation(iconId);             
+                this.renderAnimation(this.iconId);   
+
             })
+            
     }
 
     changeMetric(temperature) {
@@ -160,6 +164,7 @@ class Weather {
     }
 
     renderCanvasBackground() {
+        this.getData();
         const today = new Date();
         const time = today.getHours();
         this.hour = today.getHours();
@@ -178,7 +183,7 @@ class Weather {
         }
     
         this.c.beginPath();
-        if (time > 7 && time < 18) {
+        if (time > 7 && time < 20) {
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
             backgroundGradient.addColorStop(1, '#B7F8DB')
             backgroundGradient.addColorStop(0, '#50A7C2')
@@ -194,10 +199,10 @@ class Weather {
          
     }
 
-    renderTime() {
+    renderTime(color) {
         this.c.beginPath()
         this.c.font = '50px Cinzel'
-        this.c.fillStyle = '#555555';
+        this.c.fillStyle = color;
         this.c.fillText(`${this.hour}:${this.minutes}`, 190, 60);
         this.c.font = '20px Cinzel'
         this.c.fillText(this.midDay, 310, 40)
@@ -205,35 +210,42 @@ class Weather {
         this.c.closePath();   
     }
 
-    renderAnimation(iconId) {
+    renderAnimation() {
         const sun = '01d'
         const fewClouds = '02d';
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
         const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
-        
-        this.createStars(this.canvas.width, this.canvas.height, 30);
-        this.animateNightSky();
-        // if (rain.includes(iconId)) {
-        //     this.createStars(this.canvas.width, this.canvas.height, 30);
-        //     this.animateNightSky();
-        // }
-        
-        // if (iconId === sun) {
-        //     this.renderSun(250, 250);
-        // } else if (iconId === fewClouds){
-        //     this.renderSun(250, 80);
-        //     this.renderCloud();
-        // } else if (iconId === scatteredClouds) {
-        //     this.renderCloud();
-        // } else if (rain.includes(iconId)) {
-        //     this.animateRain();
-        // } else {
-        //     //this.animateSnow();
-        //     console.log('call snowy animation')
-        // }
-        this.renderTime();  
+
+       
+        if (this.iconId[2] === 'n') {
+            this.createStars(this.canvas.width, this.canvas.height, 30);
+            this.animateNightSky();
+            this.renderCloud(300, 150, 'lightgray');
+        }
+      
+        if (this.iconId === sun) {
+            this.renderSun(250, 250);
+        } else if (this.iconId === fewClouds){
+            this.renderCloud(300, 150, 'lightgray');
+            this.renderSun(250, 80);
+            this.renderCloud(100, 100, 'white');
+        } else if (this.iconId === scatteredClouds) {
+            this.renderCloud(50, 130, '	#dde7ee');
+            this.renderCloud(300, 150, '#f0efef');
+            this.renderCloud(100, 100, 'white');
+        } else if (rain.includes(this.iconId)) {
+            this.animateRain();
+        } else {
+            this.renderCloud(50, 130, 'red');
+            this.renderCloud(300, 150, 'lightgray');
+            this.renderCloud(100, 100);
+            // this.animateSnow();
+        }
+        let color = '#555555'
+        if (this.iconId[2] === 'n')  color = 'white'
+        this.renderTime(color);  
     }
 
     animateRain() {
@@ -242,6 +254,7 @@ class Weather {
         this.renderCanvasBackground();
         this.rains.forEach((rain) => {
             rain.update();
+            // rain.thunders[0].update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
                 if (miniRain.ttl === 0) {
@@ -250,11 +263,13 @@ class Weather {
             })
 
         });
+        
         //draw a cloud
-        this.renderCloud()
+        this.renderCloud(300, 150, 'lightgray');
+        this.renderCloud(100, 100, 'white')
         
         this.ticker++;
-
+   
         if (this.ticker % 40 === 0) {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
@@ -272,7 +287,7 @@ class Weather {
             snow.update();
         });
 
-        this.renderCloud();
+        this.renderCloud(100, 100);
         this.ticker++;
 
         if (this.ticker % 50 === 0) {
@@ -329,9 +344,8 @@ class Weather {
         this.c.closePath();
    }
 
-    renderCloud() {
-        const startX = 100;
-        const startY = 100;
+    renderCloud(startX, startY, color) {
+       
         this.c.beginPath()
         this.c.moveTo(startX, startY);
         this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
@@ -341,20 +355,11 @@ class Weather {
         this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
         this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
         this.c.closePath();
-        var grdCenterX = 260;
-        var grdCenterY = 80;
-        var grd = this.c.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
-        grd.addColorStop(0, "white"); 
-        grd.addColorStop(1, "white"); 
-        this.c.fillStyle = grd;
+        this.c.fillStyle = color;
         this.c.fill();
         this.c.lineWidth = 5;
-        this.c.strokeStyle = "white";
+        this.c.strokeStyle = color;
         this.c.stroke();
-    }
-
-    sunAnimate() {
-        requestAnimationFrame(this.sunAnimate)
     }
 
     //////////
@@ -386,13 +391,29 @@ class Weather {
                 factor = this.counter * i,
                 opacity = star.getOpacity(factor),
                 randomColor = Math.floor((Math.random() * 360) + 1);
-
             //render stars
             star.renderStar(`hsla(${randomColor}, 30%, 80%, ${opacity})`);
          });
-
+        this.renderMoon()
+        if (this.iconId === '04n') {
+            this.renderCloud(50, 130, '#B4B4B4');
+            this.renderCloud(300, 150, 'lightgray');
+            this.renderCloud(100, 100, '#909090');
+        }
         this.counter++;
+        this.renderTime('white')
+
         requestAnimationFrame(this.animateNightSky.bind(this));
+    }
+
+    renderMoon() {
+        this.c.save()
+        this.c.beginPath()
+        this.c.arc(360, 100, 50, 0, Math.PI * 2)    
+        this.c.fillStyle = "#f0c420"
+        this.c.fill()
+        this.c.closePath()
+        this.c.restore()
     }
 }
 
@@ -430,6 +451,7 @@ function success(position){
 }
 
 function error(err) {
+    console.log('enter your zipcode')
     //console.warn(`ERROR(${err.code}): ${err.message}`);
     // later will get zipcode from user, currently just showing default location
     // (standford) weather 
@@ -440,7 +462,6 @@ function error(err) {
     const api = "https://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=867ade8c61095ff3201107594fa6ff3e"
 
     const weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
-    weather.getData();
     weather.renderCanvasBackground();
 }
 
@@ -516,6 +537,7 @@ class Rain {
         this.opacity = 1
         this.lineWidth = width
         this.miniRains = []
+        this.thunders = []
         this.c = c
         this.canvas = canvas
     }
@@ -539,10 +561,17 @@ class Rain {
         //when rain hits bottom of screen
         if (this.y + this.velocity.y + 20 > this.canvas.height) {
             this.shatter();
+            this.addThunder();
         } else {
             this.velocity.y += this.gravity;
         }
         this.y += this.velocity.y;
+    }
+
+    addThunder() {
+        const x = 50;
+        const startY = 100;
+        this.thunders.push(new Thunder(x, startY, this.c))
     }
 
     shatter() {
@@ -598,6 +627,49 @@ class MiniRain {
         this.ttl -= 1
         this.opacity -= 1 / this.ttl
     }
+}
+
+class Thunder {
+    constructor(x, y, c) {
+        this.x = x;
+        this.y = y;
+        this.c = c;
+        this.velocity = {
+            x: 0,
+            y: 1
+        }
+        this.gravity = 0.05
+    }
+    //draw thunder
+    draw() {
+        this.c.beginPath();
+        this.c.moveTo(this.x, this.y);
+        this.c.lineTo(this.x + 20, this.y);
+        this.c.lineTo(this.x + 50, this.y - 35);
+        this.c.moveTo(this.x, this.y);
+        this.c.lineTo(this.x + 20, this.y + 20);
+        this.c.lineTo(this.x + 40, this.y + 20);
+        this.c.lineTo(this.x + 20, this.y);
+        this.c.moveTo(this.x + 20, this.y + 20);
+        this.c.lineTo(this.x, this.y + 40);
+        this.c.lineTo(this.x + 40, this.y + 20);
+        this.c.fillStyle = "yellow"
+        this.c.fill()
+    }
+
+    // call draw function
+    update() {
+        this.draw()
+        // //when rain hits bottom of screen
+        // if (this.y + this.velocity.y + 20 > this.canvas.height) {
+        //     this.shatter();
+        // } else {
+        //     this.velocity.y += this.gravity;
+        // }
+        this.y += this.velocity.y;
+    }
+
+
 }
 
 
