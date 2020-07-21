@@ -16,7 +16,6 @@ export default class Rain {
         this.opacity = 1
         this.lineWidth = width
         this.miniRains = []
-        this.thunders = []
         this.c = c
         this.canvas = canvas
     }
@@ -40,7 +39,6 @@ export default class Rain {
         //when rain hits bottom of screen
         if (this.y + this.velocity.y + 20 > this.canvas.height) {
             this.shatter();
-            this.addThunder();
         } else {
             this.velocity.y += this.gravity;
         }
@@ -108,45 +106,3 @@ class MiniRain {
     }
 }
 
-class Thunder {
-    constructor(x, y, c) {
-        this.x = x;
-        this.y = y;
-        this.c = c;
-        this.velocity = {
-            x: 0,
-            y: 1
-        }
-        this.gravity = 0.05
-    }
-    //draw thunder
-    draw() {
-        this.c.beginPath();
-        this.c.moveTo(this.x, this.y);
-        this.c.lineTo(this.x + 20, this.y);
-        this.c.lineTo(this.x + 50, this.y - 35);
-        this.c.moveTo(this.x, this.y);
-        this.c.lineTo(this.x + 20, this.y + 20);
-        this.c.lineTo(this.x + 40, this.y + 20);
-        this.c.lineTo(this.x + 20, this.y);
-        this.c.moveTo(this.x + 20, this.y + 20);
-        this.c.lineTo(this.x, this.y + 40);
-        this.c.lineTo(this.x + 40, this.y + 20);
-        this.c.fillStyle = "yellow"
-        this.c.fill()
-    }
-
-    // call draw function
-    update() {
-        this.draw()
-        // //when rain hits bottom of screen
-        // if (this.y + this.velocity.y + 20 > this.canvas.height) {
-        //     this.shatter();
-        // } else {
-        //     this.velocity.y += this.gravity;
-        // }
-        this.y += this.velocity.y;
-    }
-
-
-}

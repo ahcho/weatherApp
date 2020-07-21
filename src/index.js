@@ -10,6 +10,7 @@ function success(position){
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`;
+    debugger;
     const weather = new Weather(api, c, canvas);
     weather.getData();
     weather.renderCanvasBackground();
