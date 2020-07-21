@@ -146,6 +146,7 @@ var Weather = /*#__PURE__*/function () {
     this.stars = [];
     this.rains = [];
     this.snows = [];
+    this.thunders = [];
     this.ticker = 0;
     this.counter = 0;
   }
@@ -230,6 +231,7 @@ var Weather = /*#__PURE__*/function () {
       }
 
       this.renderAnimation(this.iconId);
+      requestAnimationFrame(this.renderCanvasBackground.bind(this));
     }
   }, {
     key: "renderTime",
@@ -246,12 +248,13 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "renderAnimation",
     value: function renderAnimation() {
+      var THUNDER_ICON = ['11d', '11n'];
       var sun = '01d';
       var fewClouds = '02d';
       var scatteredClouds = ['03d', '04d'];
-      var rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n'];
+      var rain = ['04d', '09d', '10d', '11d', '09n', '10n'];
       var snow = ['13d', '50d', '13n', '50n'];
-      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]; //   this.animateThunder();
+      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
 
       if (this.iconId[2] === 'n') {
         this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -271,6 +274,8 @@ var Weather = /*#__PURE__*/function () {
         this.renderCloud(100, 200, 'white');
       } else if (rain.includes(this.iconId)) {
         this.animateRain();
+      } else if (THUNDER_ICON.includess(this.iconId)) {
+        this.animateThunder();
       } else {
         this.animateSnow();
       }
@@ -282,8 +287,6 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateRain",
     value: function animateRain() {
-      requestAnimationFrame(this.animateRain.bind(this));
-      this.renderCanvasBackground();
       this.rains.forEach(function (rain) {
         rain.update();
         rain.miniRains.forEach(function (miniRain, index) {
@@ -293,11 +296,8 @@ var Weather = /*#__PURE__*/function () {
             rain.miniRains.splice(index, 1); // get rid of mini rain
           }
         });
-      }); //draw a cloud
-
-      this.renderCloud(50, 130, '	#dde7ee');
-      this.renderCloud(300, 150, '#f0efef');
-      this.renderCloud(100, 200, 'white');
+      });
+      this.renderHeavyClounds();
       this.ticker++;
 
       if (this.ticker % 40 === 0) {
@@ -312,22 +312,17 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateThunder",
     value: function animateThunder() {
-      requestAnimationFrame(this.animateThunder.bind(this));
-      this.renderCanvasBackground();
       this.thunders.forEach(function (thunder) {
         thunder.update();
-      }); //draw a cloud
-
-      this.renderCloud(50, 130, "	#dde7ee");
-      this.renderCloud(300, 150, "#f0efef");
-      this.renderCloud(100, 200, "white");
+      });
+      this.renderHeavyClounds();
       this.ticker++;
 
       if (this.ticker % 40 === 0) {
         var x = Math.random() * (400 - 100) + 100;
         var y = 150;
         var w = Math.random() * 5;
-        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c));
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -335,14 +330,10 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateSnow",
     value: function animateSnow() {
-      requestAnimationFrame(this.animateSnow.bind(this));
-      this.renderCanvasBackground();
       this.snows.forEach(function (snow) {
         snow.update();
       });
-      this.renderCloud(50, 130, '	#dde7ee');
-      this.renderCloud(300, 150, '#f0efef');
-      this.renderCloud(100, 200, 'white');
+      this.renderHeavyClounds();
       this.ticker++;
 
       if (this.ticker % 50 === 0) {
@@ -385,6 +376,13 @@ var Weather = /*#__PURE__*/function () {
       }
 
       this.c.closePath();
+    }
+  }, {
+    key: "renderHeavyClounds",
+    value: function renderHeavyClounds() {
+      this.renderCloud(50, 130, '	#dde7ee');
+      this.renderCloud(300, 150, '#f0efef');
+      this.renderCloud(100, 200, 'white');
     }
   }, {
     key: "renderCloud",
@@ -751,8 +749,8 @@ var Snow = /*#__PURE__*/function () {
       x: 0,
       y: 0.1
     };
-    this.friction = 0.08;
-    this.gravity = 0.001;
+    this.friction = 0.1;
+    this.gravity = 0.005;
     this.opacity = 1;
   }
 
@@ -1037,7 +1035,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Thunder = /*#__PURE__*/function () {
-  function Thunder(x, y, c) {
+  function Thunder(x, y, c, canvas) {
     _classCallCheck(this, Thunder);
 
     this.x = x;
@@ -1048,6 +1046,7 @@ var Thunder = /*#__PURE__*/function () {
       y: 1
     };
     this.gravity = 0.05;
+    this.canvas = canvas;
   } //draw thunder
 
 
@@ -1067,7 +1066,7 @@ var Thunder = /*#__PURE__*/function () {
       this.c.lineTo(this.x + 40, this.y + 20);
       this.c.fillStyle = "yellow";
       this.c.fill();
-      this.closePath();
+      this.c.closePath();
     } // call draw function
 
   }, {

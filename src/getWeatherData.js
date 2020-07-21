@@ -6,7 +6,6 @@ import Thunder from './thunder';
 
 export default class Weather {
     constructor(api, c, canvas) {
-
         this.c = c;
         this.canvas = canvas;
         this.api = api;
@@ -19,12 +18,12 @@ export default class Weather {
         this.stars = [];
         this.rains =[];
         this.snows = [];
+        this.thunders = [];
         this.ticker = 0;
         this.counter = 0;
     }
 
     getData() {
-       
         return fetch(this.api)
             .then(res => {
                 return res.json()
@@ -41,9 +40,7 @@ export default class Weather {
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
-                this.changeMetric(temperature);
-               
-
+                this.changeMetric(temperature);    
             })
             
     }
@@ -93,8 +90,9 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
-         this.renderAnimation(this.iconId);   
-         
+        
+        this.renderAnimation(this.iconId);  
+        requestAnimationFrame(this.renderCanvasBackground.bind(this))     
     }
 
     renderTime(color) {
@@ -109,14 +107,15 @@ export default class Weather {
     }
 
     renderAnimation() {
+        const THUNDER_ICON = ['11d', '11n']
         const sun = '01d';
         const fewClouds = '02d';
         const scatteredClouds = ['03d', '04d'];
-        const rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n']
+        const rain = ['04d', '09d', '10d', '11d', '09n', '10n']
         const snow = ['13d', '50d', '13n', '50n']
         const night =
           ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
-        //   this.animateThunder();
+        
         if (this.iconId[2] === 'n') {
             this.createStars(this.canvas.width, this.canvas.height, 30);
             this.animateNightSky();
@@ -135,6 +134,8 @@ export default class Weather {
             this.renderCloud(100, 200, 'white');
         } else if (rain.includes(this.iconId)) {
             this.animateRain();
+        } else if (THUNDER_ICON.includess(this.iconId)) {
+            this.animateThunder();
         } else {
             this.animateSnow();
         }
@@ -143,11 +144,7 @@ export default class Weather {
         this.renderTime(color);  
     }
 
-    animateRain() {
-        requestAnimationFrame(this.animateRain.bind(this))
-    
-        this.renderCanvasBackground();
-        
+    animateRain() {    
         this.rains.forEach((rain) => {
             
             rain.update();
@@ -157,14 +154,10 @@ export default class Weather {
                     rain.miniRains.splice(index, 1)// get rid of mini rain
                 }
             })
-
+            
         });
         
-        //draw a cloud
-        this.renderCloud(50, 130, '	#dde7ee');
-        this.renderCloud(300, 150, '#f0efef');
-        this.renderCloud(100, 200, 'white');
-        
+        this.renderHeavyClounds();    
         this.ticker++;
    
         if (this.ticker % 40 === 0) {
@@ -177,43 +170,29 @@ export default class Weather {
     }
 
     animateThunder() {
-
-        requestAnimationFrame(this.animateThunder.bind(this));
-
-        this.renderCanvasBackground();
-
         this.thunders.forEach((thunder) => {
-          thunder.update();
+            thunder.update();
         });
 
-        //draw a cloud
-        this.renderCloud(50, 130, "	#dde7ee");
-        this.renderCloud(300, 150, "#f0efef");
-        this.renderCloud(100, 200, "white");
-
+        this.renderHeavyClounds();
         this.ticker++;
 
         if (this.ticker % 40 === 0) {
-          const x = Math.random() * (400 - 100) + 100;
-          const y = 150;
-          const w = Math.random() * 5;
-          this.thunders.push(new Thunder(x, y, this.c));
+            const x = Math.random() * (400 - 100) + 100;
+            const y = 150;
+            const w = Math.random() * 5;
+            this.thunders.push(new Thunder(x, y, this.c, this.canvas));
         }
         this.renderTime();  
 
     }
-
+    
     animateSnow() {
-        requestAnimationFrame(this.animateSnow.bind(this))
-        this.renderCanvasBackground();
-
         this.snows.forEach((snow) => {
             snow.update();
         });
 
-        this.renderCloud(50, 130, '	#dde7ee');
-        this.renderCloud(300, 150, '#f0efef');
-        this.renderCloud(100, 200, 'white');
+        this.renderHeavyClounds();
         this.ticker++;
 
         if (this.ticker % 50 === 0) {
@@ -255,8 +234,13 @@ export default class Weather {
         this.c.closePath();
    }
 
-    renderCloud(startX, startY, color) {
-       
+    renderHeavyClounds() {
+        this.renderCloud(50, 130, '	#dde7ee');
+        this.renderCloud(300, 150, '#f0efef');
+        this.renderCloud(100, 200, 'white');
+    }
+
+    renderCloud(startX, startY, color) {   
         this.c.beginPath()
         this.c.moveTo(startX, startY);
         this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);

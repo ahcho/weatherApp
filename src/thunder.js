@@ -1,6 +1,6 @@
 export default class Thunder {
 
-  constructor(x, y, c) {
+  constructor(x, y, c, canvas) {
     this.x = x;
     this.y = y;
     this.c = c;
@@ -9,6 +9,7 @@ export default class Thunder {
       y: 1,
     };
     this.gravity = 0.05;
+    this.canvas = canvas;
   }
 
   //draw thunder
@@ -26,7 +27,7 @@ export default class Thunder {
     this.c.lineTo(this.x + 40, this.y + 20);
     this.c.fillStyle = "yellow";
     this.c.fill();
-    this.closePath();
+    this.c.closePath();
   }
 
   // call draw function

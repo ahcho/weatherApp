@@ -10,8 +10,8 @@ export default class Snow {
             x: 0,
             y: 0.1
         }
-        this.friction = 0.08
-        this.gravity = 0.001
+        this.friction = 0.1
+        this.gravity = 0.005
         this.opacity = 1
     }
 
