@@ -211,23 +211,28 @@ class Weather {
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
+        const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
         
-        // this.createStars(this.canvas.width, this.canvas.height, 30);
-        // this.animateNightSky();
+        this.createStars(this.canvas.width, this.canvas.height, 30);
+        this.animateNightSky();
+        // if (rain.includes(iconId)) {
+        //     this.createStars(this.canvas.width, this.canvas.height, 30);
+        //     this.animateNightSky();
+        // }
         
-        if (iconId === sun) {
-            this.renderSun(250, 250);
-        } else if (iconId === fewClouds){
-            this.renderSun(250, 80);
-            this.renderCloud();
-        } else if (iconId === scatteredClouds) {
-            this.renderCloud();
-        } else if (rain.includes(iconId)) {
-            this.animateRain();
-        } else {
-            this.animateSnow();
-            //console.log('call snowy animation')
-        }
+        // if (iconId === sun) {
+        //     this.renderSun(250, 250);
+        // } else if (iconId === fewClouds){
+        //     this.renderSun(250, 80);
+        //     this.renderCloud();
+        // } else if (iconId === scatteredClouds) {
+        //     this.renderCloud();
+        // } else if (rain.includes(iconId)) {
+        //     this.animateRain();
+        // } else {
+        //     //this.animateSnow();
+        //     console.log('call snowy animation')
+        // }
         this.renderTime();  
     }
 
@@ -359,13 +364,14 @@ class Weather {
     }
 
     createStars(width, height, spacing) {
-    
+        let dx;
+        let dy;
         for (let x = 0; x < width; x += spacing) {
             for (let y = 0; y < height; y += spacing) {
-                x = x + this.maxRandom(spacing);
-                y = y + this.maxRandom(spacing);
+                dx = x + this.maxRandom(spacing);
+                dy = y + this.maxRandom(spacing);
                 let r = Math.random() * 1.5;
-                const star = new _night__WEBPACK_IMPORTED_MODULE_3__["default"](x, y, r, this.c, this.canvas);
+                const star = new _night__WEBPACK_IMPORTED_MODULE_3__["default"](dx, dy, r, this.c, this.canvas);
                 this.stars.push(star);
             }
         }
@@ -373,12 +379,11 @@ class Weather {
     }
 
     animateNightSky() {
-        //debugger;
+        this.c.fillStyle = 'black';
+        this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.stars.forEach((star, i) => {
             const 
                 factor = this.counter * i,
-                x = star.x,
-                y = star.y,
                 opacity = star.getOpacity(factor),
                 randomColor = Math.floor((Math.random() * 360) + 1);
 
@@ -455,16 +460,12 @@ document.addEventListener("DOMContentLoaded", function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Star; });
-function random(max) {
-    return Math.floor(Math.random() * max);
-}
-
 class Star {
     constructor(x, y, r, c, canvas) {
         this.x = x;
         this.y = y;
         this.r = r;
-        
+
         this.c = c;
         this.canvas = canvas;
     }
@@ -483,51 +484,6 @@ class Star {
     }
 
 }
-
-
-
-
-// function renderMoon() {
-//     c.save()
-//     c.beginPath()
-//     c.arc(250, 200, 50, 0, Math.PI * 2)    
-//     c.fillStyle = `rgba(227, 234, 239, 1)`
-//     c.fill()
-//     c.closePath()
-//     c.restore()
-// }
-
-// function render() {
-//     const gradient = c.createLinearGradient(0, 0, 0, height);
-//     gradient.addColorStop(0, "#070B34");
-//     gradient.addColorStop(0.3, "#141852");
-//     gradient.addColorStop(0.5, "#2B2F77");
-//     gradient.addColorStop(1, "#483475");
-    
-//     //stars
-//     c.fillStyle = gradient;
-//     c.fillRect(0, 0, width, height);
-//     stars.forEach(function (star, i) {
-//         const factor = counter * i,
-//             x = star.x,
-//             y = star.y,
-//             opacity = getOpacity(factor),
-//             randomColor = Math.floor((Math.random() * 360) + 1);
-            
-//         //render stars
-//         renderStar(c, x, y, star.r, `hsla(${randomColor}, 30%, 80%, ${opacity})`); 
-    
-//         //moon
-//         renderMoon()
-//     });
-
-
-//     counter++;
-//     requestAnimationFrame(render);
-// }
-
-
-
 
 
 /***/ }),

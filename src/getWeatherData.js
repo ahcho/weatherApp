@@ -108,23 +108,28 @@ export default class Weather {
         const scatteredClouds = '03d';
         const rain = ['04d', '09d', '10d', '11d']
         const snow = ['13d', '50d']
+        const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
         
-        // this.createStars(this.canvas.width, this.canvas.height, 30);
-        // this.animateNightSky();
+        this.createStars(this.canvas.width, this.canvas.height, 30);
+        this.animateNightSky();
+        // if (rain.includes(iconId)) {
+        //     this.createStars(this.canvas.width, this.canvas.height, 30);
+        //     this.animateNightSky();
+        // }
         
-        if (iconId === sun) {
-            this.renderSun(250, 250);
-        } else if (iconId === fewClouds){
-            this.renderSun(250, 80);
-            this.renderCloud();
-        } else if (iconId === scatteredClouds) {
-            this.renderCloud();
-        } else if (rain.includes(iconId)) {
-            this.animateRain();
-        } else {
-            this.animateSnow();
-            //console.log('call snowy animation')
-        }
+        // if (iconId === sun) {
+        //     this.renderSun(250, 250);
+        // } else if (iconId === fewClouds){
+        //     this.renderSun(250, 80);
+        //     this.renderCloud();
+        // } else if (iconId === scatteredClouds) {
+        //     this.renderCloud();
+        // } else if (rain.includes(iconId)) {
+        //     this.animateRain();
+        // } else {
+        //     //this.animateSnow();
+        //     console.log('call snowy animation')
+        // }
         this.renderTime();  
     }
 
@@ -256,13 +261,14 @@ export default class Weather {
     }
 
     createStars(width, height, spacing) {
-    
+        let dx;
+        let dy;
         for (let x = 0; x < width; x += spacing) {
             for (let y = 0; y < height; y += spacing) {
-                x = x + this.maxRandom(spacing);
-                y = y + this.maxRandom(spacing);
+                dx = x + this.maxRandom(spacing);
+                dy = y + this.maxRandom(spacing);
                 let r = Math.random() * 1.5;
-                const star = new Star(x, y, r, this.c, this.canvas);
+                const star = new Star(dx, dy, r, this.c, this.canvas);
                 this.stars.push(star);
             }
         }
@@ -270,12 +276,11 @@ export default class Weather {
     }
 
     animateNightSky() {
-        //debugger;
+        this.c.fillStyle = 'black';
+        this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.stars.forEach((star, i) => {
             const 
                 factor = this.counter * i,
-                x = star.x,
-                y = star.y,
                 opacity = star.getOpacity(factor),
                 randomColor = Math.floor((Math.random() * 360) + 1);
 
