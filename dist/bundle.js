@@ -211,11 +211,11 @@ class Weather {
     }
 
     renderAnimation() {
-        const sun = '01d'
+        const sun = '01d';
         const fewClouds = '02d';
         const scatteredClouds = '03d';
-        const rain = ['04d', '09d', '10d', '11d']
-        const snow = ['13d', '50d']
+        const rain = ['04d', '09d', '10d', '11d', '09n', '10n', '11n']
+        const snow = ['13d', '50d', '13n', '50n']
         const night = ['01n', '02n', '03n', '04n','09n', '10n', '11n', '13n', '50n']
 
        
@@ -394,12 +394,15 @@ class Weather {
             //render stars
             star.renderStar(`hsla(${randomColor}, 30%, 80%, ${opacity})`);
          });
-        this.renderMoon()
-        if (this.iconId === '04n') {
+       
+        if (['01n', '02n'].includes(this.iconId) ) {
+            this.renderMoon()
+        } else if(['03n', '04n'].includes(this.iconId) ) {
             this.renderCloud(50, 130, '#B4B4B4');
             this.renderCloud(300, 150, 'lightgray');
             this.renderCloud(100, 100, '#909090');
-        }
+        } 
+        
         this.counter++;
         this.renderTime('white')
 
