@@ -7,6 +7,20 @@ module.exports = {
     path: path.resolve(__dirname),
     filename: "./dist/bundle.js",
   },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: "babel-loader",
+          query: {
+            presets: ["@babel/env"],
+          },
+        },
+      },
+    ],
+  },
   devtool: "source-map",
   resolve: {
     extensions: [".js", ".jsx", "*"],

@@ -48,6 +48,7 @@ export default class Weather {
     }
 
     changeMetric(temperature) {
+        //debugger
         let celsius = (temperature - 32) * (5 / 9);
         this.degreeSection.addEventListener('click', () => {
             if (this.degreeSpan.textContent === '°F') {
