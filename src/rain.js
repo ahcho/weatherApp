@@ -92,7 +92,7 @@ class MiniRain {
 
     update() {
         this.draw()
-        // when ball hits bottom of screen
+        // hits the bottom of screen
         if (this.y + this.radius + this.velocity.y > this.canvas.height) {
             this.velocity.y = -this.velocity.y * this.friction;
         } else {

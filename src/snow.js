@@ -27,7 +27,6 @@ export default class Snow {
         this.c.restore()
     }
 
-    // call draw function
     update() {
         this.draw()
         //when snow hits bottom of screen
@@ -38,12 +37,6 @@ export default class Snow {
         }
 
         this.y += this.velocity.y;
-    }
-
-    //when snow is clicked it changes shape
-    clicked() {
-        let d = dist(mouseX, mouseY, this.x, this.y)
-        this.renderSnowFlake(this.radius, this.radius)
     }
 
     renderSnowFlake(width, height) {

@@ -25,7 +25,7 @@ export default class Weather {
 
     getData() {
        
-        fetch(this.api)
+        return fetch(this.api)
             .then(res => {
                 return res.json()
             })
@@ -42,14 +42,13 @@ export default class Weather {
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
                 this.changeMetric(temperature);
-                this.renderAnimation(this.iconId);   
+               
 
             })
             
     }
 
     changeMetric(temperature) {
-        //debugger
         let celsius = (temperature - 32) * (5 / 9);
         this.degreeSection.addEventListener('click', () => {
             if (this.degreeSpan.textContent === '°F') {
@@ -79,9 +78,9 @@ export default class Weather {
         if (this.minutes < 10) {
             this.minutes = `0${this.minutes}`
         }
-    
+        
         this.c.beginPath();
-        if (time > 7 && time < 20) {
+        if(this.iconId[2]==='d'){
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
             backgroundGradient.addColorStop(1, '#B7F8DB')
             backgroundGradient.addColorStop(0, '#50A7C2')
@@ -94,6 +93,7 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
+         this.renderAnimation(this.iconId);   
          
     }
 

@@ -1,6 +1,7 @@
 import Weather from './getWeatherData'
-const config = require('../config/config.js')
+import {config} from '../config/config'
 const API_KEY = config.API_KEY;
+
 function success(position){
     const canvas = document.querySelector('canvas')
     const c = canvas.getContext('2d')
@@ -10,10 +11,9 @@ function success(position){
     const lon = position.coords.longitude;
     const lat = position.coords.latitude;
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`;
-    debugger;
     const weather = new Weather(api, c, canvas);
-    weather.getData();
-    weather.renderCanvasBackground();
+    weather.getData().then(()=>     
+        weather.renderCanvasBackground())
 }
 
 function error(err) {
@@ -32,6 +32,5 @@ function error(err) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    //debugger;
     navigator.geolocation.getCurrentPosition(success, error);
 });
