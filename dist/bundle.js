@@ -265,10 +265,11 @@ var Weather = /*#__PURE__*/function () {
     this.degreeSpan = document.querySelector('.weather-info-bottom span');
     this.iconSection = document.getElementById('temp-icon');
     this.stars = [];
-    this.rains = [];
-    this.snows = [];
-    this.thunders = [];
-    this.w_objects = [];
+    this.w_objects = []; // const x = Math.random() * (400 - 100) + 100;
+    // const y = 150;
+    // const w = Math.random() * 5;
+    // this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
+
     this.ticker = 0;
     this.counter = 0;
   }
@@ -384,7 +385,9 @@ var Weather = /*#__PURE__*/function () {
         this.createStars(this.canvas.width, this.canvas.height, 30);
         this.animateNightSky();
         this.renderCloud(300, 150, 'lightgray');
-      }
+      } // this.animateSnow();
+      // this.animateThunder();
+
 
       if (this.iconId === sun) {
         this.renderSun(250, 250);
@@ -412,7 +415,7 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateRain",
     value: function animateRain() {
-      this.rains.forEach(function (rain) {
+      this.w_objects.forEach(function (rain) {
         rain.update();
         rain.miniRains.forEach(function (miniRain, index) {
           miniRain.update();
@@ -429,7 +432,7 @@ var Weather = /*#__PURE__*/function () {
         var x = Math.random() * (400 - 100) + 100;
         var y = 150;
         var w = Math.random() * 5;
-        this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
+        this.w_objects.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
       }
 
       this.renderTime();
@@ -456,17 +459,17 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateThunder",
     value: function animateThunder() {
-      this.thunders.forEach(function (thunder) {
+      this.w_objects.forEach(function (thunder) {
         thunder.update();
       });
       this.renderHeavyClouds();
       this.ticker++;
 
-      if (this.ticker % 90 === 0) {
+      if (this.ticker % 120 === 0) {
         var x = Math.random() * (400 - 100) + 100;
         var y = 150;
         var w = Math.random() * 5;
-        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
+        this.w_objects.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -474,7 +477,7 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateSnow",
     value: function animateSnow() {
-      this.snows.forEach(function (snow) {
+      this.w_objects.forEach(function (snow) {
         snow.update();
       });
       this.renderHeavyClouds();
@@ -483,7 +486,7 @@ var Weather = /*#__PURE__*/function () {
       if (this.ticker % 50 === 0) {
         var x = Math.random() * (380 - 100) + 100;
         var y = 150;
-        this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
+        this.w_objects.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
     }
   }, {
@@ -891,9 +894,8 @@ var Snow = /*#__PURE__*/function () {
     this.color = color;
     this.velocity = {
       x: 0,
-      y: 0.1
+      y: 1
     };
-    this.friction = 0.1;
     this.gravity = 0.005;
     this.opacity = 1;
   }
@@ -916,12 +918,12 @@ var Snow = /*#__PURE__*/function () {
     value: function update() {
       this.draw(); //when snow hits bottom of screen
 
-      if (this.y + this.radius + this.velocity.y > this.canvas.height) {//this.velocity.y = -this.velocity.y * this.friction;
+      if (this.y + this.radius + this.velocity.y > this.canvas.height) {
+        this.velocity.y = 0;
       } else {
-        this.velocity.y += this.gravity;
-      }
+        this.velocity.y += 0.001; //this.gravity;
+      } //
 
-      this.y += this.velocity.y;
     }
   }, {
     key: "renderSnowFlake",
@@ -1187,14 +1189,13 @@ var Thunder = /*#__PURE__*/function () {
     this.c = c;
     this.velocity = {
       x: 0,
-      y: 0.5
+      y: 0.05
     };
     this.gravity = 0.001;
     this.canvas = canvas;
     this.size = 1;
     this.color = 'yellow';
-  } //draw thunder
-
+  }
 
   _createClass(Thunder, [{
     key: "draw",
@@ -1209,16 +1210,27 @@ var Thunder = /*#__PURE__*/function () {
       this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
       this.c.moveTo((this.x + 20) * this.size, (this.y + 20) * this.size);
       this.c.lineTo(this.x * this.size, (this.y + 40) * this.size);
-      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size); // this.c.lineTo(this.x + 20, this.y);
-      // this.c.lineTo(this.x + 50, this.y - 35);
-      // this.c.moveTo(this.x, this.y);
-      // this.c.lineTo(this.x + 20, this.y + 20);
-      // this.c.lineTo(this.x + 40, this.y + 20);
-      // this.c.lineTo(this.x + 20, this.y);
-      // this.c.moveTo(this.x + 20, this.y + 20);
-      // this.c.lineTo(this.x, this.y + 40);
-      // this.c.lineTo(this.x + 40, this.y + 20);
-
+      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+      this.c.fillStyle = this.color;
+      this.c.fill();
+      this.c.closePath(); // if (this.y + this.velocity.y + 45 > this.canvas.height) { debugger }
+    }
+  }, {
+    key: "drawBigThunder",
+    value: function drawBigThunder() {
+      this.x = this.x * 0.667;
+      this.y = this.y * 0.667;
+      this.c.beginPath();
+      this.c.moveTo(this.x * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 50) * this.size, (this.y - 35) * this.size);
+      this.c.moveTo(this.x * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+      this.c.moveTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo(this.x * this.size, (this.y + 40) * this.size);
+      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
       this.c.fillStyle = this.color;
       this.c.fill();
       this.c.closePath();
@@ -1227,17 +1239,12 @@ var Thunder = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function update() {
-      this.draw();
-
-      if (this.y + this.velocity.y + 40 > this.canvas.height) {// this.size = Math.floor(Math.random() * 3)
-        //this.color = 'red';
-        // this.size = 5;
-        // this.draw();
-      } // else {
-      // this.velocity.y += this.gravity;
-      // this.y += this.velocity.y;
-      // }
-
+      if (this.y + this.velocity.y + 45 > this.canvas.height) {
+        this.size = 1.5;
+        this.drawBigThunder();
+      } else {
+        this.draw();
+      }
 
       this.velocity.y += this.gravity;
       this.y += this.velocity.y;
@@ -1245,7 +1252,16 @@ var Thunder = /*#__PURE__*/function () {
   }]);
 
   return Thunder;
-}();
+}(); // this.c.lineTo(this.x + 20, this.y);
+// this.c.lineTo(this.x + 50, this.y - 35);
+// this.c.moveTo(this.x, this.y);
+// this.c.lineTo(this.x + 20, this.y + 20);
+// this.c.lineTo(this.x + 40, this.y + 20);
+// this.c.lineTo(this.x + 20, this.y);
+// this.c.moveTo(this.x + 20, this.y + 20);
+// this.c.lineTo(this.x, this.y + 40);
+// this.c.lineTo(this.x + 40, this.y + 20);
+
 
 
 

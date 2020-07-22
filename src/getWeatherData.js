@@ -17,10 +17,11 @@ export default class Weather {
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
         this.iconSection = document.getElementById('temp-icon');
         this.stars = [];
-        this.rains =[];
-        this.snows = [];
-        this.thunders = [];
         this.w_objects = [];
+        // const x = Math.random() * (400 - 100) + 100;
+        // const y = 150;
+        // const w = Math.random() * 5;
+        // this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
         this.ticker = 0;
         this.counter = 0;
     }
@@ -127,6 +128,8 @@ export default class Weather {
             this.renderCloud(300, 150, 'lightgray');
         }
     
+        // this.animateSnow();
+        // this.animateThunder();
         if (this.iconId === sun) {
             this.renderSun(250, 250);
         } else if (this.iconId === fewClouds){
@@ -152,7 +155,7 @@ export default class Weather {
     }
 
     animateRain() {    
-        this.rains.forEach((rain) => {
+        this.w_objects.forEach((rain) => {
             
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
@@ -171,7 +174,7 @@ export default class Weather {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
             const w = Math.random() * 5;
-            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
+            this.w_objects.push(new Rain(x, y, w, "blue", this.c, this.canvas))
         }
         this.renderTime();  
     }
@@ -194,25 +197,25 @@ export default class Weather {
     }
 
     animateThunder() {
-        this.thunders.forEach((thunder) => {
+        this.w_objects.forEach((thunder) => {
             thunder.update();
         });
 
         this.renderHeavyClouds();
         this.ticker++;
 
-        if (this.ticker % 90 === 0) {
+        if (this.ticker % 120 === 0) {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
             const w = Math.random() * 5;
-            this.thunders.push(new Thunder(x, y, this.c, this.canvas));
+            this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
         }
         this.renderTime();  
 
     }
     
     animateSnow() {
-        this.snows.forEach((snow) => {
+        this.w_objects.forEach((snow) => {
             snow.update();
         });
 
@@ -222,7 +225,7 @@ export default class Weather {
         if (this.ticker % 50 === 0) {
             const x = Math.random() * (380 - 100) + 100;
             const y = 150;
-            this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
+            this.w_objects.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
         }
     }
 

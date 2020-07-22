@@ -8,9 +8,8 @@ export default class Snow {
         this.color = color
         this.velocity = {
             x: 0,
-            y: 0.1
+            y: 1
         }
-        this.friction = 0.1
         this.gravity = 0.005
         this.opacity = 1
     }
@@ -31,12 +30,12 @@ export default class Snow {
         this.draw()
         //when snow hits bottom of screen
         if (this.y + this.radius + this.velocity.y > this.canvas.height) {
-            //this.velocity.y = -this.velocity.y * this.friction;
+            this.velocity.y = 0;
         } else {
-            this.velocity.y += this.gravity;
+            this.velocity.y += 0.001;//this.gravity;
         }
 
-        this.y += this.velocity.y;
+       //
     }
 
     renderSnowFlake(width, height) {

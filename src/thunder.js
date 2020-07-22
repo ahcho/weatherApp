@@ -6,7 +6,7 @@ export default class Thunder {
     this.c = c;
     this.velocity = {
       x: 0,
-      y: 0.5,
+      y: 0.05,
     };
     this.gravity = 0.001;
     this.canvas = canvas;
@@ -14,9 +14,32 @@ export default class Thunder {
     this.color = 'yellow'
   }
 
-  //draw thunder
+  
   draw() {
-    
+
+    this.c.beginPath();
+    this.c.moveTo(this.x * this.size , this.y * this.size);
+    this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+    this.c.lineTo((this.x + 50) * this.size, (this.y - 35) * this.size);
+    this.c.moveTo(this.x * this.size, this.y * this.size);
+    this.c.lineTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+    this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+    this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+    this.c.moveTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+    this.c.lineTo(this.x * this.size, (this.y + 40) * this.size);
+    this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+    this.c.fillStyle = this.color;
+    this.c.fill();
+    this.c.closePath();
+    // if (this.y + this.velocity.y + 45 > this.canvas.height) { debugger }
+
+  }
+  
+
+
+  drawBigThunder() {
+    this.x = this.x * 0.667;
+    this.y = this.y * 0.667;
     this.c.beginPath();
     this.c.moveTo(this.x * this.size, this.y * this.size);
     this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
@@ -28,6 +51,30 @@ export default class Thunder {
     this.c.moveTo((this.x + 20) * this.size, (this.y + 20) * this.size);
     this.c.lineTo(this.x * this.size, (this.y + 40) * this.size);
     this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+    this.c.fillStyle = this.color;
+    this.c.fill();
+    this.c.closePath();
+  }
+
+  // call draw function
+  update() {
+ 
+    if (this.y + this.velocity.y + 45 > this.canvas.height) {
+      this.size = 1.5;
+      this.drawBigThunder();  
+    } else {
+      this.draw();
+    }
+
+    this.velocity.y += this.gravity;
+    this.y += this.velocity.y;
+  }
+
+}
+
+
+
+
     // this.c.lineTo(this.x + 20, this.y);
     // this.c.lineTo(this.x + 50, this.y - 35);
     // this.c.moveTo(this.x, this.y);
@@ -37,25 +84,3 @@ export default class Thunder {
     // this.c.moveTo(this.x + 20, this.y + 20);
     // this.c.lineTo(this.x, this.y + 40);
     // this.c.lineTo(this.x + 40, this.y + 20);
-    this.c.fillStyle = this.color;
-    this.c.fill();
-    this.c.closePath();
-  }
-
-  // call draw function
-  update() {
-    this.draw();
-    if (this.y + this.velocity.y + 40 > this.canvas.height) {
-      // this.size = Math.floor(Math.random() * 3)
-      //this.color = 'red';
-      // this.size = 5;
-      // this.draw();
-    }// else {
-    // this.velocity.y += this.gravity;
-    // this.y += this.velocity.y;
-    // }
-    this.velocity.y += this.gravity;
-    this.y += this.velocity.y;
-  }
-
-}
