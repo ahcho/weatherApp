@@ -1,5 +1,5 @@
 export default class Snow {
-    constructor(x, y,radius, color, c, canvas) {
+    constructor(x, y,radius, y_velocity, color, c, canvas) {
         this.c = c
         this.canvas = canvas
         this.x = x
@@ -8,9 +8,9 @@ export default class Snow {
         this.color = color
         this.velocity = {
             x: 0,
-            y: 1
+            y: y_velocity
         }
-        this.gravity = 0.005
+        this.gravity = 0.01
         this.opacity = 1
     }
 
@@ -30,11 +30,11 @@ export default class Snow {
         this.draw()
         //when snow hits bottom of screen
         if (this.y + this.radius + this.velocity.y > this.canvas.height) {
-            this.velocity.y = 0;
+            //this.velocity.y = 0;
         } else {
-            this.velocity.y += 0.001;//this.gravity;
+            //this.velocity.y += 0.01;//this.gravity;
         }
-
+        this.y += this.velocity.y;
        //
     }
 

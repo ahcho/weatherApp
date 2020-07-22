@@ -385,32 +385,32 @@ var Weather = /*#__PURE__*/function () {
         this.createStars(this.canvas.width, this.canvas.height, 30);
         this.animateNightSky();
         this.renderCloud(300, 150, 'lightgray');
-      } // this.animateSnow();
-      // this.animateThunder();
-
-
-      if (this.iconId === sun) {
-        this.renderSun(250, 250);
-      } else if (this.iconId === fewClouds) {
-        this.renderCloud(300, 250, 'lightgray');
-        this.renderSun(250, 180);
-        this.renderCloud(100, 200, 'white'); //this.animateCloud();
-      } else if (scatteredClouds.includes(this.iconId)) {
-        this.renderCloud(50, 130, '	#dde7ee');
-        this.renderCloud(300, 150, '#f0efef');
-        this.renderCloud(100, 200, 'white');
-        this.animateCloud();
-      } else if (rain.includes(this.iconId)) {
-        this.animateRain();
-      } else if (THUNDER_ICON.includess(this.iconId)) {
-        this.animateThunder();
-      } else {
-        this.animateSnow();
       }
 
-      var color = '#555555';
-      if (this.iconId[2] === 'n') color = 'white';
-      this.renderTime(color);
+      this.animateThunder(); // this.animateSnow();
+      // this.animateSnow()
+      //     if (this.iconId === sun) {
+      //         this.renderSun(250, 250);
+      //     } else if (this.iconId === fewClouds){
+      //         this.renderCloud(300, 250, 'lightgray');
+      //         this.renderSun(250, 180);
+      //         this.renderCloud(100, 200, 'white');
+      //         //this.animateCloud();
+      //     } else if (scatteredClouds.includes(this.iconId)) {
+      //         this.renderCloud(50, 130, '	#dde7ee');
+      //         this.renderCloud(300, 150, '#f0efef');
+      //         this.renderCloud(100, 200, 'white');
+      //         this.animateCloud();
+      //     } else if (rain.includes(this.iconId)) {
+      //         this.animateRain();
+      //     } else if (THUNDER_ICON.includess(this.iconId)) {
+      //         this.animateThunder();
+      //     } else {
+      //         this.animateSnow();
+      //     }
+      //     let color = '#555555'
+      //     if (this.iconId[2] === 'n')  color = 'white'
+      //     this.renderTime(color);  
     }
   }, {
     key: "animateRain",
@@ -883,7 +883,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Snow = /*#__PURE__*/function () {
-  function Snow(x, y, radius, color, c, canvas) {
+  function Snow(x, y, radius, y_velocity, color, c, canvas) {
     _classCallCheck(this, Snow);
 
     this.c = c;
@@ -894,9 +894,9 @@ var Snow = /*#__PURE__*/function () {
     this.color = color;
     this.velocity = {
       x: 0,
-      y: 1
+      y: y_velocity
     };
-    this.gravity = 0.005;
+    this.gravity = 0.01;
     this.opacity = 1;
   }
 
@@ -918,12 +918,11 @@ var Snow = /*#__PURE__*/function () {
     value: function update() {
       this.draw(); //when snow hits bottom of screen
 
-      if (this.y + this.radius + this.velocity.y > this.canvas.height) {
-        this.velocity.y = 0;
-      } else {
-        this.velocity.y += 0.001; //this.gravity;
-      } //
+      if (this.y + this.radius + this.velocity.y > this.canvas.height) {//this.velocity.y = 0;
+      } else {//this.velocity.y += 0.01;//this.gravity;
+        }
 
+      this.y += this.velocity.y; //
     }
   }, {
     key: "renderSnowFlake",
@@ -1195,6 +1194,7 @@ var Thunder = /*#__PURE__*/function () {
     this.canvas = canvas;
     this.size = 1;
     this.color = 'yellow';
+    this.flag = true;
   }
 
   _createClass(Thunder, [{
@@ -1213,7 +1213,7 @@ var Thunder = /*#__PURE__*/function () {
       this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
       this.c.fillStyle = this.color;
       this.c.fill();
-      this.c.closePath(); // if (this.y + this.velocity.y + 45 > this.canvas.height) { debugger }
+      this.c.closePath();
     }
   }, {
     key: "drawBigThunder",
@@ -1241,7 +1241,11 @@ var Thunder = /*#__PURE__*/function () {
     value: function update() {
       if (this.y + this.velocity.y + 45 > this.canvas.height) {
         this.size = 1.5;
-        this.drawBigThunder();
+
+        if (this.flag) {
+          this.drawBigThunder();
+          this.flag = false;
+        }
       } else {
         this.draw();
       }

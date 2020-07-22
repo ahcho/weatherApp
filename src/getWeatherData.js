@@ -127,31 +127,31 @@ export default class Weather {
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
-    
+        this.animateThunder();
         // this.animateSnow();
-        // this.animateThunder();
-        if (this.iconId === sun) {
-            this.renderSun(250, 250);
-        } else if (this.iconId === fewClouds){
-            this.renderCloud(300, 250, 'lightgray');
-            this.renderSun(250, 180);
-            this.renderCloud(100, 200, 'white');
-            //this.animateCloud();
-        } else if (scatteredClouds.includes(this.iconId)) {
-            this.renderCloud(50, 130, '	#dde7ee');
-            this.renderCloud(300, 150, '#f0efef');
-            this.renderCloud(100, 200, 'white');
-            this.animateCloud();
-        } else if (rain.includes(this.iconId)) {
-            this.animateRain();
-        } else if (THUNDER_ICON.includess(this.iconId)) {
-            this.animateThunder();
-        } else {
-            this.animateSnow();
-        }
-        let color = '#555555'
-        if (this.iconId[2] === 'n')  color = 'white'
-        this.renderTime(color);  
+        // this.animateSnow()
+    //     if (this.iconId === sun) {
+    //         this.renderSun(250, 250);
+    //     } else if (this.iconId === fewClouds){
+    //         this.renderCloud(300, 250, 'lightgray');
+    //         this.renderSun(250, 180);
+    //         this.renderCloud(100, 200, 'white');
+    //         //this.animateCloud();
+    //     } else if (scatteredClouds.includes(this.iconId)) {
+    //         this.renderCloud(50, 130, '	#dde7ee');
+    //         this.renderCloud(300, 150, '#f0efef');
+    //         this.renderCloud(100, 200, 'white');
+    //         this.animateCloud();
+    //     } else if (rain.includes(this.iconId)) {
+    //         this.animateRain();
+    //     } else if (THUNDER_ICON.includess(this.iconId)) {
+    //         this.animateThunder();
+    //     } else {
+    //         this.animateSnow();
+    //     }
+    //     let color = '#555555'
+    //     if (this.iconId[2] === 'n')  color = 'white'
+    //     this.renderTime(color);  
     }
 
     animateRain() {    

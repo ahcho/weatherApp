@@ -12,11 +12,11 @@ export default class Thunder {
     this.canvas = canvas;
     this.size = 1;
     this.color = 'yellow'
+    this.flag = true;
   }
 
   
   draw() {
-
     this.c.beginPath();
     this.c.moveTo(this.x * this.size , this.y * this.size);
     this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
@@ -31,8 +31,6 @@ export default class Thunder {
     this.c.fillStyle = this.color;
     this.c.fill();
     this.c.closePath();
-    // if (this.y + this.velocity.y + 45 > this.canvas.height) { debugger }
-
   }
   
 
@@ -54,18 +52,21 @@ export default class Thunder {
     this.c.fillStyle = this.color;
     this.c.fill();
     this.c.closePath();
+    
   }
 
   // call draw function
   update() {
- 
-    if (this.y + this.velocity.y + 45 > this.canvas.height) {
+     if (this.y + this.velocity.y + 45 > this.canvas.height) {
       this.size = 1.5;
-      this.drawBigThunder();  
+      if (this.flag){
+        this.drawBigThunder();  
+        this.flag = false; 
+      }
     } else {
       this.draw();
     }
-
+    
     this.velocity.y += this.gravity;
     this.y += this.velocity.y;
   }
