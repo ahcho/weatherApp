@@ -1,4 +1,5 @@
-# My First Weather
+# My First Weather 
+[live site](https://ahcho.github.io/weatherApp/)
 
 ## About
 My first weather is for young smartphone users. 
@@ -24,7 +25,9 @@ shatter() {
         }
     }
 ```
+<!-- ![Alt text](./dist/night_sky.png?raw=true "Night Sky")
 
+![Alt text](dist/thunder.png?raw=true "Night Sky") -->
 ### To-dos
 * Add option to get current weather of the user input zipcode area.
 * Add additional animation feature to entertain users.
