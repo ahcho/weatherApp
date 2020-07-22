@@ -102,6 +102,127 @@ var config = {
 
 /***/ }),
 
+/***/ "./src/cloud.js":
+/*!**********************!*\
+  !*** ./src/cloud.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return cloud; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var cloud = /*#__PURE__*/function () {
+  function cloud(x, y, color, c, canvas) {
+    _classCallCheck(this, cloud);
+
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.velocity = {
+      x: 0.3,
+      y: 0
+    };
+    this.friction = 0.8;
+    this.gravity = 0.05;
+    this.opacity = 1;
+    this.lineWidth = 5;
+    this.c = c;
+    this.canvas = canvas;
+  } // how rain will look like
+
+
+  _createClass(cloud, [{
+    key: "draw",
+    value: function draw() {
+      this.c.beginPath();
+      this.c.moveTo(this.x, this.y);
+      this.c.bezierCurveTo(this.x - 40, this.y + 20, this.x - 40, this.y + 70, this.x + 60, this.y + 70);
+      this.c.bezierCurveTo(this.x + 80, this.y + 100, this.x + 150, this.y + 100, this.x + 170, this.y + 70);
+      this.c.bezierCurveTo(this.x + 300, this.y + 70, this.x + 300, this.y + 40, this.x + 250, this.y + 20);
+      this.c.bezierCurveTo(this.x + 260, this.y - 40, this.x + 200, this.y - 50, this.x + 170, this.y - 30);
+      this.c.bezierCurveTo(this.x + 150, this.y - 75, this.x + 80, this.y - 60, this.x + 80, this.y - 30);
+      this.c.bezierCurveTo(this.x + 30, this.y - 75, this.x - 20, this.y - 60, this.x, this.y);
+      this.c.fillStyle = this.color;
+      this.c.fill();
+      this.c.lineWidth = 5;
+      this.c.strokeStyle = this.color;
+      this.c.stroke();
+      this.c.closePath();
+    } // call draw function
+
+  }, {
+    key: "update",
+    value: function update() {
+      this.draw(); //when rain hits bottom of screen
+
+      if (this.x + this.velocity.x - 20 === this.canvas.width) {
+        this.x -= this.velocity.x;
+      } else if (this.x + this.velocity.x - 20 === 0) {
+        this.x += this.velocity.x;
+      }
+
+      this.x += this.velocity.x;
+    }
+  }]);
+
+  return cloud;
+}(); // const canvas = document.querySelector('canvas');
+// const ctx = canvas.getContext('2d');
+// let TAU = 2.0 * Math.PI
+// let w = ctx.canvas.width
+// let h = ctx.canvas.height
+// let s = Math.min(w,h);
+// let t = 6;
+// let STROKE = 0.08;
+// let color = 'white' 
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
+// function circle(ctx, x, y, r) {
+//     ctx.beginPath();
+//     ctx.arc(x, y, r, 0, TAU, false);
+//     ctx.fill();
+// }
+// function puffs(ctx, t, cx, cy, rx, ry, rmin, rmax) {
+//     var i;
+//     for (i = 5; i--;)
+//         puff(ctx, t + i / 5, cx, cy, rx, ry, rmin, rmax);
+// }
+// function puff(ctx, t, cx, cy, rx, ry, rmin, rmax) {
+//     var c = Math.cos(t * TAU),
+//         s = Math.sin(t * TAU);
+//     rmax -= rmin;
+//     circle(
+//         ctx,
+//         cx - s * rx,
+//         cy + c * ry + rmax * 0.5,
+//         rmin + (1 - c * 0.5) * rmax
+//     );
+// }
+// function cloud(ctx, t, cx, cy, cw, s, color) {
+//     t /= 30000;
+//     var a = cw * 0.21,
+//         b = cw * 0.12,
+//         c = cw * 0.24,
+//         d = cw * 0.28;
+//     ctx.fillStyle = color;
+//     puffs(ctx, t, cx, cy, a, b, c, d);
+//     ctx.globalCompositeOperation = 'destination-out';
+//     puffs(ctx, t, cx, cy, a, b, c - s, d - s);
+// }
+// cloud(ctx, t, w * 0.375, h * 0.625, s * 0.75, s * STROKE, color);
+
+
+
+
+/***/ }),
+
 /***/ "./src/getWeatherData.js":
 /*!*******************************!*\
   !*** ./src/getWeatherData.js ***!
@@ -118,11 +239,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _snow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./snow */ "./src/snow.js");
 /* harmony import */ var _night__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./night */ "./src/night.js");
 /* harmony import */ var _thunder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./thunder */ "./src/thunder.js");
+/* harmony import */ var _cloud__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cloud */ "./src/cloud.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -147,6 +270,7 @@ var Weather = /*#__PURE__*/function () {
     this.rains = [];
     this.snows = [];
     this.thunders = [];
+    this.w_objects = [];
     this.ticker = 0;
     this.counter = 0;
   }
@@ -235,7 +359,9 @@ var Weather = /*#__PURE__*/function () {
     }
   }, {
     key: "renderTime",
-    value: function renderTime(color) {
+    value: function renderTime() {
+      var color = '#555555';
+      if (this.iconId[2] === 'n') color = 'white';
       this.c.beginPath();
       this.c.font = '50px Cinzel';
       this.c.fillStyle = color;
@@ -255,6 +381,11 @@ var Weather = /*#__PURE__*/function () {
       var rain = ['04d', '09d', '10d', '11d', '09n', '10n'];
       var snow = ['13d', '50d', '13n', '50n'];
       var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
+      this.renderCloud(300, 250, 'lightgray');
+      this.renderSun(250, 180);
+      this.renderCloud(100, 200, 'white');
+      this.animateCloud();
+      this.animateCloud();
 
       if (this.iconId[2] === 'n') {
         this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -265,9 +396,10 @@ var Weather = /*#__PURE__*/function () {
       if (this.iconId === sun) {
         this.renderSun(250, 250);
       } else if (this.iconId === fewClouds) {
-        this.renderCloud(300, 150, 'lightgray');
-        this.renderSun(250, 80);
-        this.renderCloud(100, 100, 'white');
+        this.renderCloud(300, 250, 'lightgray');
+        this.renderSun(250, 180);
+        this.renderCloud(100, 200, 'white');
+        this.animateCloud();
       } else if (scatteredClouds.includes(this.iconId)) {
         this.renderCloud(50, 130, '	#dde7ee');
         this.renderCloud(300, 150, '#f0efef');
@@ -297,7 +429,7 @@ var Weather = /*#__PURE__*/function () {
           }
         });
       });
-      this.renderHeavyClounds();
+      this.renderHeavyClouds();
       this.ticker++;
 
       if (this.ticker % 40 === 0) {
@@ -310,15 +442,34 @@ var Weather = /*#__PURE__*/function () {
       this.renderTime();
     }
   }, {
+    key: "animateCloud",
+    value: function animateCloud() {
+      var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey'];
+      this.w_objects.forEach(function (cloud) {
+        cloud.update();
+      });
+      this.ticker++;
+
+      if (this.ticker % 500 === 0) {
+        var rand_num = Math.floor(Math.random() * 6);
+        console.log(rand_num);
+        var x = Math.floor(Math.random() * 200) - 100;
+        var y = Math.random() * 400 + 100;
+        this.w_objects.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], this.c, this.canvas));
+      }
+
+      this.renderTime();
+    }
+  }, {
     key: "animateThunder",
     value: function animateThunder() {
       this.thunders.forEach(function (thunder) {
         thunder.update();
       });
-      this.renderHeavyClounds();
+      this.renderHeavyClouds();
       this.ticker++;
 
-      if (this.ticker % 40 === 0) {
+      if (this.ticker % 90 === 0) {
         var x = Math.random() * (400 - 100) + 100;
         var y = 150;
         var w = Math.random() * 5;
@@ -333,7 +484,7 @@ var Weather = /*#__PURE__*/function () {
       this.snows.forEach(function (snow) {
         snow.update();
       });
-      this.renderHeavyClounds();
+      this.renderHeavyClouds();
       this.ticker++;
 
       if (this.ticker % 50 === 0) {
@@ -378,9 +529,9 @@ var Weather = /*#__PURE__*/function () {
       this.c.closePath();
     }
   }, {
-    key: "renderHeavyClounds",
-    value: function renderHeavyClounds() {
-      this.renderCloud(50, 130, '	#dde7ee');
+    key: "renderHeavyClouds",
+    value: function renderHeavyClouds() {
+      this.renderCloud(50, 130, '#dde7ee');
       this.renderCloud(300, 150, '#f0efef');
       this.renderCloud(100, 200, 'white');
     }
@@ -1043,10 +1194,12 @@ var Thunder = /*#__PURE__*/function () {
     this.c = c;
     this.velocity = {
       x: 0,
-      y: 1
+      y: 0.5
     };
-    this.gravity = 0.05;
+    this.gravity = 0.001;
     this.canvas = canvas;
+    this.size = 1;
+    this.color = 'yellow';
   } //draw thunder
 
 
@@ -1054,17 +1207,26 @@ var Thunder = /*#__PURE__*/function () {
     key: "draw",
     value: function draw() {
       this.c.beginPath();
-      this.c.moveTo(this.x, this.y);
-      this.c.lineTo(this.x + 20, this.y);
-      this.c.lineTo(this.x + 50, this.y - 35);
-      this.c.moveTo(this.x, this.y);
-      this.c.lineTo(this.x + 20, this.y + 20);
-      this.c.lineTo(this.x + 40, this.y + 20);
-      this.c.lineTo(this.x + 20, this.y);
-      this.c.moveTo(this.x + 20, this.y + 20);
-      this.c.lineTo(this.x, this.y + 40);
-      this.c.lineTo(this.x + 40, this.y + 20);
-      this.c.fillStyle = "yellow";
+      this.c.moveTo(this.x * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 50) * this.size, (this.y - 35) * this.size);
+      this.c.moveTo(this.x * this.size, this.y * this.size);
+      this.c.lineTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
+      this.c.moveTo((this.x + 20) * this.size, (this.y + 20) * this.size);
+      this.c.lineTo(this.x * this.size, (this.y + 40) * this.size);
+      this.c.lineTo((this.x + 40) * this.size, (this.y + 20) * this.size); // this.c.lineTo(this.x + 20, this.y);
+      // this.c.lineTo(this.x + 50, this.y - 35);
+      // this.c.moveTo(this.x, this.y);
+      // this.c.lineTo(this.x + 20, this.y + 20);
+      // this.c.lineTo(this.x + 40, this.y + 20);
+      // this.c.lineTo(this.x + 20, this.y);
+      // this.c.moveTo(this.x + 20, this.y + 20);
+      // this.c.lineTo(this.x, this.y + 40);
+      // this.c.lineTo(this.x + 40, this.y + 20);
+
+      this.c.fillStyle = this.color;
       this.c.fill();
       this.c.closePath();
     } // call draw function
@@ -1073,6 +1235,17 @@ var Thunder = /*#__PURE__*/function () {
     key: "update",
     value: function update() {
       this.draw();
+
+      if (this.y + this.velocity.y + 40 > this.canvas.height) {// this.size = Math.floor(Math.random() * 3)
+        //this.color = 'red';
+        // this.size = 5;
+        // this.draw();
+      } // else {
+      // this.velocity.y += this.gravity;
+      // this.y += this.velocity.y;
+      // }
+
+
       this.velocity.y += this.gravity;
       this.y += this.velocity.y;
     }
