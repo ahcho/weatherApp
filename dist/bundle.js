@@ -119,19 +119,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var cloud = /*#__PURE__*/function () {
-  function cloud(x, y, color, c, canvas) {
+  function cloud(x, y, color, vx, c, canvas) {
     _classCallCheck(this, cloud);
 
     this.x = x;
     this.y = y;
     this.color = color;
     this.velocity = {
-      x: 0.3,
+      x: vx,
       y: 0
     };
     this.friction = 0.8;
-    this.gravity = 0.05;
-    this.opacity = 1;
     this.lineWidth = 5;
     this.c = c;
     this.canvas = canvas;
@@ -381,11 +379,6 @@ var Weather = /*#__PURE__*/function () {
       var rain = ['04d', '09d', '10d', '11d', '09n', '10n'];
       var snow = ['13d', '50d', '13n', '50n'];
       var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
-      this.renderCloud(300, 250, 'lightgray');
-      this.renderSun(250, 180);
-      this.renderCloud(100, 200, 'white');
-      this.animateCloud();
-      this.animateCloud();
 
       if (this.iconId[2] === 'n') {
         this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -398,12 +391,12 @@ var Weather = /*#__PURE__*/function () {
       } else if (this.iconId === fewClouds) {
         this.renderCloud(300, 250, 'lightgray');
         this.renderSun(250, 180);
-        this.renderCloud(100, 200, 'white');
-        this.animateCloud();
+        this.renderCloud(100, 200, 'white'); //this.animateCloud();
       } else if (scatteredClouds.includes(this.iconId)) {
         this.renderCloud(50, 130, '	#dde7ee');
         this.renderCloud(300, 150, '#f0efef');
         this.renderCloud(100, 200, 'white');
+        this.animateCloud();
       } else if (rain.includes(this.iconId)) {
         this.animateRain();
       } else if (THUNDER_ICON.includess(this.iconId)) {
@@ -444,18 +437,18 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateCloud",
     value: function animateCloud() {
-      var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey'];
+      var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray'];
       this.w_objects.forEach(function (cloud) {
         cloud.update();
       });
       this.ticker++;
 
-      if (this.ticker % 500 === 0) {
-        var rand_num = Math.floor(Math.random() * 6);
-        console.log(rand_num);
+      if (this.ticker % 800 === 0) {
+        var rand_num = Math.floor(Math.random() * 7);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
-        this.w_objects.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], this.c, this.canvas));
+        var velocity = (Math.random() * 40 + 5) * 1 / 100;
+        this.w_objects.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
       }
 
       this.renderTime();

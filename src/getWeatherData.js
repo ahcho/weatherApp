@@ -119,11 +119,8 @@ export default class Weather {
         const snow = ['13d', '50d', '13n', '50n']
         const night =
           ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
-        this.renderCloud(300, 250, 'lightgray');
-        this.renderSun(250, 180);
-        this.renderCloud(100, 200, 'white');
-        this.animateCloud();
-        this.animateCloud();
+  
+        
         if (this.iconId[2] === 'n') {
             this.createStars(this.canvas.width, this.canvas.height, 30);
             this.animateNightSky();
@@ -136,11 +133,12 @@ export default class Weather {
             this.renderCloud(300, 250, 'lightgray');
             this.renderSun(250, 180);
             this.renderCloud(100, 200, 'white');
-            this.animateCloud();
+            //this.animateCloud();
         } else if (scatteredClouds.includes(this.iconId)) {
             this.renderCloud(50, 130, '	#dde7ee');
             this.renderCloud(300, 150, '#f0efef');
             this.renderCloud(100, 200, 'white');
+            this.animateCloud();
         } else if (rain.includes(this.iconId)) {
             this.animateRain();
         } else if (THUNDER_ICON.includess(this.iconId)) {
@@ -179,18 +177,18 @@ export default class Weather {
     }
 
     animateCloud() {
-        const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey']
+        const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray']
         this.w_objects.forEach((cloud) => {
             cloud.update();
         })
         this.ticker++;
         
-        if (this.ticker % 500 === 0) {
-            const rand_num = Math.floor(Math.random() * 6)
-            console.log(rand_num)
+        if (this.ticker % 800 === 0) {
+            const rand_num = Math.floor(Math.random() * 7)
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
-            this.w_objects.push(new Cloud(x, y, CLOUD_COLOR[rand_num], this.c, this.canvas));
+            const velocity = ((Math.random() * 40) + 5) * 1/100;
+            this.w_objects.push(new Cloud(x, y, CLOUD_COLOR[rand_num],velocity, this.c, this.canvas));
         }
         this.renderTime();  
     }

@@ -1,15 +1,13 @@
 export default class cloud {
-    constructor(x, y, color, c, canvas) {
+    constructor(x, y, color, vx, c, canvas) {
         this.x = x
         this.y = y
         this.color = color
         this.velocity = {
-            x: 0.3,
+            x: vx,
             y: 0
         }
         this.friction = 0.8
-        this.gravity = 0.05
-        this.opacity = 1
         this.lineWidth = 5
         this.c = c
         this.canvas = canvas
@@ -44,7 +42,7 @@ export default class cloud {
             this.x += this.velocity.x;
         }
         this.x += this.velocity.x;
-        
+           
         
     }
 }
