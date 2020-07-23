@@ -204,17 +204,15 @@ export default class Weather {
                 miniRain.update();
              
                 if (miniRain.ttl === 0) {
-                    rain.miniRains.splice(index, 1)// get rid of mini rain
-                    
+                    rain.miniRains.splice(index, 1)// get rid of mini rain    
                 }
-            })
-            
+            })    
         });
         
 
         this.ticker++;
    
-        if (this.ticker % 80 === 0 && this.rains.length < 20) {
+        if (this.rains.length === 0 || (this.ticker % 80 === 0 && this.rains.length < 20)) {
             const x = (Math.random() * 490)  + 30;
             const y = 150;
             const w = Math.random() * 5;
@@ -229,7 +227,7 @@ export default class Weather {
             cloud.update();
         })
         this.ticker++;
-        if (this.ticker % 250 === 0 && this.clouds.length <= 10) {
+        if (this.clouds.length === 0 || (this.ticker % 250 === 0 && this.clouds.length <= 10)) {
             const rand_num = Math.floor(Math.random() * 7)
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
@@ -245,7 +243,7 @@ export default class Weather {
         });
 
         this.ticker++;
-        if (this.ticker % 100 === 0 && this.thunders.length < 10) {
+        if (this.thunders.length === 0 || (this.ticker % 100 === 0 && this.thunders.length < 10)) {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
             this.thunders.push(new Thunder(x, y, this.c, this.canvas));
@@ -256,13 +254,14 @@ export default class Weather {
     }
     
     animateSnow() {
+        
         this.snows.forEach((snow) => {
             snow.update();
         });
         
         this.ticker++;
         
-        if (this.ticker % 100 === 0 && this.snows.length <= 20) {
+        if (this.snows.length === 0 || (this.ticker % 100 === 0 && this.snows.length <= 20) ) {
             const x = (Math.random() * 480) + 50;
             const y = 150;
             this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
