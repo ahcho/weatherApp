@@ -30,7 +30,7 @@ export default class Snow {
         this.draw()
         //when snow hits bottom of screen
         if (this.y + this.radius + this.velocity.y > this.canvas.height) {
-            //this.velocity.y = 0;
+            this.y = 150;
         } else {
             //this.velocity.y += 0.01;//this.gravity;
         }

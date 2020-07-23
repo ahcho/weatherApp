@@ -38,7 +38,10 @@ export default class cloud {
         //when rain hits bottom of screen
         if (this.x + this.velocity.x - 20 === this.canvas.width) {
             this.x -= this.velocity.x 
-        } else if ((this.x + this.velocity.x - 20 === 0)) {
+        } else if (this.x - 100 > this.canvas.width)   {
+            this.x = Math.floor(Math.random() * 200) - 100;
+        }
+        else if ((this.x + this.velocity.x - 20 === 0)) {
             this.x += this.velocity.x;
         }
         this.x += this.velocity.x;

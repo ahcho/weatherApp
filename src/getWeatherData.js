@@ -175,13 +175,16 @@ export default class Weather {
             this.renderCloud(100, 200, 'white');
             this.animateCloud();
         } else if (scatteredClouds.includes(this.iconId)) {
+            //debugger;
             this.renderHeavyClouds();
             this.animateCloud();
         } else if (rain.includes(this.iconId)) {
+            this.renderHeavyClouds();
             this.animateRain();
         } else if (THUNDER_ICON.includes(this.iconId)) {
             this.animateThunder();
         } else if (SNOW_ICON.includes(this.iconId)) {
+            this.renderHeavyClouds();
             this.animateSnow();
         }
 
@@ -206,11 +209,11 @@ export default class Weather {
             
         });
         
-        this.renderHeavyClouds();    
         this.ticker++;
    
-        if (this.ticker % 40 === 0) {
-            const x = Math.random() * (400 - 100) + 100;
+        if (this.ticker % 80 === 0 && this.rains.length <= 20) {
+            console.log(this.rains.length)
+            const x = (Math.random() * 490)  + 70;
             const y = 150;
             const w = Math.random() * 5;
             this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
@@ -219,13 +222,14 @@ export default class Weather {
     }
 
     animateCloud() {
+        //debugger;
         const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray']
         this.renderHeavyClouds();
         this.clouds.forEach((cloud) => {
             cloud.update();
         })
         this.ticker++;
-        if (this.ticker % 250 === 0) {
+        if (this.ticker % 250 === 0 && this.clouds.length <= 10) {
             const rand_num = Math.floor(Math.random() * 7)
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
@@ -242,13 +246,13 @@ export default class Weather {
             thunder.update();
         });
 
-        this.renderHeavyClouds();
         this.ticker++;
-        if (this.ticker % 100 === 0) {
+        if (this.ticker % 100 === 0 && this.thunders.length < 10) {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
             this.thunders.push(new Thunder(x, y, this.c, this.canvas));
         }
+        this.renderHeavyClouds();
         this.renderTime();  
     
 
@@ -258,11 +262,11 @@ export default class Weather {
         this.snows.forEach((snow) => {
             snow.update();
         });
-
-        this.renderHeavyClouds();
+        
         this.ticker++;
 
-        if (this.ticker % 100 === 0) {
+        if (this.ticker % 100 === 0 && this.snows.length <= 20) {
+            console.log(this.snows.length)
             const x = Math.random() * (380 - 100) + 100;
             const y = 150;
             this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))

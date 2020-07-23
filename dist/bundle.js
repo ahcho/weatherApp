@@ -162,6 +162,8 @@ var cloud = /*#__PURE__*/function () {
 
       if (this.x + this.velocity.x - 20 === this.canvas.width) {
         this.x -= this.velocity.x;
+      } else if (this.x - 100 > this.canvas.width) {
+        this.x = Math.floor(Math.random() * 200) - 100;
       } else if (this.x + this.velocity.x - 20 === 0) {
         this.x += this.velocity.x;
       }
@@ -444,13 +446,16 @@ var Weather = /*#__PURE__*/function () {
         this.renderCloud(100, 200, 'white');
         this.animateCloud();
       } else if (scatteredClouds.includes(this.iconId)) {
+        //debugger;
         this.renderHeavyClouds();
         this.animateCloud();
       } else if (rain.includes(this.iconId)) {
+        this.renderHeavyClouds();
         this.animateRain();
       } else if (THUNDER_ICON.includes(this.iconId)) {
         this.animateThunder();
       } else if (SNOW_ICON.includes(this.iconId)) {
+        this.renderHeavyClouds();
         this.animateSnow();
       }
 
@@ -471,11 +476,11 @@ var Weather = /*#__PURE__*/function () {
           }
         });
       });
-      this.renderHeavyClouds();
       this.ticker++;
 
-      if (this.ticker % 40 === 0) {
-        var x = Math.random() * (400 - 100) + 100;
+      if (this.ticker % 80 === 0 && this.rains.length <= 20) {
+        console.log(this.rains.length);
+        var x = Math.random() * 490 + 70;
         var y = 150;
         var w = Math.random() * 5;
         this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
@@ -486,6 +491,7 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateCloud",
     value: function animateCloud() {
+      //debugger;
       var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray'];
       this.renderHeavyClouds();
       this.clouds.forEach(function (cloud) {
@@ -493,7 +499,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.ticker % 250 === 0) {
+      if (this.ticker % 250 === 0 && this.clouds.length <= 10) {
         var rand_num = Math.floor(Math.random() * 7);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
@@ -511,15 +517,15 @@ var Weather = /*#__PURE__*/function () {
       this.thunders.forEach(function (thunder) {
         thunder.update();
       });
-      this.renderHeavyClouds();
       this.ticker++;
 
-      if (this.ticker % 100 === 0) {
+      if (this.ticker % 100 === 0 && this.thunders.length < 10) {
         var x = Math.random() * (400 - 100) + 100;
         var y = 150;
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
       }
 
+      this.renderHeavyClouds();
       this.renderTime();
     }
   }, {
@@ -528,10 +534,10 @@ var Weather = /*#__PURE__*/function () {
       this.snows.forEach(function (snow) {
         snow.update();
       });
-      this.renderHeavyClouds();
       this.ticker++;
 
-      if (this.ticker % 100 === 0) {
+      if (this.ticker % 100 === 0 && this.snows.length <= 20) {
+        console.log(this.snows.length);
         var x = Math.random() * (380 - 100) + 100;
         var y = 150;
         this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
@@ -826,7 +832,8 @@ var Rain = /*#__PURE__*/function () {
       this.draw(); //when rain hits bottom of screen
 
       if (this.y + this.velocity.y + 20 > this.canvas.height) {
-        this.shatter(); // return "rain"
+        this.shatter();
+        this.y = 150;
       } else {
         this.velocity.y += this.gravity;
       }
@@ -966,9 +973,10 @@ var Snow = /*#__PURE__*/function () {
     value: function update() {
       this.draw(); //when snow hits bottom of screen
 
-      if (this.y + this.radius + this.velocity.y > this.canvas.height) {//this.velocity.y = 0;
+      if (this.y + this.radius + this.velocity.y > this.canvas.height) {
+        this.y = 150;
       } else {//this.velocity.y += 0.01;//this.gravity;
-        }
+      }
 
       this.y += this.velocity.y; //
     }
@@ -1287,7 +1295,10 @@ var Thunder = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function update() {
-      if (this.y + this.velocity.y + 45 > this.canvas.height) {
+      if (this.y > this.canvas.height) {
+        this.y = 150;
+      } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
+        console.log(this.y + this.velocity.y + 45);
         this.size = 1.5;
 
         if (this.flag) {
