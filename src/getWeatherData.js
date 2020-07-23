@@ -31,7 +31,6 @@ export default class Weather {
     }
 
     getData() {
-        debugger;
         return fetch(this.api)
             .then(res => {
                 return res.json()

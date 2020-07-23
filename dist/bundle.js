@@ -285,7 +285,6 @@ var Weather = /*#__PURE__*/function () {
     value: function getData() {
       var _this = this;
 
-      debugger;
       return fetch(this.api).then(function (res) {
         return res.json();
       }).then(function (data) {
