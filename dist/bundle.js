@@ -426,7 +426,7 @@ var Weather = /*#__PURE__*/function () {
       var scatteredClouds = ['03d', '04d'];
       var rain = ['09d', '10d', '09n', '10n'];
       var SNOW_ICON = ['13d', '50d', '13n', '50n'];
-      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]; //console.log(this.iconId)
+      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
 
       if (this.iconId[2] === 'n') {
         this.createStars(this.canvas.width, this.canvas.height, 30);
@@ -450,13 +450,14 @@ var Weather = /*#__PURE__*/function () {
         this.renderHeavyClouds();
         this.animateCloud();
       } else if (rain.includes(this.iconId)) {
-        this.renderHeavyClouds();
         this.animateRain();
+        this.renderHeavyClouds();
       } else if (THUNDER_ICON.includes(this.iconId)) {
         this.animateThunder();
-      } else if (SNOW_ICON.includes(this.iconId)) {
         this.renderHeavyClouds();
+      } else if (SNOW_ICON.includes(this.iconId)) {
         this.animateSnow();
+        this.renderHeavyClouds();
       }
 
       var color = '#555555';
@@ -475,11 +476,11 @@ var Weather = /*#__PURE__*/function () {
             rain.miniRains.splice(index, 1); // get rid of mini rain
           }
         });
-      });
+      }); // this.renderHeavyClouds();
+
       this.ticker++;
 
       if (this.ticker % 80 === 0 && this.rains.length <= 20) {
-        console.log(this.rains.length);
         var x = Math.random() * 490 + 70;
         var y = 150;
         var w = Math.random() * 5;
@@ -493,7 +494,6 @@ var Weather = /*#__PURE__*/function () {
     value: function animateCloud() {
       //debugger;
       var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray'];
-      this.renderHeavyClouds();
       this.clouds.forEach(function (cloud) {
         cloud.update();
       });
@@ -504,8 +504,6 @@ var Weather = /*#__PURE__*/function () {
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
         var velocity = Math.floor(Math.random() * 40 + 5) * 1 / 100;
-        console.log(CLOUD_COLOR[rand_num]);
-        console.log(velocity);
         this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
       }
 
@@ -525,7 +523,6 @@ var Weather = /*#__PURE__*/function () {
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
       }
 
-      this.renderHeavyClouds();
       this.renderTime();
     }
   }, {
@@ -537,8 +534,7 @@ var Weather = /*#__PURE__*/function () {
       this.ticker++;
 
       if (this.ticker % 100 === 0 && this.snows.length <= 20) {
-        console.log(this.snows.length);
-        var x = Math.random() * (380 - 100) + 100;
+        var x = Math.random() * 490 + 50;
         var y = 150;
         this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
@@ -973,7 +969,7 @@ var Snow = /*#__PURE__*/function () {
     value: function update() {
       this.draw(); //when snow hits bottom of screen
 
-      if (this.y + this.radius + this.velocity.y > this.canvas.height) {
+      if (this.y - 100 > this.canvas.height) {
         this.y = 150;
       } else {//this.velocity.y += 0.01;//this.gravity;
       }
@@ -1298,7 +1294,6 @@ var Thunder = /*#__PURE__*/function () {
       if (this.y > this.canvas.height) {
         this.y = 150;
       } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
-        console.log(this.y + this.velocity.y + 45);
         this.size = 1.5;
 
         if (this.flag) {
