@@ -692,27 +692,36 @@ function success(position) {
   var lat = position.coords.latitude;
   var api = "https://api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&lon=").concat(lon, "&units=imperial&appid=").concat(API_KEY);
   var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
+  console.log(api);
   weather.getData().then(function () {
     return weather.renderCanvasBackground();
   });
 }
 
 function error(err) {
-  //console.warn(`ERROR(${err.code}): ${err.message}`);
-  // later will get zipcode from user, currently just showing default location
-  // (standford) weather 
   var canvas = document.querySelector('canvas');
   var c = canvas.getContext('2d');
   canvas.width = 500;
   canvas.height = 600;
-  var api = "https://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=".concat(API_KEY);
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
-  weather.renderCanvasBackground();
+  errorMsg(c); // const api =
+  //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
+  //   console.log(api);
+  // const weather = new Weather(api, c, canvas);
+  // weather.renderCanvasBackground();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   navigator.geolocation.getCurrentPosition(success, error);
 });
+
+function errorMsg(c) {
+  c.beginPath();
+  c.font = '30px Cinzel';
+  c.fillStyle = 'black';
+  c.fillText('please allow me to know', 0, 60);
+  c.fillText('your location:)', 0, 100);
+  c.closePath();
+}
 
 /***/ }),
 

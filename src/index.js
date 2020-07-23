@@ -12,25 +12,34 @@ function success(position){
     const lat = position.coords.latitude;
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`;
     const weather = new Weather(api, c, canvas);
+    console.log(api)
     weather.getData().then(()=>     
         weather.renderCanvasBackground())
 }
 
 function error(err) {
-    //console.warn(`ERROR(${err.code}): ${err.message}`);
-    // later will get zipcode from user, currently just showing default location
-    // (standford) weather 
     const canvas = document.querySelector('canvas')
     const c = canvas.getContext('2d')
     canvas.width = 500
     canvas.height = 600
-    const api =
-      `https://api.openweathermap.org/data/2.5/weather?lat=37.4079488&lon=-122.13944319999999&units=imperial&appid=${API_KEY}`;
+    errorMsg(c);
+    // const api =
+    //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
+    //   console.log(api);
 
-    const weather = new Weather(api, c, canvas);
-    weather.renderCanvasBackground();
+    // const weather = new Weather(api, c, canvas);
+    // weather.renderCanvasBackground();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     navigator.geolocation.getCurrentPosition(success, error);
 });
+
+function errorMsg(c) {
+    c.beginPath()
+    c.font = '30px Cinzel'
+    c.fillStyle = 'black';
+    c.fillText('please allow me to know', 0, 60);
+    c.fillText('your location:)', 0, 100);
+    c.closePath();   
+}
