@@ -27,7 +27,7 @@ export default class Weather {
         this.thunders = [];
         this.rains = [];
         this.snows = [];
-        push(new Thunder(x, y, this.c, this.canvas));
+        // push(new Thunder(x, y, this.c, this.canvas));
         this.ticker = 0;
         this.counter = 0;
     }
