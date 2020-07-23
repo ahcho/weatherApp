@@ -94,6 +94,9 @@ canvas {
   background-color: gray;
   width: 520px;
   border-radius: 4px;
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .topnav a {
@@ -105,7 +108,28 @@ canvas {
   font-size: 17px;
 }
 
+
+.topnav-right {
+    margin-right: 10px;
+    display: flex;
+    /* align-items: center; */
+    text-align: center;
+
+}
+.topnav i {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 12px;
+    font-size: 17px;
+    width: 20px;
+
+}
 .topnav a:hover {
+  background-color: #50A7C2;
+  color: white;
+}
+
+.topnav i:hover {
   background-color: #50A7C2;
   color: white;
 }

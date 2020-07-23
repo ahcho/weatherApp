@@ -8,12 +8,12 @@ export default class cloud {
             y: 0
         }
         this.friction = 0.8
-        this.lineWidth = 5
+        this.lineWidth = 1
         this.c = c
         this.canvas = canvas
     }
 
-    // how rain will look like
+    // cloud shape
     draw() {
         this.c.beginPath()
         this.c.moveTo(this.x, this.y);
@@ -26,8 +26,8 @@ export default class cloud {
         
         this.c.fillStyle = this.color;
         this.c.fill();
-        this.c.lineWidth = 5;
-        this.c.strokeStyle = this.color;
+        this.c.lineWidth = this.lineWidth;
+        this.c.strokeStyle = 'gray';
         this.c.stroke();
         this.c.closePath();
     }

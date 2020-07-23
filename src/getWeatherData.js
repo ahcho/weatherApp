@@ -16,12 +16,22 @@ export default class Weather {
         this.degreeSection = document.querySelector('.weather-info-bottom');
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
         this.iconSection = document.getElementById('temp-icon');
+        this.cloudSection = document.querySelector('.fa-cloud');
+        this.rainSection = document.querySelector('.fa-tint');
+        this.snowSection = document.querySelector('.fa-asterisk');
+        this.starSection = document.querySelector('.fa-star');
+        this.thunderSection = document.querySelector('.fa-bolt');
         this.stars = [];
-        this.w_objects = [];
+        //this.w_objects = [];
+        this.clouds = [];
+        this.thunders = [];
+        this.rains = [];
+        this.snows = [];
+        
         // const x = Math.random() * (400 - 100) + 100;
         // const y = 150;
         // const w = Math.random() * 5;
-        // this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
+        // this.w_thunders.push(new Thunder(x, y, this.c, this.canvas));
         this.ticker = 0;
         this.counter = 0;
     }
@@ -36,6 +46,7 @@ export default class Weather {
                 const temperature = Math.floor(data.main.temp)
                 const location = data.name
                 this.iconId = data.weather[0].icon
+                this.fixIconId = data.weather[0].icon
                 const iconAdd = `https://openweathermap.org/img/wn/${this.iconId}@2x.png`
 
                 //Set DOM Elements from the API
@@ -44,8 +55,19 @@ export default class Weather {
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
                 this.changeMetric(temperature);    
+                this.listenClick();
             })
             
+    }
+
+    listenClick() {
+        this.stars = [];
+        
+        this.cloudSection.addEventListener('click', () => { this.iconId = '03d'})
+        this.rainSection.addEventListener('click', () => { this.iconId = '09d' })
+        this.snowSection.addEventListener('click', () => { this.iconId = '13d' })
+        this.starSection.addEventListener('click', () => { this.iconId = '01n' })
+        this.thunderSection.addEventListener('click', () => { this.iconId = '11d' })
     }
 
     changeMetric(temperature) {
@@ -93,7 +115,7 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
-        
+        // this.listenClick();
         this.renderAnimation(this.iconId);  
         requestAnimationFrame(this.renderCanvasBackground.bind(this))     
     }
@@ -116,46 +138,49 @@ export default class Weather {
         const sun = '01d';
         const fewClouds = '02d';
         const scatteredClouds = ['03d', '04d'];
-        const rain = ['04d', '09d', '10d', '11d', '09n', '10n']
-        const snow = ['13d', '50d', '13n', '50n']
+        const rain = ['09d', '10d', '09n', '10n']
+        const SNOW_ICON = ['13d', '50d', '13n', '50n']
         const night =
           ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
   
-        
+        //console.log(this.iconId)
         if (this.iconId[2] === 'n') {
             this.createStars(this.canvas.width, this.canvas.height, 30);
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
-        this.animateThunder();
-        // this.animateSnow();
-        // this.animateSnow()
-    //     if (this.iconId === sun) {
-    //         this.renderSun(250, 250);
-    //     } else if (this.iconId === fewClouds){
-    //         this.renderCloud(300, 250, 'lightgray');
-    //         this.renderSun(250, 180);
-    //         this.renderCloud(100, 200, 'white');
-    //         //this.animateCloud();
-    //     } else if (scatteredClouds.includes(this.iconId)) {
-    //         this.renderCloud(50, 130, '	#dde7ee');
-    //         this.renderCloud(300, 150, '#f0efef');
-    //         this.renderCloud(100, 200, 'white');
-    //         this.animateCloud();
-    //     } else if (rain.includes(this.iconId)) {
-    //         this.animateRain();
-    //     } else if (THUNDER_ICON.includess(this.iconId)) {
-    //         this.animateThunder();
-    //     } else {
-    //         this.animateSnow();
-    //     }
-    //     let color = '#555555'
-    //     if (this.iconId[2] === 'n')  color = 'white'
-    //     this.renderTime(color);  
+        // this.animateThunder();
+        //this.animateCloud();
+        //this.animateSnow()
+        //this.animateRain()
+        if (this.iconId === sun) {
+            this.renderSun(250, 250);
+        } else if (this.iconId === fewClouds){
+            this.renderCloud(300, 250, 'lightgray');
+            this.renderSun(250, 180);
+            this.renderCloud(100, 200, 'white');
+            this.animateCloud();
+            //this.animateCloud();
+        } else if (scatteredClouds.includes(this.iconId)) {
+            this.renderCloud(50, 130, '	#dde7ee');
+            this.renderCloud(300, 150, '#f0efef');
+            this.renderCloud(100, 200, 'white');
+            this.animateCloud();
+        } else if (rain.includes(this.iconId)) {
+            this.animateRain();
+        } else if (THUNDER_ICON.includes(this.iconId)) {
+            this.animateThunder();
+        } else if (SNOW_ICON.includes(this.iconId)) {
+            this.animateSnow();
+        }
+
+        let color = '#555555'
+        if (this.iconId[2] === 'n')  color = 'white'
+        this.renderTime(color);  
     }
 
     animateRain() {    
-        this.w_objects.forEach((rain) => {
+        this.rains.forEach((rain) => {
             
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
@@ -174,58 +199,59 @@ export default class Weather {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
             const w = Math.random() * 5;
-            this.w_objects.push(new Rain(x, y, w, "blue", this.c, this.canvas))
+            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
         }
         this.renderTime();  
     }
 
     animateCloud() {
         const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray']
-        this.w_objects.forEach((cloud) => {
+        this.renderHeavyClouds();
+        this.clouds.forEach((cloud) => {
             cloud.update();
         })
         this.ticker++;
-        
-        if (this.ticker % 800 === 0) {
+        if (this.ticker % 250 === 0) {
             const rand_num = Math.floor(Math.random() * 7)
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
-            const velocity = ((Math.random() * 40) + 5) * 1/100;
-            this.w_objects.push(new Cloud(x, y, CLOUD_COLOR[rand_num],velocity, this.c, this.canvas));
+            const velocity = Math.floor((Math.random() * 40) + 5) * 1/100;
+            console.log(CLOUD_COLOR[rand_num])
+            console.log(velocity)
+            this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num],velocity, this.c, this.canvas));
         }
         this.renderTime();  
     }
 
     animateThunder() {
-        this.w_objects.forEach((thunder) => {
+        this.thunders.forEach((thunder) => {
             thunder.update();
         });
 
         this.renderHeavyClouds();
         this.ticker++;
-
-        if (this.ticker % 120 === 0) {
+        if (this.ticker % 100 === 0) {
             const x = Math.random() * (400 - 100) + 100;
             const y = 150;
-            const w = Math.random() * 5;
-            this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
+            this.thunders.push(new Thunder(x, y, this.c, this.canvas));
         }
         this.renderTime();  
+    
 
     }
     
     animateSnow() {
-        this.w_objects.forEach((snow) => {
+        this.snows.forEach((snow) => {
             snow.update();
         });
 
         this.renderHeavyClouds();
         this.ticker++;
 
-        if (this.ticker % 50 === 0) {
+        if (this.ticker % 100 === 0) {
             const x = Math.random() * (380 - 100) + 100;
             const y = 150;
-            this.w_objects.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
+            this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
         }
     }
 
@@ -279,8 +305,8 @@ export default class Weather {
         this.c.closePath();
         this.c.fillStyle = color;
         this.c.fill();
-        this.c.lineWidth = 5;
-        this.c.strokeStyle = color;
+        this.c.lineWidth = 1;
+        this.c.strokeStyle = 'gray';
         this.c.stroke();
     }
 

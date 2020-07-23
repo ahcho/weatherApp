@@ -1,14 +1,14 @@
 export default class Snow {
-    constructor(x, y,radius, y_velocity, color, c, canvas) {
-        this.c = c
-        this.canvas = canvas
+    constructor(x, y,radius, color, c, canvas) {
         this.x = x
         this.y = y
+        this.c = c
+        this.canvas = canvas
         this.radius = radius 
         this.color = color
         this.velocity = {
             x: 0,
-            y: y_velocity
+            y: 1
         }
         this.gravity = 0.01
         this.opacity = 1
