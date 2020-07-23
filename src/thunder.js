@@ -57,7 +57,9 @@ export default class Thunder {
   // call draw function
   update() {
     if (this.y > this.canvas.height) {
+      this.velocity.y = 0.1; 
       this.y = 150;
+      this.size = 1;
     } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
       this.size = 1.5;
       if (this.flag){

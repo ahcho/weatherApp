@@ -31,6 +31,7 @@ export default class Weather {
     }
 
     getData() {
+        debugger;
         return fetch(this.api)
             .then(res => {
                 return res.json()
@@ -214,7 +215,7 @@ export default class Weather {
 
         this.ticker++;
    
-        if (this.ticker % 80 === 0 && this.rains.length <= 20) {
+        if (this.ticker % 80 === 0 && this.rains.length < 20) {
             const x = (Math.random() * 490)  + 30;
             const y = 150;
             const w = Math.random() * 5;

@@ -285,6 +285,7 @@ var Weather = /*#__PURE__*/function () {
     value: function getData() {
       var _this = this;
 
+      debugger;
       return fetch(this.api).then(function (res) {
         return res.json();
       }).then(function (data) {
@@ -481,7 +482,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.ticker % 80 === 0 && this.rains.length <= 20) {
+      if (this.ticker % 80 === 0 && this.rains.length < 20) {
         var x = Math.random() * 490 + 30;
         var y = 150;
         var w = Math.random() * 5;
@@ -829,19 +830,13 @@ var Rain = /*#__PURE__*/function () {
 
       if (this.y + this.velocity.y + 20 > this.canvas.height) {
         this.shatter();
+        this.velocity.y = 1;
         this.y = 150;
       } else {
         this.velocity.y += this.gravity;
       }
 
       this.y += this.velocity.y;
-    }
-  }, {
-    key: "addThunder",
-    value: function addThunder() {
-      var x = 50;
-      var startY = 100;
-      this.thunders.push(new Thunder(x, startY, this.c));
     }
   }, {
     key: "shatter",
@@ -1292,7 +1287,9 @@ var Thunder = /*#__PURE__*/function () {
     key: "update",
     value: function update() {
       if (this.y > this.canvas.height) {
+        this.velocity.y = 0.1;
         this.y = 150;
+        this.size = 1;
       } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
         this.size = 1.5;
 

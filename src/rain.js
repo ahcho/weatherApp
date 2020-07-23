@@ -39,17 +39,12 @@ export default class Rain {
         //when rain hits bottom of screen
         if (this.y + this.velocity.y + 20 > this.canvas.height) {
             this.shatter();
+            this.velocity.y = 1;
             this.y = 150;
         } else {
             this.velocity.y += this.gravity;
         }
         this.y += this.velocity.y;
-    }
-
-    addThunder() {
-        const x = 50;
-        const startY = 100;
-        this.thunders.push(new Thunder(x, startY, this.c))
     }
 
     shatter() {
