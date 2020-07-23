@@ -22,12 +22,10 @@ export default class Weather {
         this.starSection = document.querySelector('.fa-star');
         this.thunderSection = document.querySelector('.fa-bolt');
         this.stars = [];
-        //this.w_objects = [];
         this.clouds = [];
         this.thunders = [];
         this.rains = [];
         this.snows = [];
-        // push(new Thunder(x, y, this.c, this.canvas));
         this.ticker = 0;
         this.counter = 0;
     }
@@ -176,7 +174,6 @@ export default class Weather {
             this.renderSun(250, 180);
             this.renderCloud(100, 200, 'white');
             this.animateCloud();
-            //this.animateCloud();
         } else if (scatteredClouds.includes(this.iconId)) {
             this.renderHeavyClouds();
             this.animateCloud();

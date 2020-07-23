@@ -269,13 +269,11 @@ var Weather = /*#__PURE__*/function () {
     this.snowSection = document.querySelector('.fa-asterisk');
     this.starSection = document.querySelector('.fa-star');
     this.thunderSection = document.querySelector('.fa-bolt');
-    this.stars = []; //this.w_objects = [];
-
+    this.stars = [];
     this.clouds = [];
     this.thunders = [];
     this.rains = [];
-    this.snows = []; // push(new Thunder(x, y, this.c, this.canvas));
-
+    this.snows = [];
     this.ticker = 0;
     this.counter = 0;
   }
@@ -444,7 +442,7 @@ var Weather = /*#__PURE__*/function () {
         this.renderCloud(300, 250, 'lightgray');
         this.renderSun(250, 180);
         this.renderCloud(100, 200, 'white');
-        this.animateCloud(); //this.animateCloud();
+        this.animateCloud();
       } else if (scatteredClouds.includes(this.iconId)) {
         this.renderHeavyClouds();
         this.animateCloud();
