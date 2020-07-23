@@ -7,9 +7,9 @@ export default class Thunder {
     this.canvas = canvas;
     this.velocity = {
       x: 0,
-      y: 0.005,
+      y: 0.1,
     };
-    this.gravity = 0.001;
+    this.gravity = 0.01;
     this.size = 1;
     this.color = 'yellow'
     this.flag = true;

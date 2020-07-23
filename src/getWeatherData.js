@@ -27,11 +27,7 @@ export default class Weather {
         this.thunders = [];
         this.rains = [];
         this.snows = [];
-        
-        // const x = Math.random() * (400 - 100) + 100;
-        // const y = 150;
-        // const w = Math.random() * 5;
-        // this.w_thunders.push(new Thunder(x, y, this.c, this.canvas));
+        push(new Thunder(x, y, this.c, this.canvas));
         this.ticker = 0;
         this.counter = 0;
     }
@@ -63,11 +59,31 @@ export default class Weather {
     listenClick() {
         this.stars = [];
         
-        this.cloudSection.addEventListener('click', () => { this.iconId = '03d'})
-        this.rainSection.addEventListener('click', () => { this.iconId = '09d' })
-        this.snowSection.addEventListener('click', () => { this.iconId = '13d' })
-        this.starSection.addEventListener('click', () => { this.iconId = '01n' })
-        this.thunderSection.addEventListener('click', () => { this.iconId = '11d' })
+        this.cloudSection.addEventListener('click', () => { 
+            this.thunders = [];
+            this.rains = [];
+            this.snows = [];
+            this.iconId = '03d'})
+        this.rainSection.addEventListener('click', () => { 
+            this.thunders = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '09d' })
+        this.snowSection.addEventListener('click', () => { 
+            this.thunders = [];
+            this.clouds = [];
+            this.rains = [];
+            this.iconId = '13d' })
+        this.starSection.addEventListener('click', () => { 
+            this.thunders = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '01n' })
+        this.thunderSection.addEventListener('click', () => { 
+            this.rains = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '11d' })
     }
 
     changeMetric(temperature) {
@@ -162,9 +178,7 @@ export default class Weather {
             this.animateCloud();
             //this.animateCloud();
         } else if (scatteredClouds.includes(this.iconId)) {
-            this.renderCloud(50, 130, '	#dde7ee');
-            this.renderCloud(300, 150, '#f0efef');
-            this.renderCloud(100, 200, 'white');
+            this.renderHeavyClouds();
             this.animateCloud();
         } else if (rain.includes(this.iconId)) {
             this.animateRain();
@@ -179,14 +193,17 @@ export default class Weather {
         this.renderTime(color);  
     }
 
-    animateRain() {    
+    animateRain() {
+
         this.rains.forEach((rain) => {
             
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
+             
                 if (miniRain.ttl === 0) {
                     rain.miniRains.splice(index, 1)// get rid of mini rain
+                    
                 }
             })
             
