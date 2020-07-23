@@ -27,9 +27,9 @@ shatter() {
     }
 ```
 
-When thunder hits the bottom of the canvas, it will get larger.
-I made two draw thunder method one for a regular size and the other for
-larger size. In order to run function drawBigThunder, a flag is used. 
+When thunder hits the bottom of the canvas, it gets larger.
+I made two draw thunder methods, one for a regular size and the other for
+a larger size. In order to run function drawBigThunder, a flag is used. 
 ```js
 update() {
      if (this.y + this.velocity.y + 45 > this.canvas.height) {
