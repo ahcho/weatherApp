@@ -158,7 +158,9 @@ export default class Weather {
           ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
   
         if (this.iconId[2] === 'n') {
-            this.createStars(this.canvas.width, this.canvas.height, 30);
+            if (this.stars.length === 0 ) {
+                this.createStars(this.canvas.width, this.canvas.height, 30);
+            }
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
@@ -174,7 +176,6 @@ export default class Weather {
             this.renderCloud(100, 200, 'white');
             this.animateCloud();
         } else if (scatteredClouds.includes(this.iconId)) {
-            //debugger;
             this.renderHeavyClouds();
             this.animateCloud();
         } else if (rain.includes(this.iconId)) {
@@ -209,12 +210,12 @@ export default class Weather {
             })
             
         });
-        // this.renderHeavyClouds();
+        
 
         this.ticker++;
    
         if (this.ticker % 80 === 0 && this.rains.length <= 20) {
-            const x = (Math.random() * 490)  + 70;
+            const x = (Math.random() * 490)  + 30;
             const y = 150;
             const w = Math.random() * 5;
             this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
@@ -223,7 +224,6 @@ export default class Weather {
     }
 
     animateCloud() {
-        //debugger;
         const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray']
         this.clouds.forEach((cloud) => {
             cloud.update();
@@ -263,7 +263,7 @@ export default class Weather {
         this.ticker++;
         
         if (this.ticker % 100 === 0 && this.snows.length <= 20) {
-            const x = (Math.random() * 490) + 50;
+            const x = (Math.random() * 480) + 50;
             const y = 150;
             this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
         }
@@ -343,8 +343,7 @@ export default class Weather {
                 const star = new Star(dx, dy, r, this.c, this.canvas);
                 this.stars.push(star);
             }
-        }
-  
+        } 
     }
 
     animateNightSky() {

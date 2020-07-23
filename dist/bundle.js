@@ -429,7 +429,10 @@ var Weather = /*#__PURE__*/function () {
       var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
 
       if (this.iconId[2] === 'n') {
-        this.createStars(this.canvas.width, this.canvas.height, 30);
+        if (this.stars.length === 0) {
+          this.createStars(this.canvas.width, this.canvas.height, 30);
+        }
+
         this.animateNightSky();
         this.renderCloud(300, 150, 'lightgray');
       } // this.animateThunder();
@@ -446,7 +449,6 @@ var Weather = /*#__PURE__*/function () {
         this.renderCloud(100, 200, 'white');
         this.animateCloud();
       } else if (scatteredClouds.includes(this.iconId)) {
-        //debugger;
         this.renderHeavyClouds();
         this.animateCloud();
       } else if (rain.includes(this.iconId)) {
@@ -476,12 +478,11 @@ var Weather = /*#__PURE__*/function () {
             rain.miniRains.splice(index, 1); // get rid of mini rain
           }
         });
-      }); // this.renderHeavyClouds();
-
+      });
       this.ticker++;
 
       if (this.ticker % 80 === 0 && this.rains.length <= 20) {
-        var x = Math.random() * 490 + 70;
+        var x = Math.random() * 490 + 30;
         var y = 150;
         var w = Math.random() * 5;
         this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
@@ -492,7 +493,6 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateCloud",
     value: function animateCloud() {
-      //debugger;
       var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray'];
       this.clouds.forEach(function (cloud) {
         cloud.update();
@@ -534,7 +534,7 @@ var Weather = /*#__PURE__*/function () {
       this.ticker++;
 
       if (this.ticker % 100 === 0 && this.snows.length <= 20) {
-        var x = Math.random() * 490 + 50;
+        var x = Math.random() * 480 + 50;
         var y = 150;
         this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
