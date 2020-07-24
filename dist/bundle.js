@@ -235,7 +235,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
 /* harmony import */ var _rain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rain */ "./src/rain.js");
 /* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sun */ "./src/sun.js");
-/* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_sun__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _snow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./snow */ "./src/snow.js");
 /* harmony import */ var _night__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./night */ "./src/night.js");
 /* harmony import */ var _thunder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./thunder */ "./src/thunder.js");
@@ -397,8 +396,7 @@ var Weather = /*#__PURE__*/function () {
 
         this.c.fillStyle = _backgroundGradient;
         this.c.fillRect(0, 0, 500, 600);
-      } // this.listenClick();
-
+      }
 
       this.renderAnimation(this.iconId);
       requestAnimationFrame(this.renderCanvasBackground.bind(this));
@@ -435,11 +433,7 @@ var Weather = /*#__PURE__*/function () {
 
         this.animateNightSky();
         this.renderCloud(300, 150, 'lightgray');
-      } // this.animateThunder();
-      //this.animateCloud();
-      //this.animateSnow()
-      //this.animateRain()
-
+      }
 
       if (this.iconId === sun) {
         this.renderSun(250, 250);
@@ -465,6 +459,37 @@ var Weather = /*#__PURE__*/function () {
       var color = '#555555';
       if (this.iconId[2] === 'n') color = 'white';
       this.renderTime(color);
+    }
+  }, {
+    key: "animateSun",
+    value: function animateSun() {
+      //this.degree = 22.5;
+      this.degree = 0;
+      this.x = 250;
+      this.y = 250;
+      this.radius = 50;
+      this.sAngle = 0;
+      this.eAngle = Math.PI * 2;
+      this.len = 30;
+      this.c.beginPath();
+      this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
+      this.c.fillStyle = '#FDB813';
+      this.c.fill();
+
+      for (var i = 0; i < 8; i++) {
+        this.c.beginPath();
+        this.c.lineCap = 'round';
+        var x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
+        var y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
+        this.c.moveTo(x, y);
+        this.c.lineTo(x + this.len * Math.cos(Math.PI * this.degree / 180), y - this.len * Math.sin(Math.PI * this.degree / 180));
+        this.c.lineWidth = 9;
+        this.c.strokeStyle = '#FDB813';
+        this.c.stroke();
+        this.degree += 45;
+      }
+
+      this.c.closePath();
     }
   }, {
     key: "animateRain",
@@ -692,7 +717,6 @@ function success(position) {
   var lat = position.coords.latitude;
   var api = "https://api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&lon=").concat(lon, "&units=imperial&appid=").concat(API_KEY);
   var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
-  console.log(api);
   weather.getData().then(function () {
     return weather.renderCanvasBackground();
   });
@@ -705,7 +729,6 @@ function error(err) {
   canvas.height = 600;
   errorMsg(c); // const api =
   //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
-  //   console.log(api);
   // const weather = new Weather(api, c, canvas);
   // weather.renderCanvasBackground();
 }
@@ -1010,30 +1033,19 @@ var Snow = /*#__PURE__*/function () {
 /*!********************!*\
   !*** ./src/sun.js ***!
   \********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Sun; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// addEventListener('click', (event) => {
-//     mouse.x = event.clientX
-//     mouse.y = event.clientY
-// })
-// addEventListener('resize', () => {
-//     canvas.width = 500
-//     canvas.height = 600
-//     init()
-// })
-function randomIntFromRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 var Sun = /*#__PURE__*/function () {
-  // constructor(x, y, radius, color) {
   function Sun(c) {
     _classCallCheck(this, Sun);
 
@@ -1044,9 +1056,6 @@ var Sun = /*#__PURE__*/function () {
     this.sAngle = 0;
     this.eAngle = Math.PI * 2;
     this.color = '#FDB813';
-    this.radians = 0;
-    this.velocity = 0.001; // speed of bar
-
     this.degree = 0;
     this.len = 30;
   }
@@ -1054,14 +1063,13 @@ var Sun = /*#__PURE__*/function () {
   _createClass(Sun, [{
     key: "draw",
     value: function draw() {
-      //main sun
-      this.c.beginPath();
-      this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
-      this.c.fillStyle = this.color;
-      this.c.fill();
+      var len = 30; //main sun
+      // this.c.beginPath();
+      // this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
+      // this.c.fillStyle = this.color;
+      // this.c.fill();
 
       for (var i = 0; i < 8; i++) {
-        var len = 30;
         this.c.beginPath();
         this.c.lineCap = 'round';
         var x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
@@ -1077,144 +1085,15 @@ var Sun = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function update() {
-      //move points over time
-      this.radians += this.velocity;
-      this.x = this.x + Math.cos(this.radians); //* 100;
-
-      this.y = this.y + Math.sin(this.radians); //* 100;
-
       this.draw();
+      this.degree = 22.5;
     }
   }]);
 
   return Sun;
-}(); ////////////////
-
-
-var Particle = /*#__PURE__*/function () {
-  function Particle(x, y, radius, color) {
-    _classCallCheck(this, Particle);
-
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.color = color;
-    this.radians = Math.random() * Math.PI * 2;
-    this.velocity = 0.02; // speed of particle
-
-    this.distanceFromCenter = randomIntFromRange(50, 120);
-  }
-
-  _createClass(Particle, [{
-    key: "draw",
-    value: function draw(startPoint) {
-      c.beginPath();
-      c.strokeStyle = this.color;
-      c.lineWidth = this.radius;
-      c.moveTo(startPoint.x, startPoint.y);
-      c.lineTo(this.x, this.y);
-      c.stroke(); // c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-      // c.fillStyle = this.color
-      // c.fill()
-
-      c.closePath();
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var lastPoint = {
-        x: this.x,
-        y: this.y
-      }; // move points over time
-
-      var x = canvas.width / 2;
-      var y = canvas.height / 2;
-      this.radians += this.velocity;
-      this.x = x + Math.cos(this.radians) * this.distanceFromCenter;
-      this.y = y + Math.sin(this.radians) * this.distanceFromCenter;
-      this.draw(lastPoint);
-    }
-  }]);
-
-  return Particle;
-}(); //////////////////////
-
-
-var Bar = /*#__PURE__*/function () {
-  function Bar(x, y, degree) {
-    _classCallCheck(this, Bar);
-
-    this.x = 250;
-    this.y = 250;
-    this.len = 30;
-    this.div = 180;
-    var len = 30;
-    this.radians = 0;
-    this.velocity = 0.05; // speed of bar
-
-    this.degree = degree;
-  }
-
-  _createClass(Bar, [{
-    key: "draw",
-    value: function draw() {
-      var len = 30;
-      c.beginPath();
-      c.lineCap = 'round';
-      var x = this.x + Math.cos(Math.PI * this.degree / 180) * 65;
-      var y = this.y - Math.sin(Math.PI * this.degree / 180) * 65;
-      c.moveTo(x, y);
-      c.lineTo(x + this.len * Math.cos(Math.PI * this.degree / 180), y - this.len * Math.sin(Math.PI * this.degree / 180));
-      c.lineWidth = 9;
-      c.strokeStyle = '#FDB813';
-      c.stroke();
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      this.radians += this.velocity;
-      this.x = this.x + Math.cos(this.radians) * 30;
-      this.y = this.y + Math.sin(this.radians) * 30;
-      this.draw();
-    }
-  }]);
-
-  return Bar;
 }();
 
-var particles = [];
 
-function init() {
-  // const backgroundGradient = c.createLinearGradient(0, 0, 0, canvas.height)
-  // backgroundGradient.addColorStop(0, '#171e26')
-  // backgroundGradient.addColorStop(1, '#3f586b')
-  var sun = new Sun();
-  sun.update();
-  particles = [];
-  var colors = ["#FCB033", "#FFE469", "#FECC51", "#FA8607", "#FA961B"];
-
-  for (var i = 0; i < 200; i++) {
-    var rand = Math.floor(Math.random() * colors.length);
-    var radius = Math.ceil(Math.random() * 2);
-    particles.push(new Particle(canvas.width / 2, canvas.height / 2, radius, colors[rand]));
-  }
-}
-
-function animate() {
-  requestAnimationFrame(animate); // const backgroundGradient = c.createLinearGradient(0, 0, 0, canvas.height)
-  // backgroundGradient.addColorStop(0, '#171e26')
-  // backgroundGradient.addColorStop(1, '#3f586b')
-
-  c.clearRect(0, 0, canvas.width, canvas.height); // c.fillStyle = backgroundGradient;
-  // c.fillRect(0, 0, canvas.width, canvas.height)
-  // bars.forEach(bar => {
-  //     bar.update()
-  // })
-
-  var sun = new Sun();
-  sun.update();
-} // init()
-// animate()
 
 /***/ }),
 

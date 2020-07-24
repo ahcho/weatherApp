@@ -12,7 +12,6 @@ function success(position){
     const lat = position.coords.latitude;
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`;
     const weather = new Weather(api, c, canvas);
-    console.log(api)
     weather.getData().then(()=>     
         weather.renderCanvasBackground())
 }
@@ -25,7 +24,6 @@ function error(err) {
     errorMsg(c);
     // const api =
     //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
-    //   console.log(api);
 
     // const weather = new Weather(api, c, canvas);
     // weather.renderCanvasBackground();

@@ -129,7 +129,7 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
-        // this.listenClick();
+  
         this.renderAnimation(this.iconId);  
         requestAnimationFrame(this.renderCanvasBackground.bind(this))     
     }
@@ -164,10 +164,6 @@ export default class Weather {
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
-        // this.animateThunder();
-        //this.animateCloud();
-        //this.animateSnow()
-        //this.animateRain()
         if (this.iconId === sun) {
             this.renderSun(250, 250);
         } else if (this.iconId === fewClouds){
@@ -193,6 +189,39 @@ export default class Weather {
         let color = '#555555'
         if (this.iconId[2] === 'n')  color = 'white'
         this.renderTime(color);  
+    }
+
+    animateSun() {
+        //this.degree = 22.5;
+        
+        this.degree = 0;
+        this.x = 250;
+        this.y = 250;
+        this.radius = 50;
+        this.sAngle = 0;
+        this.eAngle = Math.PI * 2;
+        this.len = 30;
+
+        this.c.beginPath();
+        this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
+        this.c.fillStyle = '#FDB813';
+        this.c.fill();
+        
+        for (let i = 0; i < 8; i++) {
+            this.c.beginPath();
+            this.c.lineCap = 'round';
+            const x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
+            const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
+            this.c.moveTo(x, y);
+            this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
+                y - (this.len * Math.sin(Math.PI * this.degree / 180)));
+            this.c.lineWidth = 9;
+            this.c.strokeStyle = '#FDB813';
+            this.c.stroke();
+            this.degree += 45;
+        }
+        
+        this.c.closePath();
     }
 
     animateRain() {
@@ -271,6 +300,7 @@ export default class Weather {
     }
 
     renderSun(x, y) {
+        
         this.degree = 0;
         this.x = x;
         this.y = y;
