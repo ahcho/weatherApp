@@ -361,7 +361,6 @@ var Weather = /*#__PURE__*/function () {
     key: "renderCanvasBackground",
     value: function renderCanvasBackground() {
       var today = new Date();
-      var time = today.getHours();
       this.hour = today.getHours();
       this.minutes = today.getMinutes();
       this.midDay = 'AM';
@@ -518,7 +517,7 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateCloud",
     value: function animateCloud() {
-      var CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray'];
+      var CLOUD_COLOR = ['#dde0f2', '#cadae1', '#d6d9f0', '#ffeef7', '#a99da4', '#dfe8fb', 'lightgrey', 'gray'];
       this.clouds.forEach(function (cloud) {
         cloud.update();
       });
@@ -528,7 +527,7 @@ var Weather = /*#__PURE__*/function () {
         var rand_num = Math.floor(Math.random() * 7);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
-        var velocity = Math.floor(Math.random() * 40 + 5) * 1 / 100;
+        var velocity = Math.floor(Math.random() * 40 + 1) * 1 / 100;
         this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
       }
 
@@ -542,10 +541,16 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.thunders.length === 0 || this.ticker % 100 === 0 && this.thunders.length < 10) {
-        var x = Math.random() * (400 - 100) + 100;
+      if (this.ticker % 100 === 0 && this.thunders.length < 10) {
+        var x = Math.random() * (450 - 100) + 100;
         var y = 150;
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
+      }
+
+      if (this.thunders.length === 0) {
+        var startX = 60;
+        var startY = 170;
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](startX, startY, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -1123,9 +1128,9 @@ var Thunder = /*#__PURE__*/function () {
     this.canvas = canvas;
     this.velocity = {
       x: 0,
-      y: 0.1
+      y: 0.01
     };
-    this.gravity = 0.01;
+    this.gravity = 0.001;
     this.size = 1;
     this.color = 'yellow';
     this.flag = true;

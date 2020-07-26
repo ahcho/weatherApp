@@ -99,7 +99,6 @@ export default class Weather {
 
     renderCanvasBackground() {
         const today = new Date();
-        const time = today.getHours();
         this.hour = today.getHours();
         this.minutes = today.getMinutes();
         this.midDay = 'AM';
@@ -251,16 +250,16 @@ export default class Weather {
     }
 
     animateCloud() {
-        const CLOUD_COLOR = ['white', 'white', '#f0efef', '#ffeef7', '#efebf9', '#dfe8fb', 'lightgrey', 'gray']
+        const CLOUD_COLOR = ['#dde0f2', '#cadae1', '#d6d9f0', '#ffeef7', '#a99da4', '#dfe8fb', 'lightgrey', 'gray']
         this.clouds.forEach((cloud) => {
             cloud.update();
         })
         this.ticker++;
         if (this.clouds.length === 0 || (this.ticker % 250 === 0 && this.clouds.length <= 10)) {
-            const rand_num = Math.floor(Math.random() * 7)
+            const rand_num = Math.floor(Math.random() * 7);
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
-            const velocity = Math.floor((Math.random() * 40) + 5) * 1/100;
+            const velocity = Math.floor((Math.random() * 40) + 1) * 1/100;
             this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num],velocity, this.c, this.canvas));
         }
         this.renderTime();  
@@ -268,14 +267,22 @@ export default class Weather {
 
     animateThunder() {
         this.thunders.forEach((thunder) => {
+            
             thunder.update();
         });
 
         this.ticker++;
-        if (this.thunders.length === 0 || (this.ticker % 100 === 0 && this.thunders.length < 10)) {
-            const x = Math.random() * (400 - 100) + 100;
+        if (this.ticker % 100 === 0 && this.thunders.length < 10) {
+            const x = Math.random() * (450 - 100) + 100;
             const y = 150;
             this.thunders.push(new Thunder(x, y, this.c, this.canvas));
+        }
+
+        if (this.thunders.length === 0) {
+            const startX = 60;
+            const startY = 170
+
+            this.thunders.push(new Thunder(startX, startY, this.c, this.canvas));
         }
         this.renderTime();  
     
