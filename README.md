@@ -6,6 +6,8 @@ My first weather is for young smartphone users.
 It shows the current weather of the user's location with animated Sun, clouds, rain, thunder or snow that the user can interact with. 
 This will help middle schoolers or even younger users to build a habit of checking daily weather and plan for their day.
 
+This app doesn't collect user's personal data.
+
 ## Instruction
 Once the user allows the application to use their location, it will show
 time, weather of the user's current location. In the bottom half of the application shows a weather animation. When a weather icon on top right is selected,

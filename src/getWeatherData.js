@@ -16,15 +16,16 @@ export default class Weather {
         this.degreeSection = document.querySelector('.weather-info-bottom');
         this.degreeSpan = document.querySelector('.weather-info-bottom span');
         this.iconSection = document.getElementById('temp-icon');
-        this.w_objectsection = document.querySelector('.fa-cloud');
+        this.cloudSection = document.querySelector('.fa-cloud');
         this.rainSection = document.querySelector('.fa-tint');
         this.snowSection = document.querySelector('.fa-asterisk');
         this.starSection = document.querySelector('.fa-star');
         this.thunderSection = document.querySelector('.fa-bolt');
         this.stars = [];
-
-
-        this.w_objects = [];
+        this.clouds = [];
+        this.thunders = [];
+        this.rains = [];
+        this.snows = [];
         this.ticker = 0;
         this.counter = 0;
     }
@@ -47,31 +48,45 @@ export default class Weather {
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
-                this.changeMetric(temperature);    
+                this.changeMetric(temperature);
                 this.listenClick();
             })
-            
+
     }
 
     listenClick() {
         this.stars = [];
-        
-        this.w_objectsection.addEventListener('click', () => { 
-            this.w_objects = [];
-            this.iconId = '03d'})
-        this.rainSection.addEventListener('click', () => { 
-            this.w_objects = [];
-            this.iconId = '09d' })
-        this.snowSection.addEventListener('click', () => { 
-            this.w_objects = [];
-            this.iconId = '13d' })
-        this.starSection.addEventListener('click', () => { 
-            this.w_objects = [];
-            this.iconId = '01n' })
-        this.thunderSection.addEventListener('click', () => { 
-            this.w_objects = [];
-            this.iconId = '11d' })
 
+        this.cloudSection.addEventListener('click', () => {
+            this.thunders = [];
+            this.rains = [];
+            this.snows = [];
+            this.iconId = '03d'
+        })
+        this.rainSection.addEventListener('click', () => {
+            this.thunders = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '09d'
+        })
+        this.snowSection.addEventListener('click', () => {
+            this.thunders = [];
+            this.clouds = [];
+            this.rains = [];
+            this.iconId = '13d'
+        })
+        this.starSection.addEventListener('click', () => {
+            this.thunders = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '01n'
+        })
+        this.thunderSection.addEventListener('click', () => {
+            this.rains = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '11d'
+        })
     }
 
     changeMetric(temperature) {
@@ -92,7 +107,7 @@ export default class Weather {
         this.hour = today.getHours();
         this.minutes = today.getMinutes();
         this.midDay = 'AM';
-        
+
         if (this.hour >= 12) {
             this.midDay = 'PM'
             if (this.hour > 12) this.hour -= 12;
@@ -103,9 +118,9 @@ export default class Weather {
         if (this.minutes < 10) {
             this.minutes = `0${this.minutes}`
         }
-        
+
         this.c.beginPath();
-        if(this.iconId[2]==='d'){
+        if (this.iconId[2] === 'd') {
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
             backgroundGradient.addColorStop(1, '#B7F8DB')
             backgroundGradient.addColorStop(0, '#50A7C2')
@@ -118,22 +133,22 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
-  
-        this.renderAnimation(this.iconId);  
-        requestAnimationFrame(this.renderCanvasBackground.bind(this))     
+
+        this.renderAnimation(this.iconId);
+        requestAnimationFrame(this.renderCanvasBackground.bind(this))
     }
 
     renderTime() {
         let color = '#555555'
-        if (this.iconId[2] === 'n')  color = 'white'
+        if (this.iconId[2] === 'n') color = 'white'
         this.c.beginPath()
         this.c.font = '50px Cinzel'
         this.c.fillStyle = color;
         this.c.fillText(`${this.hour}:${this.minutes}`, 190, 60);
         this.c.font = '20px Cinzel'
         this.c.fillText(this.midDay, 310, 40)
-        this.c.fill();   
-        this.c.closePath();   
+        this.c.fill();
+        this.c.closePath();
     }
 
     renderAnimation() {
@@ -144,10 +159,10 @@ export default class Weather {
         const rain = ['09d', '10d', '09n', '10n']
         const SNOW_ICON = ['13d', '50d', '13n', '50n']
         const night =
-          ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"] 
-  
+            ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]
+
         if (this.iconId[2] === 'n') {
-            if (this.stars.length === 0 ) {
+            if (this.stars.length === 0) {
                 this.createStars(this.canvas.width, this.canvas.height, 30);
             }
             this.animateNightSky();
@@ -155,7 +170,7 @@ export default class Weather {
         }
         if (this.iconId === sun) {
             this.renderSun(250, 250);
-        } else if (this.iconId === fewClouds){
+        } else if (this.iconId === fewClouds) {
             this.renderCloud(300, 250, 'lightgray');
             this.renderSun(250, 180);
             this.renderCloud(100, 200, 'white');
@@ -170,19 +185,19 @@ export default class Weather {
             this.animateThunder();
             this.renderHeavyClouds();
         } else if (SNOW_ICON.includes(this.iconId)) {
-            this.animateSnow(); 
+            this.animateSnow();
             this.renderHeavyClouds();
-            
+
         }
 
         let color = '#555555'
-        if (this.iconId[2] === 'n')  color = 'white'
-        this.renderTime(color);  
+        if (this.iconId[2] === 'n') color = 'white'
+        this.renderTime(color);
     }
 
     animateSun() {
         //this.degree = 22.5;
-        
+
         this.degree = 0;
         this.x = 250;
         this.y = 250;
@@ -195,7 +210,7 @@ export default class Weather {
         this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
         this.c.fillStyle = '#FDB813';
         this.c.fill();
-        
+
         for (let i = 0; i < 8; i++) {
             this.c.beginPath();
             this.c.lineCap = 'round';
@@ -209,95 +224,95 @@ export default class Weather {
             this.c.stroke();
             this.degree += 45;
         }
-        
+
         this.c.closePath();
     }
 
     animateRain() {
 
-        this.w_objects.forEach((rain) => {
-            
+        this.rains.forEach((rain) => {
+
             rain.update();
             rain.miniRains.forEach((miniRain, index) => {
                 miniRain.update();
-             
+
                 if (miniRain.ttl === 0) {
                     rain.miniRains.splice(index, 1)// get rid of mini rain    
                 }
-            })    
+            })
         });
-        
+
 
         this.ticker++;
-        if (this.w_objects.length === 0 || (this.ticker % 80 === 0 && this.w_objects.length < 20)) {
+
+        if (this.rains.length === 0 || (this.ticker % 80 === 0 && this.rains.length < 20)) {
             const x = (Math.random() * 490) + 30;
             const y = 150;
             const w = Math.random() * 5;
-            this.w_objects.push(new Rain(x, y, w, "blue", this.c, this.canvas))
+            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
         }
-        this.renderTime();  
+        this.renderTime();
     }
 
     animateCloud() {
         const CLOUD_COLOR = ['#dde0f2', '#cadae1', '#d6d9f0', '#ffeef7', '#a99da4', '#dfe8fb', 'lightgrey', 'gray']
-        this.w_objects.forEach((cloud) => {
+        this.clouds.forEach((cloud) => {
             cloud.update();
         })
         this.ticker++;
-        if (this.w_objects.length === 0 || (this.ticker % 250 === 0 && this.w_objects.length <= 10)) {
+        if (this.clouds.length === 0 || (this.ticker % 250 === 0 && this.clouds.length <= 10)) {
             const rand_num = Math.floor(Math.random() * 7);
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
-            const velocity = Math.floor((Math.random() * 40) + 1) * 1/100;
-            this.w_objects.push(new Cloud(x, y, CLOUD_COLOR[rand_num],velocity, this.c, this.canvas));
+            const velocity = Math.floor((Math.random() * 40) + 1) * 1 / 100;
+            this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
         }
-        this.renderTime();  
+        this.renderTime();
     }
 
     animateThunder() {
-        this.w_objects.forEach((thunder) => {
-            
+        this.thunders.forEach((thunder) => {
+
             thunder.update();
         });
 
         this.ticker++;
-
-        if (this.ticker % 100 === 0 && this.w_objects.length < 10) {
+        if (this.ticker % 100 === 0 && this.thunders.length < 10) {
             const x = Math.random() * (450 - 100) + 100;
             const y = 150;
-            this.w_objects.push(new Thunder(x, y, this.c, this.canvas));
+            this.thunders.push(new Thunder(x, y, this.c, this.canvas));
         }
 
-        if (this.w_objects.length === 0) {
+        if (this.thunders.length === 0) {
             const startX = 60;
             const startY = 170
 
-            this.w_objects.push(new Thunder(startX, startY, this.c, this.canvas));
+            this.thunders.push(new Thunder(startX, startY, this.c, this.canvas));
         }
-        
-        this.renderTime();  
-    
+        this.renderTime();
+
 
     }
-    
+
     animateSnow() {
-        
-        this.w_objects.forEach((snow) => {
+
+        this.snows.forEach((snow) => {
             snow.update();
         });
-        
+
         this.ticker++;
 
-        if (this.w_objects.length === 0 || (this.ticker % 100 === 0 && this.w_objects.length <= 20)) {
+        if (this.snows.length === 0 || (this.ticker % 100 === 0 && this.snows.length <= 20)) {
             const x = (Math.random() * 480) + 50;
             const y = 150;
-            this.w_objects.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
+            this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
         }
+
 
     }
 
     renderSun(x, y) {
-        
+
         this.degree = 0;
         this.x = x;
         this.y = y;
@@ -311,7 +326,7 @@ export default class Weather {
         this.c.fillStyle = '#FDB813';
         this.c.fill();
 
-        if (y === 250){
+        if (y === 250) {
             for (let i = 0; i < 8; i++) {
                 this.c.beginPath();
                 this.c.lineCap = 'round';
@@ -319,15 +334,15 @@ export default class Weather {
                 const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
                 this.c.moveTo(x, y);
                 this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
-                            y - (this.len * Math.sin(Math.PI * this.degree / 180)));
+                    y - (this.len * Math.sin(Math.PI * this.degree / 180)));
                 this.c.lineWidth = 9;
                 this.c.strokeStyle = '#FDB813';
                 this.c.stroke();
                 this.degree += 45;
-            }   
+            }
         }
         this.c.closePath();
-   }
+    }
 
     renderHeavyClouds() {
         this.renderCloud(50, 130, '#dde7ee');
@@ -335,7 +350,7 @@ export default class Weather {
         this.renderCloud(100, 200, 'white');
     }
 
-    renderCloud(startX, startY, color) {   
+    renderCloud(startX, startY, color) {
         this.c.beginPath()
         this.c.moveTo(startX, startY);
         this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
@@ -369,29 +384,29 @@ export default class Weather {
                 const star = new Star(dx, dy, r, this.c, this.canvas);
                 this.stars.push(star);
             }
-        } 
+        }
     }
 
     animateNightSky() {
         this.c.fillStyle = 'black';
         this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.stars.forEach((star, i) => {
-            const 
+            const
                 factor = this.counter * i,
                 opacity = star.getOpacity(factor),
                 randomColor = Math.floor((Math.random() * 360) + 1);
             //render stars
             star.renderStar(`hsla(${randomColor}, 30%, 80%, ${opacity})`);
-         });
-       
-        if (['01n', '02n'].includes(this.iconId) ) {
+        });
+
+        if (['01n', '02n'].includes(this.iconId)) {
             this.renderMoon()
-        } else if(['03n', '04n'].includes(this.iconId) ) {
+        } else if (['03n', '04n'].includes(this.iconId)) {
             this.renderCloud(50, 130, '#B4B4B4');
             this.renderCloud(300, 150, 'lightgray');
             this.renderCloud(100, 100, '#909090');
-        } 
-        
+        }
+
         this.counter++;
         this.renderTime('white')
 
@@ -401,14 +416,10 @@ export default class Weather {
     renderMoon() {
         this.c.save()
         this.c.beginPath()
-        this.c.arc(360, 100, 50, 0, Math.PI * 2)    
+        this.c.arc(360, 100, 50, 0, Math.PI * 2)
         this.c.fillStyle = "#f0c420"
         this.c.fill()
         this.c.closePath()
         this.c.restore()
     }
 }
-
-
-
-

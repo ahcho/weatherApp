@@ -265,13 +265,16 @@ var Weather = /*#__PURE__*/function () {
     this.degreeSection = document.querySelector('.weather-info-bottom');
     this.degreeSpan = document.querySelector('.weather-info-bottom span');
     this.iconSection = document.getElementById('temp-icon');
-    this.w_objectsection = document.querySelector('.fa-cloud');
+    this.cloudSection = document.querySelector('.fa-cloud');
     this.rainSection = document.querySelector('.fa-tint');
     this.snowSection = document.querySelector('.fa-asterisk');
     this.starSection = document.querySelector('.fa-star');
     this.thunderSection = document.querySelector('.fa-bolt');
     this.stars = [];
-    this.w_objects = [];
+    this.clouds = [];
+    this.thunders = [];
+    this.rains = [];
+    this.snows = [];
     this.ticker = 0;
     this.counter = 0;
   }
@@ -307,24 +310,34 @@ var Weather = /*#__PURE__*/function () {
       var _this2 = this;
 
       this.stars = [];
-      this.w_objectsection.addEventListener('click', function () {
-        _this2.w_objects = [];
+      this.cloudSection.addEventListener('click', function () {
+        _this2.thunders = [];
+        _this2.rains = [];
+        _this2.snows = [];
         _this2.iconId = '03d';
       });
       this.rainSection.addEventListener('click', function () {
-        _this2.w_objects = [];
+        _this2.thunders = [];
+        _this2.clouds = [];
+        _this2.snows = [];
         _this2.iconId = '09d';
       });
       this.snowSection.addEventListener('click', function () {
-        _this2.w_objects = [];
+        _this2.thunders = [];
+        _this2.clouds = [];
+        _this2.rains = [];
         _this2.iconId = '13d';
       });
       this.starSection.addEventListener('click', function () {
-        _this2.w_objects = [];
+        _this2.thunders = [];
+        _this2.clouds = [];
+        _this2.snows = [];
         _this2.iconId = '01n';
       });
       this.thunderSection.addEventListener('click', function () {
-        _this2.w_objects = [];
+        _this2.rains = [];
+        _this2.clouds = [];
+        _this2.snows = [];
         _this2.iconId = '11d';
       });
     }
@@ -480,7 +493,7 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateRain",
     value: function animateRain() {
-      this.w_objects.forEach(function (rain) {
+      this.rains.forEach(function (rain) {
         rain.update();
         rain.miniRains.forEach(function (miniRain, index) {
           miniRain.update();
@@ -492,11 +505,11 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.w_objects.length === 0 || this.ticker % 80 === 0 && this.w_objects.length < 20) {
+      if (this.rains.length === 0 || this.ticker % 80 === 0 && this.rains.length < 20) {
         var x = Math.random() * 490 + 30;
         var y = 150;
         var w = Math.random() * 5;
-        this.w_objects.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
+        this.rains.push(new _rain__WEBPACK_IMPORTED_MODULE_0__["default"](x, y, w, "blue", this.c, this.canvas));
       }
 
       this.renderTime();
@@ -505,17 +518,17 @@ var Weather = /*#__PURE__*/function () {
     key: "animateCloud",
     value: function animateCloud() {
       var CLOUD_COLOR = ['#dde0f2', '#cadae1', '#d6d9f0', '#ffeef7', '#a99da4', '#dfe8fb', 'lightgrey', 'gray'];
-      this.w_objects.forEach(function (cloud) {
+      this.clouds.forEach(function (cloud) {
         cloud.update();
       });
       this.ticker++;
 
-      if (this.w_objects.length === 0 || this.ticker % 250 === 0 && this.w_objects.length <= 10) {
+      if (this.clouds.length === 0 || this.ticker % 250 === 0 && this.clouds.length <= 10) {
         var rand_num = Math.floor(Math.random() * 7);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
         var velocity = Math.floor(Math.random() * 40 + 1) * 1 / 100;
-        this.w_objects.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
+        this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -523,21 +536,21 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateThunder",
     value: function animateThunder() {
-      this.w_objects.forEach(function (thunder) {
+      this.thunders.forEach(function (thunder) {
         thunder.update();
       });
       this.ticker++;
 
-      if (this.ticker % 100 === 0 && this.w_objects.length < 10) {
+      if (this.ticker % 100 === 0 && this.thunders.length < 10) {
         var x = Math.random() * (450 - 100) + 100;
         var y = 150;
-        this.w_objects.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
       }
 
-      if (this.w_objects.length === 0) {
+      if (this.thunders.length === 0) {
         var startX = 60;
         var startY = 170;
-        this.w_objects.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](startX, startY, this.c, this.canvas));
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](startX, startY, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -545,15 +558,15 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateSnow",
     value: function animateSnow() {
-      this.w_objects.forEach(function (snow) {
+      this.snows.forEach(function (snow) {
         snow.update();
       });
       this.ticker++;
 
-      if (this.w_objects.length === 0 || this.ticker % 100 === 0 && this.w_objects.length <= 20) {
+      if (this.snows.length === 0 || this.ticker % 100 === 0 && this.snows.length <= 20) {
         var x = Math.random() * 480 + 50;
         var y = 150;
-        this.w_objects.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
+        this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
     }
   }, {
