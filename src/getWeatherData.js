@@ -1,5 +1,4 @@
 import Rain from './rain';
-import Sun from './sun';
 import Snow from './snow';
 import Star from './night';
 import Thunder from './thunder';

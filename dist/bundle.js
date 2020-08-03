@@ -234,17 +234,15 @@ var cloud = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Weather; });
 /* harmony import */ var _rain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rain */ "./src/rain.js");
-/* harmony import */ var _sun__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sun */ "./src/sun.js");
-/* harmony import */ var _snow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./snow */ "./src/snow.js");
-/* harmony import */ var _night__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./night */ "./src/night.js");
-/* harmony import */ var _thunder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./thunder */ "./src/thunder.js");
-/* harmony import */ var _cloud__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cloud */ "./src/cloud.js");
+/* harmony import */ var _snow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./snow */ "./src/snow.js");
+/* harmony import */ var _night__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./night */ "./src/night.js");
+/* harmony import */ var _thunder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./thunder */ "./src/thunder.js");
+/* harmony import */ var _cloud__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cloud */ "./src/cloud.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -506,7 +504,7 @@ var Weather = /*#__PURE__*/function () {
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
         var velocity = Math.floor(Math.random() * 40 + 1) * 1 / 100;
-        this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_5__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
+        this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -522,13 +520,13 @@ var Weather = /*#__PURE__*/function () {
       if (this.ticker % 100 === 0 && this.thunders.length < 10) {
         var x = Math.random() * (450 - 100) + 100;
         var y = 150;
-        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, this.c, this.canvas));
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](x, y, this.c, this.canvas));
       }
 
       if (this.thunders.length === 0) {
         var startX = 60;
         var startY = 170;
-        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_4__["default"](startX, startY, this.c, this.canvas));
+        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](startX, startY, this.c, this.canvas));
       }
 
       this.renderTime();
@@ -544,7 +542,7 @@ var Weather = /*#__PURE__*/function () {
       if (this.snows.length === 0 || this.ticker % 100 === 0 && this.snows.length <= 20) {
         var x = Math.random() * 480 + 50;
         var y = 150;
-        this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_2__["default"](x, y, 10, 'white', this.c, this.canvas));
+        this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_1__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
     }
   }, {
@@ -628,7 +626,7 @@ var Weather = /*#__PURE__*/function () {
           dx = x + this.maxRandom(spacing);
           dy = y + this.maxRandom(spacing);
           var r = Math.random() * 1.5;
-          var star = new _night__WEBPACK_IMPORTED_MODULE_3__["default"](dx, dy, r, this.c, this.canvas);
+          var star = new _night__WEBPACK_IMPORTED_MODULE_2__["default"](dx, dy, r, this.c, this.canvas);
           this.stars.push(star);
         }
       }
@@ -1010,74 +1008,6 @@ var Snow = /*#__PURE__*/function () {
   }]);
 
   return Snow;
-}();
-
-
-
-/***/ }),
-
-/***/ "./src/sun.js":
-/*!********************!*\
-  !*** ./src/sun.js ***!
-  \********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Sun; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Sun = /*#__PURE__*/function () {
-  function Sun(c) {
-    _classCallCheck(this, Sun);
-
-    this.c = c;
-    this.x = 250;
-    this.y = 250;
-    this.radius = 50;
-    this.sAngle = 0;
-    this.eAngle = Math.PI * 2;
-    this.color = '#FDB813';
-    this.degree = 0;
-    this.len = 30;
-  }
-
-  _createClass(Sun, [{
-    key: "draw",
-    value: function draw() {
-      var len = 30; //main sun
-      // this.c.beginPath();
-      // this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
-      // this.c.fillStyle = this.color;
-      // this.c.fill();
-
-      for (var i = 0; i < 8; i++) {
-        this.c.beginPath();
-        this.c.lineCap = 'round';
-        var x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
-        var y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
-        this.c.moveTo(x, y);
-        this.c.lineTo(x + this.len * Math.cos(Math.PI * this.degree / 180), y - this.len * Math.sin(Math.PI * this.degree / 180));
-        this.c.lineWidth = 9;
-        this.c.strokeStyle = '#FDB813';
-        this.c.stroke();
-        this.degree += 45;
-      }
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      this.draw();
-      this.degree = 22.5;
-    }
-  }]);
-
-  return Sun;
 }();
 
 
