@@ -116,14 +116,15 @@ canvas {
     text-align: center;
 
 }
+
 .topnav i {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 12px;
     font-size: 17px;
     width: 20px;
-
 }
+
 .topnav a:hover {
   background-color: #50A7C2;
   color: white;

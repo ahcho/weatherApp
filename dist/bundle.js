@@ -265,6 +265,7 @@ var Weather = /*#__PURE__*/function () {
     this.degreeSection = document.querySelector('.weather-info-bottom');
     this.degreeSpan = document.querySelector('.weather-info-bottom span');
     this.iconSection = document.getElementById('temp-icon');
+    this.sunSection = document.querySelector('.fa-sun');
     this.cloudSection = document.querySelector('.fa-cloud');
     this.rainSection = document.querySelector('.fa-tint');
     this.snowSection = document.querySelector('.fa-asterisk');
@@ -310,6 +311,14 @@ var Weather = /*#__PURE__*/function () {
       var _this2 = this;
 
       this.stars = [];
+      debugger;
+      this.sunSection.addEventListener('click', function () {
+        _this2.thunders = [];
+        _this2.rains = [];
+        _this2.clouds = [];
+        _this2.snows = [];
+        _this2.iconId = "01d";
+      });
       this.cloudSection.addEventListener('click', function () {
         _this2.thunders = [];
         _this2.rains = [];
@@ -418,12 +427,12 @@ var Weather = /*#__PURE__*/function () {
     key: "renderAnimation",
     value: function renderAnimation() {
       var THUNDER_ICON = ['11d', '11n'];
-      var sun = '01d';
-      var fewClouds = '02d';
-      var scatteredClouds = ['03d', '04d'];
-      var rain = ['09d', '10d', '09n', '10n'];
-      var SNOW_ICON = ['13d', '50d', '13n', '50n'];
-      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
+      var SUN = '01d';
+      var FEW_CLOUDS = '02d';
+      var SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
+      var RAIN = ['09d', '10d', '09n', '10n'];
+      var SNOW_ICON = ['13d', '13n'];
+      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]; // console.log(this.iconId)
 
       if (this.iconId[2] === 'n') {
         if (this.stars.length === 0) {
@@ -434,17 +443,17 @@ var Weather = /*#__PURE__*/function () {
         this.renderCloud(300, 150, 'lightgray');
       }
 
-      if (this.iconId === sun) {
+      if (this.iconId === SUN) {
         this.renderSun(250, 250);
-      } else if (this.iconId === fewClouds) {
+      } else if (this.iconId === FEW_CLOUDS) {
         this.renderCloud(300, 250, 'lightgray');
         this.renderSun(250, 180);
         this.renderCloud(100, 200, 'white');
         this.animateCloud();
-      } else if (scatteredClouds.includes(this.iconId)) {
+      } else if (SCATTER_CLOUDS.includes(this.iconId)) {
         this.renderHeavyClouds();
         this.animateCloud();
-      } else if (rain.includes(this.iconId)) {
+      } else if (RAIN.includes(this.iconId)) {
         this.animateRain();
         this.renderHeavyClouds();
       } else if (THUNDER_ICON.includes(this.iconId)) {
