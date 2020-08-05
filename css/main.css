@@ -1,59 +1,49 @@
 body {
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    /* background: linear-gradient(rgb(47, 150, 163), rgb(48, 62,143)); */
     background: #d9d9d9;
     font-family: sans-serif;
     color: white;
     font-family: 'Cinzel';
-    /* border: solid black 1px; */
 } 
 
 .weather-container {
-    margin-top: 100px;
     flex-direction: column;
-    min-height: 100vh;
-    /* max-height: 100%; */
+    min-height: 100%;
     height: auto;
+    /* max-height: auto; */
+    width: 100%;
     max-width: 500px;
     display: flex;
     align-items: center;
-    /* border: solid black 2px; */
     background-color: white;
-    padding: 0 10px 0 10px;
     box-shadow: 8px 8px 5px #a6a6a6;
     border-radius: 4px;
     overflow-y: auto;
-    
 }
 
 .weather-info {
-    min-height: 160px;
+    min-height: 150px;
     width: 100%;
     display: flex;
     flex-direction: column;
     color: gray;
     padding-top: 15px;
-    /* align-items: center; */
-    /* border: solid red 1px; */
 }
 
 .weather-info-bottom {
     flex-direction: row;
 }
 
-.weather-info-bottom-left {
-    /* border: solid black 1px; */
-
-}
 
 canvas {
     z-index: 2;
     background: transparent;
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     padding-top: 10px;
     height: 100%;
     margin-bottom: 50px;
@@ -66,7 +56,6 @@ canvas {
     font-size: 85px;
     float: right;
     padding-top: 20px;
-    /* border: 1px solid yellow; */
 }
 
 .degree-section span {
@@ -78,22 +67,21 @@ canvas {
     max-width: 500px;
     display: flex;
     float: right;
-    /* border: 1px solid yellow; */
     font-size: 20px;
     padding-right: 10px;
 }
 
 .temp-description {
+    margin-left: 10px;
     font: 10px;
-    /* border: 1px solid yellow; */
 }
 
 
 /**/
 .topnav {
-  /* overflow: hidden; */
   background-color: gray;
-  width: 520px;
+  width: 100%;
+  max-width: 520px;
   border-radius: 4px 4px 0 0;
   display: flex;
   justify-content: space-between;
@@ -112,7 +100,6 @@ canvas {
 .topnav-right {
     margin-right: 10px;
     display: flex;
-    /* align-items: center; */
     text-align: center;
 
 }
@@ -144,7 +131,8 @@ i, a {
 
 #myLocation {
     background-color: gray;
-    width: 520px;
+    width: 100%;
+    max-width: 520px;
     border-radius: 4px 4px 0 0;
     display: none;
     justify-content: space-between;
@@ -152,7 +140,8 @@ i, a {
 
 .footer {
    position: flex;
-   width: 520px;
+   width: 100%;
+   max-width: 520px;
    background-color: gray;
    border-radius: 0 0 4px 4px;
 }
