@@ -762,6 +762,9 @@ function toggle() {
   element.style.display = "flex"; // } else {
   //     element.style.display = "none";
   // }
+
+  var nav1 = document.getElementById("main-nav");
+  nav1.style.display = "none";
 }
 
 function listenClick() {

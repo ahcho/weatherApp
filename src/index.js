@@ -37,6 +37,8 @@ function toggle() {
     // } else {
     //     element.style.display = "none";
     // }
+    const nav1 = document.getElementById("main-nav");
+    nav1.style.display = "none";
 }
 
 function listenClick() {

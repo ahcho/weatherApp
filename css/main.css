@@ -124,12 +124,7 @@ canvas {
     width: 20px;
 }
 
-.topnav a:hover {
-  background-color: #50A7C2;
-  color: white;
-}
-
-.topnav i:hover {
+.topnav a:hover, .topnav i:hover, #myLocation a:hover {
   background-color: #50A7C2;
   color: white;
 }
