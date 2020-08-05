@@ -268,7 +268,14 @@ var Weather = /*#__PURE__*/function () {
     this.rainSection = document.querySelector('.fa-tint');
     this.snowSection = document.querySelector('.fa-asterisk');
     this.starSection = document.querySelector('.fa-star');
-    this.thunderSection = document.querySelector('.fa-bolt');
+    this.thunderSection = document.querySelector('.fa-bolt'); ///
+
+    this.seoul = document.querySelector('.seoul');
+    this.pittsburgh = document.querySelector('.pittsburgh');
+    this.losangeles = document.querySelector('.losangeles');
+    this.london = document.querySelector('.london');
+    this.rome = document.querySelector('.rome'); ///
+
     this.stars = [];
     this.clouds = [];
     this.thunders = [];
@@ -346,7 +353,38 @@ var Weather = /*#__PURE__*/function () {
         _this2.clouds = [];
         _this2.snows = [];
         _this2.iconId = '11d';
+      }); ///
+
+      this.seoul.addEventListener('click', function () {
+        _this2.thunders = [];
+        _this2.clouds = [];
+        _this2.rains = [];
+        _this2.iconId = '13d';
       });
+      this.pittsburgh.addEventListener('click', function () {
+        _this2.thunders = [];
+        _this2.clouds = [];
+        _this2.snows = [];
+        _this2.iconId = '01n';
+      });
+      this.losangeles.addEventListener('click', function () {
+        _this2.rains = [];
+        _this2.clouds = [];
+        _this2.snows = [];
+        _this2.iconId = '11d';
+      });
+      this.london.addEventListener('click', function () {
+        _this2.rains = [];
+        _this2.clouds = [];
+        _this2.snows = [];
+        _this2.iconId = '11d';
+      });
+      this.rome.addEventListener('click', function () {
+        _this2.rains = [];
+        _this2.clouds = [];
+        _this2.snows = [];
+        _this2.iconId = '11d';
+      }); ///
     }
   }, {
     key: "changeMetric",
@@ -711,11 +749,15 @@ function error(err) {
   var canvas = document.querySelector('canvas');
   var c = canvas.getContext('2d');
   canvas.width = 500;
-  canvas.height = 600;
+  canvas.height = 500;
   errorMsg(c); // const api =
   //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
-  // const weather = new Weather(api, c, canvas);
-  // weather.renderCanvasBackground();
+
+  var api = "https://api.openweathermap.org/data/2.5/weather?zip=90405,us&units=imperial&appid=".concat(API_KEY);
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
+  weather.getData().then(function () {
+    return weather.renderCanvasBackground();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -139,3 +139,8 @@ canvas {
   background-color: #50A7C2;
   color: white;
 }
+
+i, a {
+    cursor: pointer; 
+}
+

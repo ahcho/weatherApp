@@ -21,6 +21,13 @@ export default class Weather {
         this.snowSection = document.querySelector('.fa-asterisk');
         this.starSection = document.querySelector('.fa-star');
         this.thunderSection = document.querySelector('.fa-bolt');
+        ///
+        this.seoul = document.querySelector('.seoul');
+        this.pittsburgh = document.querySelector('.pittsburgh');
+        this.losangeles = document.querySelector('.losangeles');
+        this.london = document.querySelector('.london');
+        this.rome = document.querySelector('.rome');
+        ///
         this.stars = [];
         this.clouds = [];
         this.thunders = [];
@@ -95,6 +102,38 @@ export default class Weather {
             this.snows = [];
             this.iconId = '11d'
         })
+        ///
+        this.seoul.addEventListener('click', () => {
+            this.thunders = [];
+            this.clouds = [];
+            this.rains = [];
+            this.iconId = '13d'
+        })
+        this.pittsburgh.addEventListener('click', () => {
+            this.thunders = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '01n'
+        })
+        this.losangeles.addEventListener('click', () => {
+            this.rains = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '11d'
+        })
+        this.london.addEventListener('click', () => {
+            this.rains = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '11d'
+        })
+        this.rome.addEventListener('click', () => {
+            this.rains = [];
+            this.clouds = [];
+            this.snows = [];
+            this.iconId = '11d'
+        })
+        ///
     }
 
     changeMetric(temperature) {

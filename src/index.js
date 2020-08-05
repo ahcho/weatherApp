@@ -20,13 +20,15 @@ function error(err) {
     const canvas = document.querySelector('canvas')
     const c = canvas.getContext('2d')
     canvas.width = 500
-    canvas.height = 600
+    canvas.height = 500
     errorMsg(c);
     // const api =
     //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
 
-    // const weather = new Weather(api, c, canvas);
-    // weather.renderCanvasBackground();
+    const api = `https://api.openweathermap.org/data/2.5/weather?zip=90405,us&units=imperial&appid=${API_KEY}`;
+    const weather = new Weather(api, c, canvas);
+    weather.getData().then(() =>
+        weather.renderCanvasBackground())
 }
 
 document.addEventListener("DOMContentLoaded", function () {

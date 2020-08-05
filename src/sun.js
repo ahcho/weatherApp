@@ -13,11 +13,6 @@ export default class Sun {
 
     draw() {
         const len = 30;
-        //main sun
-        // this.c.beginPath();
-        // this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
-        // this.c.fillStyle = this.color;
-        // this.c.fill();
 
         for (let i = 0; i < 8; i++) {    
             this.c.beginPath();
