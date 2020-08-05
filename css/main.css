@@ -56,6 +56,7 @@ canvas {
     width: 500px;
     padding-top: 10px;
     height: 100%;
+    margin-bottom: 50px;
 }
 
 .degree-section {
@@ -93,12 +94,12 @@ canvas {
   /* overflow: hidden; */
   background-color: gray;
   width: 520px;
-  border-radius: 4px;
+  border-radius: 4px 4px 0 0;
   display: flex;
   justify-content: space-between;
 }
 
-.topnav a, #myLocation > a {
+.topnav a, #myLocation > a, .footer > * {
   float: left;
   color: #f2f2f2;
   text-align: center;
@@ -124,7 +125,10 @@ canvas {
     width: 20px;
 }
 
-.topnav a:hover, .topnav i:hover, #myLocation a:hover {
+.topnav a:hover, 
+.topnav i:hover, 
+#myLocation a:hover,
+.footer > *:hover {
   background-color: #50A7C2;
   color: white;
 }
@@ -141,7 +145,14 @@ i, a {
 #myLocation {
     background-color: gray;
     width: 520px;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     display: none;
     justify-content: space-between;
 } 
+
+.footer {
+   position: flex;
+   width: 520px;
+   background-color: gray;
+   border-radius: 0 0 4px 4px;
+}
