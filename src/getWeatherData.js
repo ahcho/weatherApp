@@ -115,12 +115,6 @@ export default class Weather {
             this.snows = [];
             this.iconId = '01n'
         })
-        this.losangeles.addEventListener('click', () => {
-            this.rains = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '11d'
-        })
         this.london.addEventListener('click', () => {
             this.rains = [];
             this.clouds = [];

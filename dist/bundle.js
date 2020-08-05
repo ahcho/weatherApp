@@ -367,12 +367,6 @@ var Weather = /*#__PURE__*/function () {
         _this2.snows = [];
         _this2.iconId = '01n';
       });
-      this.losangeles.addEventListener('click', function () {
-        _this2.rains = [];
-        _this2.clouds = [];
-        _this2.snows = [];
-        _this2.iconId = '11d';
-      });
       this.london.addEventListener('click', function () {
         _this2.rains = [];
         _this2.clouds = [];
@@ -746,18 +740,62 @@ function success(position) {
 }
 
 function error(err) {
+  toggle();
   var canvas = document.querySelector('canvas');
   var c = canvas.getContext('2d');
   canvas.width = 500;
   canvas.height = 500;
-  errorMsg(c); // const api =
-  //   `https://api.openweathermap.org/data/2.5/weather?lat=37.4112256&lon=-122.13616640000001&units=imperial&appid=${API_KEY}`;
+  errorMsg(c);
+  var api = listenClick();
 
-  var api = "https://api.openweathermap.org/data/2.5/weather?zip=90405,us&units=imperial&appid=".concat(API_KEY);
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
-  weather.getData().then(function () {
-    return weather.renderCanvasBackground();
+  if (api) {
+    var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
+    weather.getData().then(function () {
+      return weather.renderCanvasBackground();
+    });
+  }
+}
+
+function toggle() {
+  var element = document.getElementById("myLocation"); // if (element.style.display !== "none") {
+
+  element.style.display = "flex"; // } else {
+  //     element.style.display = "none";
+  // }
+}
+
+function listenClick() {
+  var seoul = document.querySelector('.seoul');
+  var pittsburgh = document.querySelector('.pittsburgh');
+  var london = document.querySelector('.london');
+  var rome = document.querySelector('.rome');
+  var city = "",
+      country = "";
+  seoul.addEventListener('click', function () {
+    city = "Seoul";
+    country = "kr";
   });
+  pittsburgh.addEventListener('click', function () {
+    city = "Pittsburgh";
+    country = "us";
+  });
+  london.addEventListener('click', function () {
+    city = "London";
+    country = "uk";
+  });
+  rome.addEventListener('click', function () {
+    city = "Rome";
+    country = "it";
+  });
+
+  if (city.length > 0) {
+    var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
+    return api;
+  }
+
+  city = "Pittsburgh";
+  country = "us";
+  return "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
