@@ -437,7 +437,7 @@ var Weather = /*#__PURE__*/function () {
       }
 
       this.renderAnimation(this.iconId);
-      requestAnimationFrame(this.renderCanvasBackground.bind(this));
+      requestAnimationFrame(this.renderCanvasBackground.bind(this)); // resume update what did I do how, and the result 
     }
   }, {
     key: "renderTime",
@@ -551,13 +551,13 @@ var Weather = /*#__PURE__*/function () {
 
       if (this.ticker % 100 === 0 && this.thunders.length < 10) {
         var x = Math.random() * (450 - 100) + 100;
-        var y = 150;
+        var y = 180;
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](x, y, this.c, this.canvas));
       }
 
       if (this.thunders.length === 0) {
         var startX = 60;
-        var startY = 170;
+        var startY = 180;
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](startX, startY, this.c, this.canvas));
       }
 
@@ -573,7 +573,7 @@ var Weather = /*#__PURE__*/function () {
 
       if (this.snows.length === 0 || this.ticker % 100 === 0 && this.snows.length <= 20) {
         var x = Math.random() * 480 + 50;
-        var y = 150;
+        var y = 180;
         this.snows.push(new _snow__WEBPACK_IMPORTED_MODULE_1__["default"](x, y, 10, 'white', this.c, this.canvas));
       }
     }
@@ -723,7 +723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config/config */ "./config/config.js");
 
 
-var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].API_KEY;
+var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].API_KEY; // debugger;
 
 function success(position) {
   var canvas = document.querySelector('canvas');

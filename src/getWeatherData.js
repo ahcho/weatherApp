@@ -176,7 +176,7 @@ export default class Weather {
         }
 
         this.renderAnimation(this.iconId);
-        requestAnimationFrame(this.renderCanvasBackground.bind(this))
+        requestAnimationFrame(this.renderCanvasBackground.bind(this)) // resume update what did I do how, and the result 
     }
 
     renderTime() {
@@ -279,25 +279,23 @@ export default class Weather {
 
     animateThunder() {
         this.thunders.forEach((thunder) => {
-
             thunder.update();
         });
 
         this.ticker++;
         if (this.ticker % 100 === 0 && this.thunders.length < 10) {
             const x = Math.random() * (450 - 100) + 100;
-            const y = 150;
+            const y = 180;
             this.thunders.push(new Thunder(x, y, this.c, this.canvas));
         }
 
         if (this.thunders.length === 0) {
             const startX = 60;
-            const startY = 170
+            const startY = 180
 
             this.thunders.push(new Thunder(startX, startY, this.c, this.canvas));
         }
         this.renderTime();
-
 
     }
 
@@ -311,7 +309,7 @@ export default class Weather {
 
         if (this.snows.length === 0 || (this.ticker % 100 === 0 && this.snows.length <= 20)) {
             const x = (Math.random() * 480) + 50;
-            const y = 150;
+            const y = 180;
             this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
         }
 

@@ -51,7 +51,8 @@ update() {
 }
 ```
 
-I only used javascript, canvas, html to design and create animations.
+I used only javascript, canvas, html to design and create animations.
+
 <img src="https://media.giphy.com/media/jUJhMNvDWyyXBurv3Z/giphy.gif"  />
 <img src="https://media.giphy.com/media/Y3eTPOoNiIQUWuHsQv/giphy.gif" />
 <img src="https://media.giphy.com/media/Jpe8pPrMW2lydBowup/giphy.gif" />
