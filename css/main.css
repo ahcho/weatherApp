@@ -46,9 +46,17 @@ canvas {
     max-width: 500px;
     padding-top: 10px;
     height: 100%;
-    margin-bottom: 50px;
 }
 
+.made-mark {
+    margin: 10px 5px 20px 0;
+    font-size: 12px;
+    text-align: right;
+}
+
+a {
+    text-decoration: none;
+}
 .degree-section {
     display: flex;
     align-items: center;
