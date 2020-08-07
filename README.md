@@ -17,6 +17,7 @@ it will show related weather animation.
 Javascript, CSS, OpenWeatherMap API
 
 ## Features
+
 In the rainy day animation shows rain splash, when a rain drop hits the ground,
 it generates an array of mini rains to show splash animation
 ```js
@@ -49,6 +50,16 @@ update() {
   }
 }
 ```
+
+I only used javascript, canvas, html to design and create animations.
+<img src="https://media.giphy.com/media/jUJhMNvDWyyXBurv3Z/giphy.gif"  />
+<img src="https://media.giphy.com/media/Y3eTPOoNiIQUWuHsQv/giphy.gif" />
+<img src="https://media.giphy.com/media/Jpe8pPrMW2lydBowup/giphy.gif" />
+<img src="https://media.giphy.com/media/l24ZpBeWTEYe4y1wnQ/giphy.gif" />
+<img src="https://media.giphy.com/media/QA1EQ1xbk3IPS5gxs9/giphy.gif" />
+<img src="https://media.giphy.com/media/cnoVw8eOxX85Ap9SeI/giphy.gif" />
+
+
 <!-- ![Alt text](./dist/night_sky.png?raw=true "Night Sky")
 
 ![Alt text](dist/thunder.png?raw=true "Night Sky") -->
