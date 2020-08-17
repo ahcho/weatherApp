@@ -601,7 +601,7 @@ var Weather = /*#__PURE__*/function () {
       this.c.fill();
       this.ticker++;
 
-      if (this.ticker % 100 === 0) {
+      if (this.ticker % 50 === 0) {
         this.degree += 11.25;
       }
 
@@ -732,7 +732,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config/config */ "./config/config.js");
 
 
-var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].API_KEY; // debugger;
+var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].API_KEY;
 
 function success(position) {
   var canvas = document.querySelector('canvas');

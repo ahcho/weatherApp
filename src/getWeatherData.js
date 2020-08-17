@@ -63,6 +63,7 @@ export default class Weather {
     }
 
     listenClick() {
+
         this.stars = [];
         this.sunSection.addEventListener('click', () => {
             this.thunders = [];
@@ -143,6 +144,7 @@ export default class Weather {
     }
 
     renderCanvasBackground() {
+        
         const today = new Date();
         this.hour = today.getHours();
         this.minutes = today.getMinutes();
@@ -339,7 +341,7 @@ export default class Weather {
         this.c.fill();
 
         this.ticker++;
-        if (this.ticker % 100 === 0 ) {
+        if (this.ticker % 50 === 0 ) {
             this.degree += 11.25
         }
         if (y === 250) {

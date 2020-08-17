@@ -1,7 +1,7 @@
 import Weather from './getWeatherData'
 import {config} from '../config/config'
 const API_KEY = config.API_KEY;
-// debugger;
+
 
 function success(position){
     const canvas = document.querySelector('canvas')
@@ -68,6 +68,7 @@ function listenClick() {
         const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
         return api;
     }
+
     city = "Pittsburgh"
     country = "us"
     return  `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`
