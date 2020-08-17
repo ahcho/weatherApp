@@ -295,18 +295,18 @@ var Weather = /*#__PURE__*/function () {
         return res.json();
       }).then(function (data) {
         var description = data.weather[0].description;
-        var temperature = Math.floor(data.main.temp);
+        _this.temperature = Math.floor(data.main.temp);
         var location = data.name;
         _this.iconId = data.weather[0].icon;
         _this.fixIconId = data.weather[0].icon;
         var iconAdd = "https://openweathermap.org/img/wn/".concat(_this.iconId, "@2x.png"); //Set DOM Elements from the API
 
-        _this.temperatureDegree.textContent = temperature;
+        _this.temperatureDegree.textContent = _this.temperature;
         _this.temperatureDescription.textContent = description;
         _this.locationTimezone.textContent = location;
         _this.iconSection.src = iconAdd;
 
-        _this.changeMetric(temperature);
+        _this.changeMetric(_this.temperature);
 
         _this.listenClick();
       });
@@ -353,7 +353,7 @@ var Weather = /*#__PURE__*/function () {
         _this2.clouds = [];
         _this2.snows = [];
         _this2.iconId = '11d';
-      }); ///
+      }); ////
 
       this.seoul.addEventListener('click', function () {
         _this2.thunders = [];
@@ -438,6 +438,10 @@ var Weather = /*#__PURE__*/function () {
 
       this.renderAnimation(this.iconId);
       requestAnimationFrame(this.renderCanvasBackground.bind(this)); // resume update what did I do how, and the result 
+
+      if (['13d', '13n', '09d', '10d', '09n', '10n', '11d', '11n'].includes(this.iconId)) {
+        this.renderHeavyClouds();
+      }
     }
   }, {
     key: "renderTime",
@@ -474,24 +478,21 @@ var Weather = /*#__PURE__*/function () {
       }
 
       if (this.iconId === SUN) {
-        this.renderSun(250, 250);
+        this.animateSun(250, 250);
       } else if (this.iconId === FEW_CLOUDS) {
         this.renderCloud(300, 250, 'lightgray');
-        this.renderSun(250, 180);
+        this.animateSun(250, 180);
         this.renderCloud(100, 200, 'white');
         this.animateCloud();
       } else if (SCATTER_CLOUDS.includes(this.iconId)) {
         this.renderHeavyClouds();
         this.animateCloud();
       } else if (RAIN.includes(this.iconId)) {
-        this.animateRain();
-        this.renderHeavyClouds();
+        this.animateRain(); // this.renderHeavyClouds();
       } else if (THUNDER_ICON.includes(this.iconId)) {
-        this.animateThunder();
-        this.renderHeavyClouds();
+        this.animateThunder(); // this.renderHeavyClouds();
       } else if (SNOW_ICON.includes(this.iconId)) {
-        this.animateSnow();
-        this.renderHeavyClouds();
+        this.animateSnow(); // this.renderHeavyClouds();
       }
 
       var color = '#555555';
@@ -578,14 +579,22 @@ var Weather = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "renderSun",
-    value: function renderSun(x, y) {
+    key: "animateSun",
+    value: function animateSun(x, y) {
+      if (this.temperature > 80) {
+        this.radius = 100;
+        this.lineWidth = 15;
+        this.len = 50;
+      } else {
+        this.radius = 60;
+        this.lineWidth = 9;
+        this.len = 30;
+      }
+
       this.x = x;
       this.y = y;
-      this.radius = 50;
       this.sAngle = 0;
       this.eAngle = Math.PI * 2;
-      this.len = 30;
       this.c.beginPath();
       this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
       this.c.fillStyle = '#FDB813';
@@ -601,13 +610,13 @@ var Weather = /*#__PURE__*/function () {
           this.c.beginPath();
           this.c.lineCap = 'round';
 
-          var _x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
+          var _x = 250 + Math.cos(Math.PI * this.degree / 180) * (this.radius + 15);
 
-          var _y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
+          var _y = 250 - Math.sin(Math.PI * this.degree / 180) * (this.radius + 15);
 
           this.c.moveTo(_x, _y);
           this.c.lineTo(_x + this.len * Math.cos(Math.PI * this.degree / 180), _y - this.len * Math.sin(Math.PI * this.degree / 180));
-          this.c.lineWidth = 9;
+          this.c.lineWidth = this.lineWidth;
           this.c.strokeStyle = '#FDB813';
           this.c.stroke();
           this.degree += 45;
@@ -1041,7 +1050,7 @@ var Snow = /*#__PURE__*/function () {
       x: 0,
       y: 1
     };
-    this.gravity = 0.01;
+    this.gravity = 0.02;
     this.opacity = 1;
   }
 
@@ -1123,7 +1132,7 @@ var Thunder = /*#__PURE__*/function () {
     this.canvas = canvas;
     this.velocity = {
       x: 0,
-      y: 0.01
+      y: 0.1
     };
     this.gravity = 0.001;
     this.size = 1;

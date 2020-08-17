@@ -45,18 +45,18 @@ export default class Weather {
             })
             .then(data => {
                 const description = data.weather[0].description
-                const temperature = Math.floor(data.main.temp)
+                this.temperature = Math.floor(data.main.temp)
                 const location = data.name
                 this.iconId = data.weather[0].icon
                 this.fixIconId = data.weather[0].icon
                 const iconAdd = `https://openweathermap.org/img/wn/${this.iconId}@2x.png`
 
                 //Set DOM Elements from the API
-                this.temperatureDegree.textContent = temperature;
+                this.temperatureDegree.textContent = this.temperature;
                 this.temperatureDescription.textContent = description;
                 this.locationTimezone.textContent = location;
                 this.iconSection.src = iconAdd;
-                this.changeMetric(temperature);
+                this.changeMetric(this.temperature);
                 this.listenClick();
             })
 
@@ -71,7 +71,6 @@ export default class Weather {
             this.snows = [];
             this.iconId = "01d";
         })
-
         this.cloudSection.addEventListener('click', () => {
             this.thunders = [];
             this.rains = [];
@@ -102,7 +101,7 @@ export default class Weather {
             this.snows = [];
             this.iconId = '11d'
         })
-        ///
+////
         this.seoul.addEventListener('click', () => {
             this.thunders = [];
             this.clouds = [];
@@ -174,9 +173,12 @@ export default class Weather {
             this.c.fillStyle = backgroundGradient;
             this.c.fillRect(0, 0, 500, 600)
         }
-
         this.renderAnimation(this.iconId);
         requestAnimationFrame(this.renderCanvasBackground.bind(this)) // resume update what did I do how, and the result 
+        if (['13d', '13n', '09d', '10d', '09n', '10n', '11d', '11n'].includes(this.iconId)) {
+            this.renderHeavyClouds();
+        }
+        
     }
 
     renderTime() {
@@ -198,7 +200,7 @@ export default class Weather {
         const FEW_CLOUDS = '02d';
         const SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
         const RAIN = ['09d', '10d', '09n', '10n']
-        const SNOW_ICON = ['13d', '13n']
+        const SNOW_ICON = ['13d', '13n'] 
         const night =
             ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]
 
@@ -209,12 +211,11 @@ export default class Weather {
             this.animateNightSky();
             this.renderCloud(300, 150, 'lightgray');
         }
-
         if (this.iconId === SUN) {
-            this.renderSun(250, 250);
+            this.animateSun(250, 250);
         } else if (this.iconId === FEW_CLOUDS) {
             this.renderCloud(300, 250, 'lightgray');
-            this.renderSun(250, 180);
+            this.animateSun(250, 180);
             this.renderCloud(100, 200, 'white');
             this.animateCloud();
         } else if (SCATTER_CLOUDS.includes(this.iconId)) {
@@ -222,13 +223,13 @@ export default class Weather {
             this.animateCloud();
         } else if (RAIN.includes(this.iconId)) {
             this.animateRain();
-            this.renderHeavyClouds();
+            // this.renderHeavyClouds();
         } else if (THUNDER_ICON.includes(this.iconId)) {
             this.animateThunder();
-            this.renderHeavyClouds();
+            // this.renderHeavyClouds();
         } else if (SNOW_ICON.includes(this.iconId)) {
             this.animateSnow();
-            this.renderHeavyClouds();
+            // this.renderHeavyClouds();
         }
 
         let color = '#555555'
@@ -316,15 +317,21 @@ export default class Weather {
 
     }
 
-    renderSun(x, y) {
+    animateSun(x, y) {
 
-        
+        if (this.temperature > 80) {
+            this.radius = 100;
+            this.lineWidth = 15;
+            this.len = 50;
+        } else {
+            this.radius = 60;
+            this.lineWidth = 9;
+            this.len = 30;
+        }
         this.x = x;
         this.y = y;
-        this.radius = 50;
         this.sAngle = 0;
         this.eAngle = Math.PI * 2;
-        this.len = 30;
 
         this.c.beginPath();
         this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
@@ -339,12 +346,12 @@ export default class Weather {
             for (let i = 0; i < 8; i++) {
                 this.c.beginPath();
                 this.c.lineCap = 'round';
-                const x = 250 + Math.cos(Math.PI * this.degree / 180) * 65;
-                const y = 250 - Math.sin(Math.PI * this.degree / 180) * 65;
+                const x = 250 + Math.cos(Math.PI * this.degree / 180) * (this.radius + 15);
+                const y = 250 - Math.sin(Math.PI * this.degree / 180) * (this.radius + 15);
                 this.c.moveTo(x, y);
                 this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
                     y - (this.len * Math.sin(Math.PI * this.degree / 180)));
-                this.c.lineWidth = 9;
+                this.c.lineWidth = this.lineWidth;
                 this.c.strokeStyle = '#FDB813';
                 this.c.stroke();
                 this.degree += 45;

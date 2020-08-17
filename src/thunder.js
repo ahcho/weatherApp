@@ -7,7 +7,7 @@ export default class Thunder {
     this.canvas = canvas;
     this.velocity = {
       x: 0,
-      y: 0.01,
+      y: 0.1,
     };
     this.gravity = 0.001;
     this.size = 1;
