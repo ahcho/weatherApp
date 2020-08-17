@@ -18,6 +18,19 @@ Javascript, CSS, OpenWeatherMap API
 
 ## Features
 
+In this project, I create objects and animations only using Javascript and canvas.
+For example, cloud is drawn using Canvas's bezierCurveTo method.
+```
+        this.c.beginPath()
+        this.c.moveTo(this.x, this.y);
+        this.c.bezierCurveTo(this.x - 40, this.y + 20, this.x - 40, this.y + 70, this.x + 60, this.y + 70);
+        this.c.bezierCurveTo(this.x + 80, this.y + 100, this.x + 150, this.y + 100, this.x + 170, this.y + 70);
+        this.c.bezierCurveTo(this.x + 300, this.y + 70, this.x + 300, this.y + 40, this.x + 250, this.y + 20);
+        this.c.bezierCurveTo(this.x + 260, this.y - 40, this.x + 200, this.y - 50, this.x + 170, this.y - 30);
+        this.c.bezierCurveTo(this.x + 150, this.y - 75, this.x + 80, this.y - 60, this.x + 80, this.y - 30);
+        this.c.bezierCurveTo(this.x + 30, this.y - 75, this.x - 20, this.y - 60, this.x, this.y);
+```
+
 In the rainy day animation shows rain splash, when a rain drop hits the ground,
 it generates an array of mini rains to show splash animation
 ```js
