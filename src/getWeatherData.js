@@ -225,13 +225,10 @@ export default class Weather {
             this.animateCloud();
         } else if (RAIN.includes(this.iconId)) {
             this.animateRain();
-            // this.renderHeavyClouds();
         } else if (THUNDER_ICON.includes(this.iconId)) {
             this.animateThunder();
-            // this.renderHeavyClouds();
         } else if (SNOW_ICON.includes(this.iconId)) {
             this.animateSnow();
-            // this.renderHeavyClouds();
         }
 
         let color = '#555555'

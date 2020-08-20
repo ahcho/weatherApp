@@ -97,7 +97,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
 var config = {
-  API_KEY: "dfee5e9cc8167796e72b503e92bfdbcf"
+  API_KEY: "dfee5e9cc8167796e72b503e92bfdbcf",
+  TIME_API_KEY: "f25b44f742ac47d3839138901d7b425f"
 };
 
 /***/ }),
@@ -489,11 +490,11 @@ var Weather = /*#__PURE__*/function () {
         this.renderHeavyClouds();
         this.animateCloud();
       } else if (RAIN.includes(this.iconId)) {
-        this.animateRain(); // this.renderHeavyClouds();
+        this.animateRain();
       } else if (THUNDER_ICON.includes(this.iconId)) {
-        this.animateThunder(); // this.renderHeavyClouds();
+        this.animateThunder();
       } else if (SNOW_ICON.includes(this.iconId)) {
-        this.animateSnow(); // this.renderHeavyClouds();
+        this.animateSnow();
       }
 
       var color = '#555555';
@@ -735,6 +736,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].API_KEY;
+var TIME_API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_1__["config"].TIME_API_KEY;
 
 function success(position) {
   var canvas = document.querySelector('canvas');
@@ -752,19 +754,17 @@ function success(position) {
 
 function error(err) {
   toggle();
-  var canvas = document.querySelector('canvas');
-  var c = canvas.getContext('2d');
-  canvas.width = 500;
-  canvas.height = 500;
-  errorMsg(c);
-  var api = listenClick();
-
-  if (api) {
-    var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
-    weather.getData().then(function () {
-      return weather.renderCanvasBackground();
-    });
-  }
+  listenClick(); //     const canvas = document.querySelector('canvas')
+  //     const c = canvas.getContext('2d')
+  //     canvas.width = 500
+  //     canvas.height = 500
+  //     errorMsg(c);
+  //     const api = listenClick()
+  //     if (api) {
+  //     const weather = new Weather(api, c, canvas);
+  //     weather.getData().then(() =>
+  //         weather.renderCanvasBackground())}
+  // }
 }
 
 function toggle() {
@@ -788,28 +788,35 @@ function listenClick() {
   seoul.addEventListener('click', function () {
     city = "Seoul";
     country = "kr";
+    callGetWeatherData(city, country);
   });
   pittsburgh.addEventListener('click', function () {
     city = "Pittsburgh";
     country = "us";
+    callGetWeatherData(city, country);
   });
   london.addEventListener('click', function () {
     city = "London";
     country = "uk";
+    callGetWeatherData(city, country);
   });
   rome.addEventListener('click', function () {
     city = "Rome";
     country = "it";
+    callGetWeatherData(city, country);
   });
+}
 
-  if (city.length > 0) {
-    var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
-    return api;
-  }
-
-  city = "Pittsburgh";
-  country = "us";
-  return "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
+function callGetWeatherData(city, country) {
+  var canvas = document.querySelector('canvas');
+  var c = canvas.getContext('2d');
+  canvas.width = 500;
+  canvas.height = 500;
+  var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
+  weather.getData().then(function () {
+    return weather.renderCanvasBackground();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

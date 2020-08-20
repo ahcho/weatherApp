@@ -32,11 +32,11 @@ export default class getUserInput {
             country = "it"
         })
         if (city.length > 0) {
-            const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
+            const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${this.api}`;
             return api;
         }
 
-        const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
+        const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${this.api}`;
         const weather = new Weather(api, c, canvas);
         weather.getData().then(() =>
             weather.renderCanvasBackground())
