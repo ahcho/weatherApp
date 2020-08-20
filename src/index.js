@@ -21,26 +21,12 @@ function success(position){
 function error(err) {
     toggle();
     listenClick();
-//     const canvas = document.querySelector('canvas')
-//     const c = canvas.getContext('2d')
-//     canvas.width = 500
-//     canvas.height = 500
-//     errorMsg(c);
-//     const api = listenClick()
-//     if (api) {
-//     const weather = new Weather(api, c, canvas);
-//     weather.getData().then(() =>
-//         weather.renderCanvasBackground())}
-// }
 }
 
 function toggle() {
     const element = document.getElementById("myLocation");
-    // if (element.style.display !== "none") {
-        element.style.display = "flex";
-    // } else {
-    //     element.style.display = "none";
-    // }
+    element.style.display = "flex";
+
     const nav1 = document.getElementById("main-nav");
     nav1.style.display = "none";
 }
@@ -81,7 +67,7 @@ function callGetWeatherData(city, country) {
     canvas.height = 500
     const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
     const weather = new Weather(api, c, canvas);
-    
+
     weather.getData().then(() =>
         weather.renderCanvasBackground())
 }
