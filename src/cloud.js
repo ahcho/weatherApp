@@ -1,5 +1,5 @@
 export default class cloud {
-    constructor(x, y, color, vx, c, canvas) {
+    constructor(x, y, color, vx, c, canvas, size) {
         this.x = x
         this.y = y
         this.color = color
@@ -11,18 +11,19 @@ export default class cloud {
         this.lineWidth = 1
         this.c = c
         this.canvas = canvas
+        this.size = size
     }
 
     // cloud shape
     draw() {
         this.c.beginPath()
         this.c.moveTo(this.x, this.y);
-        this.c.bezierCurveTo(this.x - 40, this.y + 20, this.x - 40, this.y + 70, this.x + 60, this.y + 70);
-        this.c.bezierCurveTo(this.x + 80, this.y + 100, this.x + 150, this.y + 100, this.x + 170, this.y + 70);
-        this.c.bezierCurveTo(this.x + 300, this.y + 70, this.x + 300, this.y + 40, this.x + 250, this.y + 20);
-        this.c.bezierCurveTo(this.x + 260, this.y - 40, this.x + 200, this.y - 50, this.x + 170, this.y - 30);
-        this.c.bezierCurveTo(this.x + 150, this.y - 75, this.x + 80, this.y - 60, this.x + 80, this.y - 30);
-        this.c.bezierCurveTo(this.x + 30, this.y - 75, this.x - 20, this.y - 60, this.x, this.y);
+        this.c.bezierCurveTo(this.x - (4 * this.size), this.y + (2 * this.size), this.x - (4 * this.size), this.y + (7 * this.size), this.x + (6 * this.size), this.y + (7 * this.size));
+        this.c.bezierCurveTo(this.x + (8 * this.size), this.y + (10 * this.size), this.x + (15 * this.size), this.y + (10 * this.size), this.x + (17 * this.size), this.y + (7 * this.size));
+        this.c.bezierCurveTo(this.x + (30 * this.size), this.y + (7 * this.size), this.x + (30 * this.size), this.y + (4 * this.size), this.x + (25 * this.size), this.y + (2 * this.size));
+        this.c.bezierCurveTo(this.x + (26 * this.size), this.y - (4 * this.size), this.x + (20 * this.size), this.y - (5 * this.size), this.x + (17 * this.size), this.y - (3 * this.size));
+        this.c.bezierCurveTo(this.x + (15 * this.size), this.y - (7.5 * this.size), this.x + (8 * this.size), this.y - (6 * this.size), this.x + (8 * this.size), this.y - (3 * this.size));
+        this.c.bezierCurveTo(this.x + (3 * this.size), this.y - (7.5 * this.size), this.x - (2 * this.size), this.y - (6 * this.size), this.x, this.y);
         
         this.c.fillStyle = this.color;
         this.c.fill();

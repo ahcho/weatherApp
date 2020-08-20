@@ -275,7 +275,8 @@ export default class Weather {
             const x = Math.floor(Math.random() * 200) - 100;
             const y = Math.random() * 400 + 100;
             const velocity = Math.floor((Math.random() * 40) + 1) * 1 / 100;
-            this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
+            const size = Math.floor(Math.random() * 10) + 4;
+            this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas, size));
         }
         this.renderTime();
     }

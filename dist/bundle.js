@@ -119,7 +119,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var cloud = /*#__PURE__*/function () {
-  function cloud(x, y, color, vx, c, canvas) {
+  function cloud(x, y, color, vx, c, canvas, size) {
     _classCallCheck(this, cloud);
 
     this.x = x;
@@ -133,6 +133,7 @@ var cloud = /*#__PURE__*/function () {
     this.lineWidth = 1;
     this.c = c;
     this.canvas = canvas;
+    this.size = size;
   } // cloud shape
 
 
@@ -141,12 +142,12 @@ var cloud = /*#__PURE__*/function () {
     value: function draw() {
       this.c.beginPath();
       this.c.moveTo(this.x, this.y);
-      this.c.bezierCurveTo(this.x - 40, this.y + 20, this.x - 40, this.y + 70, this.x + 60, this.y + 70);
-      this.c.bezierCurveTo(this.x + 80, this.y + 100, this.x + 150, this.y + 100, this.x + 170, this.y + 70);
-      this.c.bezierCurveTo(this.x + 300, this.y + 70, this.x + 300, this.y + 40, this.x + 250, this.y + 20);
-      this.c.bezierCurveTo(this.x + 260, this.y - 40, this.x + 200, this.y - 50, this.x + 170, this.y - 30);
-      this.c.bezierCurveTo(this.x + 150, this.y - 75, this.x + 80, this.y - 60, this.x + 80, this.y - 30);
-      this.c.bezierCurveTo(this.x + 30, this.y - 75, this.x - 20, this.y - 60, this.x, this.y);
+      this.c.bezierCurveTo(this.x - 4 * this.size, this.y + 2 * this.size, this.x - 4 * this.size, this.y + 7 * this.size, this.x + 6 * this.size, this.y + 7 * this.size);
+      this.c.bezierCurveTo(this.x + 8 * this.size, this.y + 10 * this.size, this.x + 15 * this.size, this.y + 10 * this.size, this.x + 17 * this.size, this.y + 7 * this.size);
+      this.c.bezierCurveTo(this.x + 30 * this.size, this.y + 7 * this.size, this.x + 30 * this.size, this.y + 4 * this.size, this.x + 25 * this.size, this.y + 2 * this.size);
+      this.c.bezierCurveTo(this.x + 26 * this.size, this.y - 4 * this.size, this.x + 20 * this.size, this.y - 5 * this.size, this.x + 17 * this.size, this.y - 3 * this.size);
+      this.c.bezierCurveTo(this.x + 15 * this.size, this.y - 7.5 * this.size, this.x + 8 * this.size, this.y - 6 * this.size, this.x + 8 * this.size, this.y - 3 * this.size);
+      this.c.bezierCurveTo(this.x + 3 * this.size, this.y - 7.5 * this.size, this.x - 2 * this.size, this.y - 6 * this.size, this.x, this.y);
       this.c.fillStyle = this.color;
       this.c.fill();
       this.c.lineWidth = this.lineWidth;
@@ -537,7 +538,8 @@ var Weather = /*#__PURE__*/function () {
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 100;
         var velocity = Math.floor(Math.random() * 40 + 1) * 1 / 100;
-        this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas));
+        var size = Math.floor(Math.random() * 10) + 4;
+        this.clouds.push(new _cloud__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas, size));
       }
 
       this.renderTime();
