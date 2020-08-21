@@ -254,8 +254,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Weather = /*#__PURE__*/function () {
   function Weather(api, c, canvas) {
+    var timeApi = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
     _classCallCheck(this, Weather);
 
+    this.timeApi = timeApi;
     this.c = c;
     this.canvas = canvas;
     this.api = api;
@@ -270,14 +273,7 @@ var Weather = /*#__PURE__*/function () {
     this.rainSection = document.querySelector('.fa-tint');
     this.snowSection = document.querySelector('.fa-asterisk');
     this.starSection = document.querySelector('.fa-star');
-    this.thunderSection = document.querySelector('.fa-bolt'); ///
-
-    this.seoul = document.querySelector('.seoul');
-    this.pittsburgh = document.querySelector('.pittsburgh');
-    this.losangeles = document.querySelector('.losangeles');
-    this.london = document.querySelector('.london');
-    this.rome = document.querySelector('.rome'); ///
-
+    this.thunderSection = document.querySelector('.fa-bolt');
     this.stars = [];
     this.clouds = [];
     this.thunders = [];
@@ -355,32 +351,7 @@ var Weather = /*#__PURE__*/function () {
         _this2.clouds = [];
         _this2.snows = [];
         _this2.iconId = '11d';
-      }); ////
-
-      this.seoul.addEventListener('click', function () {
-        _this2.thunders = [];
-        _this2.clouds = [];
-        _this2.rains = [];
-        _this2.iconId = '13d';
       });
-      this.pittsburgh.addEventListener('click', function () {
-        _this2.thunders = [];
-        _this2.clouds = [];
-        _this2.snows = [];
-        _this2.iconId = '01n';
-      });
-      this.london.addEventListener('click', function () {
-        _this2.rains = [];
-        _this2.clouds = [];
-        _this2.snows = [];
-        _this2.iconId = '11d';
-      });
-      this.rome.addEventListener('click', function () {
-        _this2.rains = [];
-        _this2.clouds = [];
-        _this2.snows = [];
-        _this2.iconId = '11d';
-      }); ///
     }
   }, {
     key: "changeMetric",
@@ -398,6 +369,34 @@ var Weather = /*#__PURE__*/function () {
         }
       });
     }
+  }, {
+    key: "renderSelectCanvasBackground",
+    value: function renderSelectCanvasBackground() {
+      // fetch(this.timeApi)
+      //     .then(res => {
+      //         return res.json()
+      //     })
+      //     .then(data => { 
+      //         this.currTime = data['time_12']
+      //     })
+      this.renderCanvasAnimation();
+    } // renderSelectCanvasBackground() {
+    //     fetch(this.timeApi)
+    //         .then(res => {
+    //             return res.json()
+    //         })
+    //         .then(data => {
+    //             debugger
+    //             this.currTime = data['time_12'].split(":")
+    //             debugger
+    //             this.hour = this.currTime[0]
+    //             this.minutes = this.currTime[1]
+    //             this.midDay = this.currTime[2];
+    //         })
+    //     debugger
+    //     this.renderCanvasAnimation();
+    // }
+
   }, {
     key: "renderCanvasBackground",
     value: function renderCanvasBackground() {
@@ -419,6 +418,11 @@ var Weather = /*#__PURE__*/function () {
         this.minutes = "0".concat(this.minutes);
       }
 
+      this.renderCanvasAnimation();
+    }
+  }, {
+    key: "renderCanvasAnimation",
+    value: function renderCanvasAnimation() {
       this.c.beginPath();
 
       if (this.iconId[2] === 'd') {
@@ -439,7 +443,12 @@ var Weather = /*#__PURE__*/function () {
       }
 
       this.renderAnimation(this.iconId);
-      requestAnimationFrame(this.renderCanvasBackground.bind(this)); // resume update what did I do how, and the result 
+
+      if (this.timeApi) {
+        requestAnimationFrame(this.renderSelectCanvasBackground.bind(this));
+      } else {
+        requestAnimationFrame(this.renderCanvasBackground.bind(this));
+      }
 
       if (['13d', '13n', '09d', '10d', '09n', '10n', '11d', '11n'].includes(this.iconId)) {
         this.renderHeavyClouds();
@@ -652,8 +661,7 @@ var Weather = /*#__PURE__*/function () {
       this.c.lineWidth = 1;
       this.c.strokeStyle = 'gray';
       this.c.stroke();
-    } //////////
-
+    }
   }, {
     key: "maxRandom",
     value: function maxRandom(max) {
@@ -799,9 +807,11 @@ function callGetWeatherData(city, country) {
   canvas.width = 500;
   canvas.height = 500;
   var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
+  var timeApi = "https://api.ipgeolocation.io/timezone?apiKey=".concat(TIME_API_KEY, "&tz=Europe/London"); //
+
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, timeApi);
   weather.getData().then(function () {
-    return weather.renderCanvasBackground();
+    return weather.renderSelectCanvasBackground();
   });
 }
 

@@ -5,7 +5,8 @@ import Thunder from './thunder';
 import Cloud from './cloud';
 
 export default class Weather {
-    constructor(api, c, canvas) {
+    constructor(api, c, canvas, timeApi=null) {
+        this.timeApi = timeApi;
         this.c = c;
         this.canvas = canvas;
         this.api = api;
@@ -21,13 +22,6 @@ export default class Weather {
         this.snowSection = document.querySelector('.fa-asterisk');
         this.starSection = document.querySelector('.fa-star');
         this.thunderSection = document.querySelector('.fa-bolt');
-        ///
-        this.seoul = document.querySelector('.seoul');
-        this.pittsburgh = document.querySelector('.pittsburgh');
-        this.losangeles = document.querySelector('.losangeles');
-        this.london = document.querySelector('.london');
-        this.rome = document.querySelector('.rome');
-        ///
         this.stars = [];
         this.clouds = [];
         this.thunders = [];
@@ -102,32 +96,6 @@ export default class Weather {
             this.snows = [];
             this.iconId = '11d'
         })
-////
-        this.seoul.addEventListener('click', () => {
-            this.thunders = [];
-            this.clouds = [];
-            this.rains = [];
-            this.iconId = '13d'
-        })
-        this.pittsburgh.addEventListener('click', () => {
-            this.thunders = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '01n'
-        })
-        this.london.addEventListener('click', () => {
-            this.rains = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '11d'
-        })
-        this.rome.addEventListener('click', () => {
-            this.rains = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '11d'
-        })
-        ///
     }
 
     changeMetric(temperature) {
@@ -142,6 +110,40 @@ export default class Weather {
             }
         })
     }
+
+    renderSelectCanvasBackground(){
+        // fetch(this.timeApi)
+        //     .then(res => {
+        //         return res.json()
+        //     })
+        //     .then(data => { 
+        //         this.currTime = data['time_12']
+        
+        //     })
+
+        this.renderCanvasAnimation();
+
+            
+    }
+
+    // renderSelectCanvasBackground() {
+    //     fetch(this.timeApi)
+    //         .then(res => {
+    //             return res.json()
+    //         })
+    //         .then(data => {
+    //             debugger
+    //             this.currTime = data['time_12'].split(":")
+    //             debugger
+    //             this.hour = this.currTime[0]
+    //             this.minutes = this.currTime[1]
+    //             this.midDay = this.currTime[2];
+    //         })
+    //     debugger
+    //     this.renderCanvasAnimation();
+
+
+    // }
 
     renderCanvasBackground() {
         
@@ -161,6 +163,10 @@ export default class Weather {
             this.minutes = `0${this.minutes}`
         }
 
+        this.renderCanvasAnimation();
+    }
+
+    renderCanvasAnimation() {
         this.c.beginPath();
         if (this.iconId[2] === 'd') {
             const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
@@ -176,11 +182,15 @@ export default class Weather {
             this.c.fillRect(0, 0, 500, 600)
         }
         this.renderAnimation(this.iconId);
-        requestAnimationFrame(this.renderCanvasBackground.bind(this)) // resume update what did I do how, and the result 
+
+        if(this.timeApi) {
+            requestAnimationFrame(this.renderSelectCanvasBackground.bind(this))
+        } else {
+            requestAnimationFrame(this.renderCanvasBackground.bind(this))  
+        }
         if (['13d', '13n', '09d', '10d', '09n', '10n', '11d', '11n'].includes(this.iconId)) {
             this.renderHeavyClouds();
         }
-        
     }
 
     renderTime() {
@@ -382,8 +392,6 @@ export default class Weather {
         this.c.strokeStyle = 'gray';
         this.c.stroke();
     }
-
-    //////////
 
     maxRandom(max) {
         return Math.floor(Math.random() * max);

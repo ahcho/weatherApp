@@ -14,7 +14,7 @@ time, weather of the user's current location. In the bottom half of the applicat
 it will show related weather animation.
 
 ## Technologies
-Javascript, CSS, HTML, OpenWeatherMap API
+Javascript, CSS, HTML, OpenWeatherMap API, IG Geolocation Timezone API
 
 ## Features
 

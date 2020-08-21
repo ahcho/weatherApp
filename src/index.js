@@ -66,11 +66,14 @@ function callGetWeatherData(city, country) {
     canvas.width = 500
     canvas.height = 500
     const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
-    const weather = new Weather(api, c, canvas);
+    const timeApi = `https://api.ipgeolocation.io/timezone?apiKey=${TIME_API_KEY}&tz=Europe/London`
+    //
+    const weather = new Weather(api, c, canvas, timeApi);
 
     weather.getData().then(() =>
-        weather.renderCanvasBackground())
+        weather.renderSelectCanvasBackground())
 }
+
 document.addEventListener("DOMContentLoaded", function () {
     navigator.geolocation.getCurrentPosition(success, error);
 });
