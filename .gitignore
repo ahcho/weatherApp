@@ -1,7 +1,5 @@
 node_modules/
 .DS_Store
 config.js
-dist/bundle.js
-dist/bundle.js.map
 package.json
 package-lock.json
