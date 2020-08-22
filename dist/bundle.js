@@ -97,8 +97,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
 var config = {
-  API_KEY: "dfee5e9cc8167796e72b503e92bfdbcf",
-  TIME_API_KEY: "07fccc6911b743b3a4e786e0bc1578ef"
+  API_KEY: "dfee5e9cc8167796e72b503e92bfdbcf"
 };
 
 /***/ }),
@@ -254,11 +253,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Weather = /*#__PURE__*/function () {
   function Weather(api, c, canvas) {
-    var timeApi = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+    var foreignTime = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
     _classCallCheck(this, Weather);
 
-    this.timeApi = timeApi;
+    this.foreignTime = foreignTime;
     this.c = c;
     this.canvas = canvas;
     this.api = api;
@@ -285,6 +284,9 @@ var Weather = /*#__PURE__*/function () {
   }
 
   _createClass(Weather, [{
+    key: "getTime",
+    value: function getTime() {}
+  }, {
     key: "getData",
     value: function getData() {
       var _this = this;
@@ -372,34 +374,12 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "renderSelectCanvasBackground",
     value: function renderSelectCanvasBackground() {
-      // fetch(this.timeApi)
-      //     .then(res => {
-      //         return res.json()
-      //     })
-      //     .then(data => { 
-      //         this.currTime = data['time_12']
-      //     })
       this.renderCanvasAnimation();
-    } // renderSelectCanvasBackground() {
-    //     fetch(this.timeApi)
-    //         .then(res => {
-    //             return res.json()
-    //         })
-    //         .then(data => {
-    //             debugger
-    //             this.currTime = data['time_12'].split(":")
-    //             debugger
-    //             this.hour = this.currTime[0]
-    //             this.minutes = this.currTime[1]
-    //             this.midDay = this.currTime[2];
-    //         })
-    //     debugger
-    //     this.renderCanvasAnimation();
-    // }
-
+    }
   }, {
     key: "renderCanvasBackground",
     value: function renderCanvasBackground() {
+      console.log("hello");
       var today = new Date();
       this.hour = today.getHours();
       this.minutes = today.getMinutes();
@@ -444,7 +424,7 @@ var Weather = /*#__PURE__*/function () {
 
       this.renderAnimation(this.iconId);
 
-      if (this.timeApi) {
+      if (this.foreignTime) {
         requestAnimationFrame(this.renderSelectCanvasBackground.bind(this));
       } else {
         requestAnimationFrame(this.renderCanvasBackground.bind(this));
@@ -807,9 +787,8 @@ function callGetWeatherData(city, country) {
   canvas.width = 500;
   canvas.height = 500;
   var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
-  var timeApi = "https://api.ipgeolocation.io/timezone?apiKey=".concat(TIME_API_KEY, "&tz=Europe/London"); //
-
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, timeApi);
+  var foreignTime = true;
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, foreignTime);
   weather.getData().then(function () {
     return weather.renderSelectCanvasBackground();
   });

@@ -5,8 +5,8 @@ import Thunder from './thunder';
 import Cloud from './cloud';
 
 export default class Weather {
-    constructor(api, c, canvas, timeApi=null) {
-        this.timeApi = timeApi;
+    constructor(api, c, canvas, foreignTime=false) {
+        this.foreignTime = foreignTime;
         this.c = c;
         this.canvas = canvas;
         this.api = api;
@@ -30,6 +30,10 @@ export default class Weather {
         this.ticker = 0;
         this.counter = 0;
         this.degree = 0;
+    }
+
+    getTime() {
+        
     }
 
     getData() {
@@ -112,41 +116,13 @@ export default class Weather {
     }
 
     renderSelectCanvasBackground(){
-        // fetch(this.timeApi)
-        //     .then(res => {
-        //         return res.json()
-        //     })
-        //     .then(data => { 
-        //         this.currTime = data['time_12']
-        
-        //     })
 
         this.renderCanvasAnimation();
-
-            
+     
     }
 
-    // renderSelectCanvasBackground() {
-    //     fetch(this.timeApi)
-    //         .then(res => {
-    //             return res.json()
-    //         })
-    //         .then(data => {
-    //             debugger
-    //             this.currTime = data['time_12'].split(":")
-    //             debugger
-    //             this.hour = this.currTime[0]
-    //             this.minutes = this.currTime[1]
-    //             this.midDay = this.currTime[2];
-    //         })
-    //     debugger
-    //     this.renderCanvasAnimation();
-
-
-    // }
-
     renderCanvasBackground() {
-        
+        console.log("hello")
         const today = new Date();
         this.hour = today.getHours();
         this.minutes = today.getMinutes();
@@ -183,7 +159,7 @@ export default class Weather {
         }
         this.renderAnimation(this.iconId);
 
-        if(this.timeApi) {
+        if (this.foreignTime) {
             requestAnimationFrame(this.renderSelectCanvasBackground.bind(this))
         } else {
             requestAnimationFrame(this.renderCanvasBackground.bind(this))  
