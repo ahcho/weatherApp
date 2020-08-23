@@ -1,7 +1,7 @@
 import Weather from './getWeatherData'
 import {config} from '../config/config'
 const API_KEY = config.API_KEY;
-const TIME_API_KEY = config.TIME_API_KEY;
+
 
 
 function success(position){
@@ -20,6 +20,7 @@ function success(position){
 
 function error(err) {
     toggle();
+
     listenClick();
 }
 
@@ -39,22 +40,22 @@ function listenClick() {
     let city = "", country = "";
 
     seoul.addEventListener('click', () => {
-        city = "Seoul"
+        city = "seoul"
         country = "kr"    
         callGetWeatherData(city, country)        
     })
     pittsburgh.addEventListener('click', () => {
-        city = "Pittsburgh"
+        city = "pittsburgh"
         country = "us"
         callGetWeatherData(city, country)
     })
     london.addEventListener('click', () => {
-        city = "London"
+        city = "london"
         country = "uk"   
         callGetWeatherData(city, country)   
     })
     rome.addEventListener('click', () => {
-        city = "Rome"
+        city = "rome"
         country = "it"
         callGetWeatherData(city, country)
     })
@@ -66,12 +67,10 @@ function callGetWeatherData(city, country) {
     canvas.width = 500
     canvas.height = 500
     const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
-    const foreignTime = true
-
-    const weather = new Weather(api, c, canvas, foreignTime);
+    const weather = new Weather(api, c, canvas, city);
 
     weather.getData().then(() =>
-        weather.renderSelectCanvasBackground())
+        weather.renderNotLocalCanvasBackground())
 }
 
 document.addEventListener("DOMContentLoaded", function () {

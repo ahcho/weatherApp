@@ -5,421 +5,574 @@ import Thunder from './thunder';
 import Cloud from './cloud';
 
 export default class Weather {
-    constructor(api, c, canvas, foreignTime=false) {
-        this.foreignTime = foreignTime;
-        this.c = c;
-        this.canvas = canvas;
-        this.api = api;
-        this.temperatureDegree = document.querySelector(".temp-degree");
-        this.temperatureDescription = document.querySelector(".temp-description");
-        this.locationTimezone = document.querySelector(".location-timezone");
-        this.degreeSection = document.querySelector('.weather-info-bottom');
-        this.degreeSpan = document.querySelector('.weather-info-bottom span');
-        this.iconSection = document.getElementById('temp-icon');
-        this.sunSection = document.querySelector('.fa-sun');
-        this.cloudSection = document.querySelector('.fa-cloud');
-        this.rainSection = document.querySelector('.fa-tint');
-        this.snowSection = document.querySelector('.fa-asterisk');
-        this.starSection = document.querySelector('.fa-star');
-        this.thunderSection = document.querySelector('.fa-bolt');
-        this.stars = [];
-        this.clouds = [];
-        this.thunders = [];
-        this.rains = [];
-        this.snows = [];
-        this.ticker = 0;
-        this.counter = 0;
-        this.degree = 0;
-    }
+                 constructor(api, c, canvas, city = false) {
+                   this.city = city;
+                   this.c = c;
+                   this.canvas = canvas;
+                   this.api = api;
+                   this.temperatureDegree = document.querySelector(
+                     ".temp-degree"
+                   );
+                   this.temperatureDescription = document.querySelector(
+                     ".temp-description"
+                   );
+                   this.locationTimezone = document.querySelector(
+                     ".location-timezone"
+                   );
+                   this.degreeSection = document.querySelector(
+                     ".weather-info-bottom"
+                   );
+                   this.degreeSpan = document.querySelector(
+                     ".weather-info-bottom span"
+                   );
+                   this.iconSection = document.getElementById("temp-icon");
+                   this.sunSection = document.querySelector(".fa-sun");
+                   this.cloudSection = document.querySelector(".fa-cloud");
+                   this.rainSection = document.querySelector(".fa-tint");
+                   this.snowSection = document.querySelector(".fa-asterisk");
+                   this.starSection = document.querySelector(".fa-star");
+                   this.thunderSection = document.querySelector(".fa-bolt");
+                   this.stars = [];
+                   this.clouds = [];
+                   this.thunders = [];
+                   this.rains = [];
+                   this.snows = [];
+                   this.ticker = 0;
+                   this.counter = 0;
+                   this.degree = 0;
+                 }
 
-    getTime() {
-        
-    }
+                 getData() {
+                   return fetch(this.api)
+                     .then((res) => {
+                       return res.json();
+                     })
+                     .then((data) => {
+                       const description = data.weather[0].description;
+                       this.temperature = Math.floor(data.main.temp);
+                       const location = data.name;
+                       this.iconId = data.weather[0].icon;
+                       this.fixIconId = data.weather[0].icon;
+                       const iconAdd = `https://openweathermap.org/img/wn/${this.iconId}@2x.png`;
 
-    getData() {
-        return fetch(this.api)
-            .then(res => {
-                return res.json()
-            })
-            .then(data => {
-                const description = data.weather[0].description
-                this.temperature = Math.floor(data.main.temp)
-                const location = data.name
-                this.iconId = data.weather[0].icon
-                this.fixIconId = data.weather[0].icon
-                const iconAdd = `https://openweathermap.org/img/wn/${this.iconId}@2x.png`
+                       //Set DOM Elements from the API
+                       this.temperatureDegree.textContent = this.temperature;
+                       this.temperatureDescription.textContent = description;
+                       this.locationTimezone.textContent = location;
+                       this.iconSection.src = iconAdd;
+                       this.changeMetric(this.temperature);
+                       this.listenClick();
+                     });
+                 }
 
-                //Set DOM Elements from the API
-                this.temperatureDegree.textContent = this.temperature;
-                this.temperatureDescription.textContent = description;
-                this.locationTimezone.textContent = location;
-                this.iconSection.src = iconAdd;
-                this.changeMetric(this.temperature);
-                this.listenClick();
-            })
+                 listenClick() {
+                   this.stars = [];
+                   this.sunSection.addEventListener("click", () => {
+                     this.thunders = [];
+                     this.rains = [];
+                     this.clouds = [];
+                     this.snows = [];
+                     this.iconId = "01d";
+                   });
+                   this.cloudSection.addEventListener("click", () => {
+                     this.thunders = [];
+                     this.rains = [];
+                     this.snows = [];
+                     this.iconId = "03d";
+                   });
+                   this.rainSection.addEventListener("click", () => {
+                     this.thunders = [];
+                     this.clouds = [];
+                     this.snows = [];
+                     this.iconId = "09d";
+                   });
+                   this.snowSection.addEventListener("click", () => {
+                     this.thunders = [];
+                     this.clouds = [];
+                     this.rains = [];
+                     this.iconId = "13d";
+                   });
+                   this.starSection.addEventListener("click", () => {
+                     this.thunders = [];
+                     this.clouds = [];
+                     this.snows = [];
+                     this.iconId = "01n";
+                   });
+                   this.thunderSection.addEventListener("click", () => {
+                     this.rains = [];
+                     this.clouds = [];
+                     this.snows = [];
+                     this.iconId = "11d";
+                   });
+                 }
 
-    }
+                 changeMetric(temperature) {
+                   let celsius = (temperature - 32) * (5 / 9);
+                   this.degreeSection.addEventListener("click", () => {
+                     if (this.degreeSpan.textContent === "°F") {
+                       this.degreeSpan.textContent = "°C";
+                       this.temperatureDegree.textContent = Math.floor(celsius);
+                     } else {
+                       this.degreeSpan.textContent = "°F";
+                       this.temperatureDegree.textContent = temperature;
+                     }
+                   });
+                 }
 
-    listenClick() {
+                 renderNotLocalCanvasBackground() {
+                    this.getNotLocalTime();
+                    this.renderWeatherAnimation();
+                 }
 
-        this.stars = [];
-        this.sunSection.addEventListener('click', () => {
-            this.thunders = [];
-            this.rains = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = "01d";
-        })
-        this.cloudSection.addEventListener('click', () => {
-            this.thunders = [];
-            this.rains = [];
-            this.snows = [];
-            this.iconId = '03d'
-        })
-        this.rainSection.addEventListener('click', () => {
-            this.thunders = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '09d'
-        })
-        this.snowSection.addEventListener('click', () => {
-            this.thunders = [];
-            this.clouds = [];
-            this.rains = [];
-            this.iconId = '13d'
-        })
-        this.starSection.addEventListener('click', () => {
-            this.thunders = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '01n'
-        })
-        this.thunderSection.addEventListener('click', () => {
-            this.rains = [];
-            this.clouds = [];
-            this.snows = [];
-            this.iconId = '11d'
-        })
-    }
+                 renderCanvasBackground() {
+                   //get local time
+                   const today = new Date();
+                   this.hour = today.getHours();
+                   this.minutes = today.getMinutes();
+                   this.midDay = "AM";
 
-    changeMetric(temperature) {
-        let celsius = (temperature - 32) * (5 / 9);
-        this.degreeSection.addEventListener('click', () => {
-            if (this.degreeSpan.textContent === '°F') {
-                this.degreeSpan.textContent = '°C'
-                this.temperatureDegree.textContent = Math.floor(celsius);
-            } else {
-                this.degreeSpan.textContent = '°F'
-                this.temperatureDegree.textContent = temperature;
-            }
-        })
-    }
+                   if (this.hour >= 12) {
+                     this.midDay = "PM";
+                     if (this.hour > 12) this.hour -= 12;
+                   }
+                   if (this.hour < 10) {
+                     this.hour = `0${this.hour}`;
+                   }
+                   if (this.minutes < 10) {
+                     this.minutes = `0${this.minutes}`;
+                   }
 
-    renderSelectCanvasBackground(){
+                   this.renderWeatherAnimation();
+                 }
 
-        this.renderCanvasAnimation();
-     
-    }
+                 getNotLocalTime() {
+    
+                    const moment = require("moment-timezone");
+                    let timeString = '';
+                    switch (this.city) {
+                      case "london":
+                        timeString = "Europe/London";
+                        break;
+                      case "pittsburgh":
+                        timeString = "America/New_York";
+                        break;
+                      case "seoul":
+                        timeString = "Asia/Seoul";
+                        break;
+                      case "rome":
+                        timeString = "Europe/Rome";
+                        break;
+                      
+                    }
+                    let notLocalTimeArr = moment.tz(timeString).format().split('T')[1].split(':')
+                    this.hour = notLocalTimeArr[0] >= 13 ? notLocalTimeArr[0] - 12 : notLocalTimeArr[0];
+                    this.minutes = notLocalTimeArr[1];
+                    this.midDay = notLocalTimeArr[0] >= 12 ? 'PM' : 'AM'
 
-    renderCanvasBackground() {
-        console.log("hello")
-        const today = new Date();
-        this.hour = today.getHours();
-        this.minutes = today.getMinutes();
-        this.midDay = 'AM';
+                 }
 
-        if (this.hour >= 12) {
-            this.midDay = 'PM'
-            if (this.hour > 12) this.hour -= 12;
-        }
-        if (this.hour < 10) {
-            this.hour = `0${this.hour}`
-        }
-        if (this.minutes < 10) {
-            this.minutes = `0${this.minutes}`
-        }
+                 renderWeatherAnimation() {
+                   this.c.beginPath();
+                   if (this.iconId[2] === "d") {
+                     const backgroundGradient = this.c.createLinearGradient(
+                       0,
+                       0,
+                       500,
+                       600
+                     );
+                     backgroundGradient.addColorStop(1, "#B7F8DB");
+                     backgroundGradient.addColorStop(0, "#50A7C2");
+                     this.c.fillStyle = backgroundGradient;
+                     this.c.fillRect(0, 0, 500, 600);
+                   } else {
+                     const backgroundGradient = this.c.createLinearGradient(
+                       0,
+                       0,
+                       500,
+                       600
+                     );
+                     backgroundGradient.addColorStop(0, "#171e26");
+                     backgroundGradient.addColorStop(1, "#3f586b");
+                     this.c.fillStyle = backgroundGradient;
+                     this.c.fillRect(0, 0, 500, 600);
+                   }
+                   this.renderCurrentWeatherAnimation(this.iconId);
 
-        this.renderCanvasAnimation();
-    }
+                   if (this.city) {
+                     requestAnimationFrame(
+                       this.renderNotLocalCanvasBackground.bind(this)
+                     );
+                   } else {
+                     requestAnimationFrame(
+                       this.renderCanvasBackground.bind(this)
+                     );
+                   }
+                   if (
+                     [
+                       "13d",
+                       "13n",
+                       "09d",
+                       "10d",
+                       "09n",
+                       "10n",
+                       "11d",
+                       "11n",
+                     ].includes(this.iconId)
+                   ) {
+                     this.renderHeavyClouds();
+                   }
+                 }
 
-    renderCanvasAnimation() {
-        this.c.beginPath();
-        if (this.iconId[2] === 'd') {
-            const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
-            backgroundGradient.addColorStop(1, '#B7F8DB')
-            backgroundGradient.addColorStop(0, '#50A7C2')
-            this.c.fillStyle = backgroundGradient;
-            this.c.fillRect(0, 0, 500, 600)
-        } else {
-            const backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600)
-            backgroundGradient.addColorStop(0, '#171e26')
-            backgroundGradient.addColorStop(1, '#3f586b')
-            this.c.fillStyle = backgroundGradient;
-            this.c.fillRect(0, 0, 500, 600)
-        }
-        this.renderAnimation(this.iconId);
+                 renderTime() {
+                   let color = "#555555";
+                   if (this.iconId[2] === "n") color = "white";
+                   this.c.beginPath();
+                   this.c.font = "50px Cinzel";
+                   this.c.fillStyle = color;
+                   this.c.fillText(`${this.hour}:${this.minutes}`, 190, 60);
+                   this.c.font = "20px Cinzel";
+                   this.c.fillText(this.midDay, 310, 40);
+                   this.c.fill();
+                   this.c.closePath();
+                 }
 
-        if (this.foreignTime) {
-            requestAnimationFrame(this.renderSelectCanvasBackground.bind(this))
-        } else {
-            requestAnimationFrame(this.renderCanvasBackground.bind(this))  
-        }
-        if (['13d', '13n', '09d', '10d', '09n', '10n', '11d', '11n'].includes(this.iconId)) {
-            this.renderHeavyClouds();
-        }
-    }
+                 renderCurrentWeatherAnimation() {
+                   const THUNDER_ICON = ["11d", "11n"];
+                   const SUN = "01d";
+                   const FEW_CLOUDS = "02d";
+                   const SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
+                   const RAIN = ["09d", "10d", "09n", "10n"];
+                   const SNOW_ICON = ["13d", "13n"];
+                   const night = [
+                     "01n",
+                     "02n",
+                     "03n",
+                     "04n",
+                     "09n",
+                     "10n",
+                     "11n",
+                     "13n",
+                     "50n",
+                   ];
 
-    renderTime() {
-        let color = '#555555'
-        if (this.iconId[2] === 'n') color = 'white'
-        this.c.beginPath()
-        this.c.font = '50px Cinzel'
-        this.c.fillStyle = color;
-        this.c.fillText(`${this.hour}:${this.minutes}`, 190, 60);
-        this.c.font = '20px Cinzel'
-        this.c.fillText(this.midDay, 310, 40)
-        this.c.fill();
-        this.c.closePath();
-    }
+                   if (this.iconId[2] === "n") {
+                     if (this.stars.length === 0) {
+                       this.createStars(
+                         this.canvas.width,
+                         this.canvas.height,
+                         30
+                       );
+                     }
+                     this.animateNightSky();
+                     this.renderCloud(300, 150, "lightgray");
+                   }
+                   if (this.iconId === SUN) {
+                     this.animateSun(250, 250);
+                   } else if (this.iconId === FEW_CLOUDS) {
+                     this.renderCloud(300, 250, "lightgray");
+                     this.animateSun(250, 180);
+                     this.renderCloud(100, 200, "white");
+                     this.animateCloud();
+                   } else if (SCATTER_CLOUDS.includes(this.iconId)) {
+                     this.renderHeavyClouds();
+                     this.animateCloud();
+                   } else if (RAIN.includes(this.iconId)) {
+                     this.animateRain();
+                   } else if (THUNDER_ICON.includes(this.iconId)) {
+                     this.animateThunder();
+                   } else if (SNOW_ICON.includes(this.iconId)) {
+                     this.animateSnow();
+                   }
 
-    renderAnimation() {
-        const THUNDER_ICON = ['11d', '11n']
-        const SUN = '01d';
-        const FEW_CLOUDS = '02d';
-        const SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
-        const RAIN = ['09d', '10d', '09n', '10n']
-        const SNOW_ICON = ['13d', '13n'] 
-        const night =
-            ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"]
+                   let color = "#555555";
+                   if (this.iconId[2] === "n") color = "white";
+                   this.renderTime(color);
+                 }
 
-        if (this.iconId[2] === 'n') {
-            if (this.stars.length === 0) {
-                this.createStars(this.canvas.width, this.canvas.height, 30);
-            }
-            this.animateNightSky();
-            this.renderCloud(300, 150, 'lightgray');
-        }
-        if (this.iconId === SUN) {
-            this.animateSun(250, 250);
-        } else if (this.iconId === FEW_CLOUDS) {
-            this.renderCloud(300, 250, 'lightgray');
-            this.animateSun(250, 180);
-            this.renderCloud(100, 200, 'white');
-            this.animateCloud();
-        } else if (SCATTER_CLOUDS.includes(this.iconId)) {
-            this.renderHeavyClouds();
-            this.animateCloud();
-        } else if (RAIN.includes(this.iconId)) {
-            this.animateRain();
-        } else if (THUNDER_ICON.includes(this.iconId)) {
-            this.animateThunder();
-        } else if (SNOW_ICON.includes(this.iconId)) {
-            this.animateSnow();
-        }
+                 animateRain() {
+                   this.rains.forEach((rain) => {
+                     rain.update();
+                     rain.miniRains.forEach((miniRain, index) => {
+                       miniRain.update();
 
-        let color = '#555555'
-        if (this.iconId[2] === 'n') color = 'white'
-        this.renderTime(color);
-    }
+                       if (miniRain.ttl === 0) {
+                         rain.miniRains.splice(index, 1); // get rid of mini rain
+                       }
+                     });
+                   });
 
-    animateRain() {
+                   this.ticker++;
 
-        this.rains.forEach((rain) => {
+                   if (
+                     this.rains.length === 0 ||
+                     (this.ticker % 80 === 0 && this.rains.length < 20)
+                   ) {
+                     const x = Math.random() * 490 + 30;
+                     const y = 150;
+                     const w = Math.random() * 5;
+                     this.rains.push(
+                       new Rain(x, y, w, "blue", this.c, this.canvas)
+                     );
+                   }
+                   this.renderTime();
+                 }
 
-            rain.update();
-            rain.miniRains.forEach((miniRain, index) => {
-                miniRain.update();
+                 animateCloud() {
+                   const CLOUD_COLOR = [
+                     "#dde0f2",
+                     "#cadae1",
+                     "#d6d9f0",
+                     "#ffeef7",
+                     "#a99da4",
+                     "#dfe8fb",
+                     "lightgrey",
+                     "gray",
+                   ];
+                   this.clouds.forEach((cloud) => {
+                     cloud.update();
+                   });
+                   this.ticker++;
+                   if (
+                     this.clouds.length === 0 ||
+                     (this.ticker % 250 === 0 && this.clouds.length <= 10)
+                   ) {
+                     const rand_num = Math.floor(Math.random() * 7);
+                     const x = Math.floor(Math.random() * 200) - 100;
+                     const y = Math.random() * 400 + 100;
+                     const velocity =
+                       (Math.floor(Math.random() * 40 + 1) * 1) / 100;
+                     const size = Math.floor(Math.random() * 10) + 4;
+                     this.clouds.push(
+                       new Cloud(
+                         x,
+                         y,
+                         CLOUD_COLOR[rand_num],
+                         velocity,
+                         this.c,
+                         this.canvas,
+                         size
+                       )
+                     );
+                   }
+                   this.renderTime();
+                 }
 
-                if (miniRain.ttl === 0) {
-                    rain.miniRains.splice(index, 1)// get rid of mini rain    
-                }
-            })
-        });
+                 animateThunder() {
+                   this.thunders.forEach((thunder) => {
+                     thunder.update();
+                   });
 
-        this.ticker++;
+                   this.ticker++;
+                   if (this.ticker % 100 === 0 && this.thunders.length < 10) {
+                     const x = Math.random() * (450 - 100) + 100;
+                     const y = 180;
+                     this.thunders.push(new Thunder(x, y, this.c, this.canvas));
+                   }
 
-        if (this.rains.length === 0 || (this.ticker % 80 === 0 && this.rains.length < 20)) {
-            const x = (Math.random() * 490) + 30;
-            const y = 150;
-            const w = Math.random() * 5;
-            this.rains.push(new Rain(x, y, w, "blue", this.c, this.canvas))
-        }
-        this.renderTime();
-    }
+                   if (this.thunders.length === 0) {
+                     const startX = 60;
+                     const startY = 180;
 
-    animateCloud() {
-        const CLOUD_COLOR = ['#dde0f2', '#cadae1', '#d6d9f0', '#ffeef7', '#a99da4', '#dfe8fb', 'lightgrey', 'gray']
-        this.clouds.forEach((cloud) => {
-            cloud.update();
-        })
-        this.ticker++;
-        if (this.clouds.length === 0 || (this.ticker % 250 === 0 && this.clouds.length <= 10)) {
-            const rand_num = Math.floor(Math.random() * 7);
-            const x = Math.floor(Math.random() * 200) - 100;
-            const y = Math.random() * 400 + 100;
-            const velocity = Math.floor((Math.random() * 40) + 1) * 1 / 100;
-            const size = Math.floor(Math.random() * 10) + 4;
-            this.clouds.push(new Cloud(x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas, size));
-        }
-        this.renderTime();
-    }
+                     this.thunders.push(
+                       new Thunder(startX, startY, this.c, this.canvas)
+                     );
+                   }
+                   this.renderTime();
+                 }
 
-    animateThunder() {
-        this.thunders.forEach((thunder) => {
-            thunder.update();
-        });
+                 animateSnow() {
+                   this.snows.forEach((snow) => {
+                     snow.update();
+                   });
 
-        this.ticker++;
-        if (this.ticker % 100 === 0 && this.thunders.length < 10) {
-            const x = Math.random() * (450 - 100) + 100;
-            const y = 180;
-            this.thunders.push(new Thunder(x, y, this.c, this.canvas));
-        }
+                   this.ticker++;
 
-        if (this.thunders.length === 0) {
-            const startX = 60;
-            const startY = 180
+                   if (
+                     this.snows.length === 0 ||
+                     (this.ticker % 100 === 0 && this.snows.length <= 20)
+                   ) {
+                     const x = Math.random() * 480 + 50;
+                     const y = 180;
+                     this.snows.push(
+                       new Snow(x, y, 10, "white", this.c, this.canvas)
+                     );
+                   }
+                 }
 
-            this.thunders.push(new Thunder(startX, startY, this.c, this.canvas));
-        }
-        this.renderTime();
+                 animateSun(x, y) {
+                   if (this.temperature > 80) {
+                     this.radius = 100;
+                     this.lineWidth = 15;
+                     this.len = 50;
+                   } else {
+                     this.radius = 60;
+                     this.lineWidth = 9;
+                     this.len = 30;
+                   }
+                   this.x = x;
+                   this.y = y;
+                   this.sAngle = 0;
+                   this.eAngle = Math.PI * 2;
 
-    }
+                   this.c.beginPath();
+                   this.c.arc(
+                     this.x,
+                     this.y,
+                     this.radius,
+                     this.sAngle,
+                     this.eAngle,
+                     false
+                   );
+                   this.c.fillStyle = "#FDB813";
+                   this.c.fill();
 
-    animateSnow() {
+                   this.ticker++;
+                   if (this.ticker % 50 === 0) {
+                     this.degree += 11.25;
+                   }
+                   if (y === 250) {
+                     for (let i = 0; i < 8; i++) {
+                       this.c.beginPath();
+                       this.c.lineCap = "round";
+                       const x =
+                         250 +
+                         Math.cos((Math.PI * this.degree) / 180) *
+                           (this.radius + 15);
+                       const y =
+                         250 -
+                         Math.sin((Math.PI * this.degree) / 180) *
+                           (this.radius + 15);
+                       this.c.moveTo(x, y);
+                       this.c.lineTo(
+                         x + this.len * Math.cos((Math.PI * this.degree) / 180),
+                         y - this.len * Math.sin((Math.PI * this.degree) / 180)
+                       );
+                       this.c.lineWidth = this.lineWidth;
+                       this.c.strokeStyle = "#FDB813";
+                       this.c.stroke();
+                       this.degree += 45;
+                     }
+                   }
+                   this.c.closePath();
+                 }
 
-        this.snows.forEach((snow) => {
-            snow.update();
-        });
+                 renderHeavyClouds() {
+                   this.renderCloud(50, 130, "#dde7ee");
+                   this.renderCloud(300, 150, "#f0efef");
+                   this.renderCloud(100, 200, "white");
+                 }
 
-        this.ticker++;
+                 renderCloud(startX, startY, color) {
+                   this.c.beginPath();
+                   this.c.moveTo(startX, startY);
+                   this.c.bezierCurveTo(
+                     startX - 40,
+                     startY + 20,
+                     startX - 40,
+                     startY + 70,
+                     startX + 60,
+                     startY + 70
+                   );
+                   this.c.bezierCurveTo(
+                     startX + 80,
+                     startY + 100,
+                     startX + 150,
+                     startY + 100,
+                     startX + 170,
+                     startY + 70
+                   );
+                   this.c.bezierCurveTo(
+                     startX + 300,
+                     startY + 70,
+                     startX + 300,
+                     startY + 40,
+                     startX + 250,
+                     startY + 20
+                   );
+                   this.c.bezierCurveTo(
+                     startX + 260,
+                     startY - 40,
+                     startX + 200,
+                     startY - 50,
+                     startX + 170,
+                     startY - 30
+                   );
+                   this.c.bezierCurveTo(
+                     startX + 150,
+                     startY - 75,
+                     startX + 80,
+                     startY - 60,
+                     startX + 80,
+                     startY - 30
+                   );
+                   this.c.bezierCurveTo(
+                     startX + 30,
+                     startY - 75,
+                     startX - 20,
+                     startY - 60,
+                     startX,
+                     startY
+                   );
+                   this.c.closePath();
+                   this.c.fillStyle = color;
+                   this.c.fill();
+                   this.c.lineWidth = 1;
+                   this.c.strokeStyle = "gray";
+                   this.c.stroke();
+                 }
 
-        if (this.snows.length === 0 || (this.ticker % 100 === 0 && this.snows.length <= 20)) {
-            const x = (Math.random() * 480) + 50;
-            const y = 180;
-            this.snows.push(new Snow(x, y, 10, 'white', this.c, this.canvas))
-        }
+                 maxRandom(max) {
+                   return Math.floor(Math.random() * max);
+                 }
 
+                 createStars(width, height, spacing) {
+                   let dx;
+                   let dy;
+                   for (let x = 0; x < width; x += spacing) {
+                     for (let y = 0; y < height; y += spacing) {
+                       dx = x + this.maxRandom(spacing);
+                       dy = y + this.maxRandom(spacing);
+                       let r = Math.random() * 1.5;
+                       const star = new Star(dx, dy, r, this.c, this.canvas);
+                       this.stars.push(star);
+                     }
+                   }
+                 }
 
-    }
+                 animateNightSky() {
+                   this.c.fillStyle = "black";
+                   this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                   this.stars.forEach((star, i) => {
+                     const factor = this.counter * i,
+                       opacity = star.getOpacity(factor),
+                       randomColor = Math.floor(Math.random() * 360 + 1);
+                     //render stars
+                     star.renderStar(
+                       `hsla(${randomColor}, 30%, 80%, ${opacity})`
+                     );
+                   });
 
-    animateSun(x, y) {
+                   if (["01n", "02n"].includes(this.iconId)) {
+                     this.renderMoon();
+                   } else if (["03n", "04n"].includes(this.iconId)) {
+                     this.renderCloud(50, 130, "#B4B4B4");
+                     this.renderCloud(300, 150, "lightgray");
+                     this.renderCloud(100, 100, "#909090");
+                   }
 
-        if (this.temperature > 80) {
-            this.radius = 100;
-            this.lineWidth = 15;
-            this.len = 50;
-        } else {
-            this.radius = 60;
-            this.lineWidth = 9;
-            this.len = 30;
-        }
-        this.x = x;
-        this.y = y;
-        this.sAngle = 0;
-        this.eAngle = Math.PI * 2;
+                   this.counter++;
+                   this.renderTime("white");
 
-        this.c.beginPath();
-        this.c.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, false);
-        this.c.fillStyle = '#FDB813';
-        this.c.fill();
+                   requestAnimationFrame(this.animateNightSky.bind(this));
+                 }
 
-        this.ticker++;
-        if (this.ticker % 50 === 0 ) {
-            this.degree += 11.25
-        }
-        if (y === 250) {
-            for (let i = 0; i < 8; i++) {
-                this.c.beginPath();
-                this.c.lineCap = 'round';
-                const x = 250 + Math.cos(Math.PI * this.degree / 180) * (this.radius + 15);
-                const y = 250 - Math.sin(Math.PI * this.degree / 180) * (this.radius + 15);
-                this.c.moveTo(x, y);
-                this.c.lineTo(x + (this.len * Math.cos(Math.PI * this.degree / 180)),
-                    y - (this.len * Math.sin(Math.PI * this.degree / 180)));
-                this.c.lineWidth = this.lineWidth;
-                this.c.strokeStyle = '#FDB813';
-                this.c.stroke();
-                this.degree += 45;
-            }
-        }
-        this.c.closePath();
-    }
-
-    renderHeavyClouds() {
-        this.renderCloud(50, 130, '#dde7ee');
-        this.renderCloud(300, 150, '#f0efef');
-        this.renderCloud(100, 200, 'white');
-    }
-
-    renderCloud(startX, startY, color) {
-        this.c.beginPath()
-        this.c.moveTo(startX, startY);
-        this.c.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
-        this.c.bezierCurveTo(startX + 80, startY + 100, startX + 150, startY + 100, startX + 170, startY + 70);
-        this.c.bezierCurveTo(startX + 300, startY + 70, startX + 300, startY + 40, startX + 250, startY + 20);
-        this.c.bezierCurveTo(startX + 260, startY - 40, startX + 200, startY - 50, startX + 170, startY - 30);
-        this.c.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
-        this.c.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
-        this.c.closePath();
-        this.c.fillStyle = color;
-        this.c.fill();
-        this.c.lineWidth = 1;
-        this.c.strokeStyle = 'gray';
-        this.c.stroke();
-    }
-
-    maxRandom(max) {
-        return Math.floor(Math.random() * max);
-    }
-
-    createStars(width, height, spacing) {
-        let dx;
-        let dy;
-        for (let x = 0; x < width; x += spacing) {
-            for (let y = 0; y < height; y += spacing) {
-                dx = x + this.maxRandom(spacing);
-                dy = y + this.maxRandom(spacing);
-                let r = Math.random() * 1.5;
-                const star = new Star(dx, dy, r, this.c, this.canvas);
-                this.stars.push(star);
-            }
-        }
-    }
-
-    animateNightSky() {
-        this.c.fillStyle = 'black';
-        this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.stars.forEach((star, i) => {
-            const
-                factor = this.counter * i,
-                opacity = star.getOpacity(factor),
-                randomColor = Math.floor((Math.random() * 360) + 1);
-            //render stars
-            star.renderStar(`hsla(${randomColor}, 30%, 80%, ${opacity})`);
-        });
-
-        if (['01n', '02n'].includes(this.iconId)) {
-            this.renderMoon()
-        } else if (['03n', '04n'].includes(this.iconId)) {
-            this.renderCloud(50, 130, '#B4B4B4');
-            this.renderCloud(300, 150, 'lightgray');
-            this.renderCloud(100, 100, '#909090');
-        }
-
-        this.counter++;
-        this.renderTime('white')
-
-        requestAnimationFrame(this.animateNightSky.bind(this));
-    }
-
-    renderMoon() {
-        this.c.save()
-        this.c.beginPath()
-        this.c.arc(360, 100, 50, 0, Math.PI * 2)
-        this.c.fillStyle = "#f0c420"
-        this.c.fill()
-        this.c.closePath()
-        this.c.restore()
-    }
-}
+                 renderMoon() {
+                   this.c.save();
+                   this.c.beginPath();
+                   this.c.arc(360, 100, 50, 0, Math.PI * 2);
+                   this.c.fillStyle = "#f0c420";
+                   this.c.fill();
+                   this.c.closePath();
+                   this.c.restore();
+                 }
+               }
