@@ -22727,6 +22727,9 @@ function success(position) {
 function error(err) {
   toggle();
   listenClick();
+  var city = "seoul";
+  var country = "kr";
+  callGetWeatherData(city, country);
 }
 
 function toggle() {
@@ -22780,15 +22783,6 @@ function callGetWeatherData(city, country) {
 document.addEventListener("DOMContentLoaded", function () {
   navigator.geolocation.getCurrentPosition(success, error);
 });
-
-function errorMsg(c) {
-  c.beginPath();
-  c.font = '30px Cinzel';
-  c.fillStyle = 'black';
-  c.fillText('please allow me to know', 0, 60);
-  c.fillText('your location:)', 0, 100);
-  c.closePath();
-}
 
 /***/ }),
 

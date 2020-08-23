@@ -22,6 +22,9 @@ function error(err) {
     toggle();
 
     listenClick();
+    let city = "seoul";
+    let country = "kr";
+    callGetWeatherData(city, country);
 }
 
 function toggle() {
@@ -77,11 +80,3 @@ document.addEventListener("DOMContentLoaded", function () {
     navigator.geolocation.getCurrentPosition(success, error);
 });
 
-function errorMsg(c) {
-    c.beginPath()
-    c.font = '30px Cinzel'
-    c.fillStyle = 'black';
-    c.fillText('please allow me to know', 0, 60);
-    c.fillText('your location:)', 0, 100);
-    c.closePath();   
-}
