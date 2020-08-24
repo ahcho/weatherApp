@@ -5,11 +5,12 @@ import Thunder from './thunder';
 import Cloud from './cloud';
 
 export default class Weather {
-                 constructor(api, c, canvas, city = false) {
+                 constructor(api, c, canvas, city = false, requestId = false) {
                    this.city = city;
                    this.c = c;
                    this.canvas = canvas;
                    this.api = api;
+                   this.requestId = requestId;
                    this.temperatureDegree = document.querySelector(
                      ".temp-degree"
                    );
@@ -65,9 +66,19 @@ export default class Weather {
                      });
                  }
 
+                 resetRequestId() {
+                   if (this.requestId) {
+                     cancelAnimationFrame(this.requestId);
+                     this.requestId = undefined;
+                   }
+                 }
+
                  listenClick() {
                    this.stars = [];
+                   
                    this.sunSection.addEventListener("click", () => {
+                    //  this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.thunders = [];
                      this.rains = [];
                      this.clouds = [];
@@ -75,30 +86,40 @@ export default class Weather {
                      this.iconId = "01d";
                    });
                    this.cloudSection.addEventListener("click", () => {
+                    // this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.thunders = [];
                      this.rains = [];
                      this.snows = [];
                      this.iconId = "03d";
                    });
                    this.rainSection.addEventListener("click", () => {
+                    //  this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.thunders = [];
                      this.clouds = [];
                      this.snows = [];
                      this.iconId = "09d";
                    });
                    this.snowSection.addEventListener("click", () => {
+                    //  this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.thunders = [];
                      this.clouds = [];
                      this.rains = [];
                      this.iconId = "13d";
                    });
                    this.starSection.addEventListener("click", () => {
+                    //  this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.thunders = [];
                      this.clouds = [];
                      this.snows = [];
                      this.iconId = "01n";
                    });
                    this.thunderSection.addEventListener("click", () => {
+                    //  this.resetRequestId();
+                     this.c.clearRect(0, 0, 500, 500);
                      this.rains = [];
                      this.clouds = [];
                      this.snows = [];
@@ -130,7 +151,6 @@ export default class Weather {
                    this.hour = today.getHours();
                    this.minutes = today.getMinutes();
                    this.midDay = "AM";
-
                    if (this.hour >= 12) {
                      this.midDay = "PM";
                      if (this.hour > 12) this.hour -= 12;
@@ -178,49 +198,39 @@ export default class Weather {
                        0,
                        0,
                        500,
-                       600
+                       500
                      );
                      backgroundGradient.addColorStop(1, "#B7F8DB");
                      backgroundGradient.addColorStop(0, "#50A7C2");
                      this.c.fillStyle = backgroundGradient;
-                     this.c.fillRect(0, 0, 500, 600);
+                     this.c.fillRect(0, 0, 500, 500);
                    } else {
                      const backgroundGradient = this.c.createLinearGradient(
                        0,
                        0,
                        500,
-                       600
+                       500
                      );
                      backgroundGradient.addColorStop(0, "#171e26");
                      backgroundGradient.addColorStop(1, "#3f586b");
                      this.c.fillStyle = backgroundGradient;
-                     this.c.fillRect(0, 0, 500, 600);
+                     this.c.fillRect(0, 0, 500, 500);
                    }
                    this.renderCurrentWeatherAnimation(this.iconId);
 
+
                    if (this.city) {
-                     requestAnimationFrame(
+                     this.requestId = requestAnimationFrame(
                        this.renderNotLocalCanvasBackground.bind(this)
                      );
                    } else {
-                     requestAnimationFrame(
+                     this.requestId = requestAnimationFrame(
                        this.renderCanvasBackground.bind(this)
                      );
                    }
-                   if (
-                     [
-                       "13d",
-                       "13n",
-                       "09d",
-                       "10d",
-                       "09n",
-                       "10n",
-                       "11d",
-                       "11n",
-                     ].includes(this.iconId)
-                   ) {
-                     this.renderHeavyClouds();
-                   }
+
+                   if ([ "13d", "13n", "09d", "10d", "09n", "10n", "11d","11n",].includes(this.iconId))
+                    { this.renderHeavyClouds();}
                  }
 
                  renderTime() {
@@ -243,18 +253,7 @@ export default class Weather {
                    const SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
                    const RAIN = ["09d", "10d", "09n", "10n"];
                    const SNOW_ICON = ["13d", "13n"];
-                   const night = [
-                     "01n",
-                     "02n",
-                     "03n",
-                     "04n",
-                     "09n",
-                     "10n",
-                     "11n",
-                     "13n",
-                     "50n",
-                   ];
-
+               
                    if (this.iconId[2] === "n") {
                      if (this.stars.length === 0) {
                        this.createStars(

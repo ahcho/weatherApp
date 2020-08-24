@@ -22211,6 +22211,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Weather = /*#__PURE__*/function () {
   function Weather(api, c, canvas) {
     var city = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var requestId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
     _classCallCheck(this, Weather);
 
@@ -22218,6 +22219,7 @@ var Weather = /*#__PURE__*/function () {
     this.c = c;
     this.canvas = canvas;
     this.api = api;
+    this.requestId = requestId;
     this.temperatureDegree = document.querySelector(".temp-degree");
     this.temperatureDescription = document.querySelector(".temp-description");
     this.locationTimezone = document.querySelector(".location-timezone");
@@ -22266,12 +22268,23 @@ var Weather = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "resetRequestId",
+    value: function resetRequestId() {
+      if (this.requestId) {
+        cancelAnimationFrame(this.requestId);
+        this.requestId = undefined;
+      }
+    }
+  }, {
     key: "listenClick",
     value: function listenClick() {
       var _this2 = this;
 
       this.stars = [];
       this.sunSection.addEventListener("click", function () {
+        //  this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.thunders = [];
         _this2.rains = [];
         _this2.clouds = [];
@@ -22279,30 +22292,45 @@ var Weather = /*#__PURE__*/function () {
         _this2.iconId = "01d";
       });
       this.cloudSection.addEventListener("click", function () {
+        // this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.thunders = [];
         _this2.rains = [];
         _this2.snows = [];
         _this2.iconId = "03d";
       });
       this.rainSection.addEventListener("click", function () {
+        //  this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.thunders = [];
         _this2.clouds = [];
         _this2.snows = [];
         _this2.iconId = "09d";
       });
       this.snowSection.addEventListener("click", function () {
+        //  this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.thunders = [];
         _this2.clouds = [];
         _this2.rains = [];
         _this2.iconId = "13d";
       });
       this.starSection.addEventListener("click", function () {
+        //  this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.thunders = [];
         _this2.clouds = [];
         _this2.snows = [];
         _this2.iconId = "01n";
       });
       this.thunderSection.addEventListener("click", function () {
+        //  this.resetRequestId();
+        _this2.c.clearRect(0, 0, 500, 500);
+
         _this2.rains = [];
         _this2.clouds = [];
         _this2.snows = [];
@@ -22391,28 +22419,28 @@ var Weather = /*#__PURE__*/function () {
       this.c.beginPath();
 
       if (this.iconId[2] === "d") {
-        var backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600);
+        var backgroundGradient = this.c.createLinearGradient(0, 0, 500, 500);
         backgroundGradient.addColorStop(1, "#B7F8DB");
         backgroundGradient.addColorStop(0, "#50A7C2");
         this.c.fillStyle = backgroundGradient;
-        this.c.fillRect(0, 0, 500, 600);
+        this.c.fillRect(0, 0, 500, 500);
       } else {
-        var _backgroundGradient = this.c.createLinearGradient(0, 0, 500, 600);
+        var _backgroundGradient = this.c.createLinearGradient(0, 0, 500, 500);
 
         _backgroundGradient.addColorStop(0, "#171e26");
 
         _backgroundGradient.addColorStop(1, "#3f586b");
 
         this.c.fillStyle = _backgroundGradient;
-        this.c.fillRect(0, 0, 500, 600);
+        this.c.fillRect(0, 0, 500, 500);
       }
 
       this.renderCurrentWeatherAnimation(this.iconId);
 
       if (this.city) {
-        requestAnimationFrame(this.renderNotLocalCanvasBackground.bind(this));
+        this.requestId = requestAnimationFrame(this.renderNotLocalCanvasBackground.bind(this));
       } else {
-        requestAnimationFrame(this.renderCanvasBackground.bind(this));
+        this.requestId = requestAnimationFrame(this.renderCanvasBackground.bind(this));
       }
 
       if (["13d", "13n", "09d", "10d", "09n", "10n", "11d", "11n"].includes(this.iconId)) {
@@ -22442,7 +22470,6 @@ var Weather = /*#__PURE__*/function () {
       var SCATTER_CLOUDS = ["03d", "04d", "50d", "50n"];
       var RAIN = ["09d", "10d", "09n", "10n"];
       var SNOW_ICON = ["13d", "13n"];
-      var night = ["01n", "02n", "03n", "04n", "09n", "10n", "11n", "13n", "50n"];
 
       if (this.iconId[2] === "n") {
         if (this.stars.length === 0) {
@@ -22720,11 +22747,11 @@ function success(position) {
   var api = "https://api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&lon=").concat(lon, "&units=imperial&appid=").concat(API_KEY);
   var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas);
   weather.getData().then(function () {
-    return weather.renderCanvasBackground();
+    weather.renderCanvasBackground();
   });
 }
 
-function error(err) {
+function error() {
   toggle();
   listenClick();
   var city = "seoul";
@@ -22749,6 +22776,7 @@ function listenClick() {
   seoul.addEventListener('click', function () {
     city = "seoul";
     country = "kr";
+    debugger;
     callGetWeatherData(city, country);
   });
   pittsburgh.addEventListener('click', function () {
@@ -22770,11 +22798,12 @@ function listenClick() {
 
 function callGetWeatherData(city, country) {
   var canvas = document.querySelector('canvas');
-  var c = canvas.getContext('2d');
+  var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
   canvas.width = 500;
   canvas.height = 500;
-  var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, city);
+  var c = canvas.getContext('2d');
+  c.clearRect(0, 0, 500, 500);
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, city, false);
   weather.getData().then(function () {
     return weather.renderNotLocalCanvasBackground();
   });
@@ -23095,7 +23124,7 @@ var Thunder = /*#__PURE__*/function () {
       x: 0,
       y: 0.1
     };
-    this.gravity = 0.001;
+    this.gravity = 0.01;
     this.size = 1;
     this.color = 'yellow';
     this.flag = true;

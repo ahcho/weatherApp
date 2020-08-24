@@ -14,11 +14,11 @@ function success(position){
     const lat = position.coords.latitude;
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`;
     const weather = new Weather(api, c, canvas);
-    weather.getData().then(()=>     
-        weather.renderCanvasBackground())
+    weather.getData().then(()=> { 
+        weather.renderCanvasBackground()})
 }
 
-function error(err) {
+function error() {
     toggle();
 
     listenClick();
@@ -45,6 +45,7 @@ function listenClick() {
     seoul.addEventListener('click', () => {
         city = "seoul"
         country = "kr"    
+        debugger
         callGetWeatherData(city, country)        
     })
     pittsburgh.addEventListener('click', () => {
@@ -66,11 +67,12 @@ function listenClick() {
 
 function callGetWeatherData(city, country) {
     const canvas = document.querySelector('canvas')
-    const c = canvas.getContext('2d')
+    const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
     canvas.width = 500
     canvas.height = 500
-    const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
-    const weather = new Weather(api, c, canvas, city);
+    const c = canvas.getContext('2d')
+    c.clearRect(0, 0, 500, 500);
+    const weather = new Weather(api, c, canvas, city, false);
 
     weather.getData().then(() =>
         weather.renderNotLocalCanvasBackground())
