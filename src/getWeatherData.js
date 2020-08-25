@@ -310,29 +310,28 @@ export default class Weather {
                   this.weatherObjects.forEach((cloud) => {
                      cloud.update();
                    });
-                   this.ticker++;
-                   if (this.weatherObjects.length === 0 ||
-                     (this.ticker % 250 && this.weatherObjects.length < 10)
-                   ) {
-                     const rand_num = Math.floor(Math.random() * 9);
-                     const x = Math.floor(Math.random() * 200) - 100;
-                     const y = Math.random() * 400 + 50;
-                     const velocity =
-                       (Math.floor(Math.random() * 40 + 1) * 1) / 50;
-                     const size = Math.floor(Math.random() * 10) + 3;
-                     this.weatherObjects.push(
+                  this.ticker++;
+                  if (this.weatherObjects.length === 0 || (this.ticker % 100 === 0 && this.weatherObjects.length < 10)
+                  ) {
+                    const rand_num = Math.floor(Math.random() * 9);
+                    const x = Math.floor(Math.random() * 200) - 100;
+                    const y = Math.random() * 400 + 50;
+                    const velocity =
+                      (Math.floor(Math.random() * 40 + 1) * 1) / 50;
+                    const size = Math.floor(Math.random() * 10) + 3;
+                    this.weatherObjects.push(
                        new Cloud(
-                         x,
-                         y,
-                         CLOUD_COLOR[rand_num],
-                         velocity,
-                         this.c,
-                         this.canvas,
-                         size
-                       )
-                     );
+                        x,
+                        y,
+                        CLOUD_COLOR[rand_num],
+                        velocity,
+                        this.c,
+                        this.canvas,
+                        size
+                      )
+                    );
                    }
-                   this.renderTime();
+                  this.renderTime();
                  }
 
                  animateThunder() {
@@ -341,7 +340,7 @@ export default class Weather {
                    });
 
                    this.ticker++;
-                   if (this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
+                   if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
                      const x = Math.random() * (450 - 100) + 100;
                      const y = 180;
                      this.weatherObjects.push(new Thunder(x, y, this.c, this.canvas));
@@ -357,8 +356,7 @@ export default class Weather {
 
                    this.ticker++;
 
-                   if (
-                     this.weatherObjects.length === 0 ||
+                   if ( this.weatherObjects.length === 0 ||
                      (this.ticker % 100 === 0 && this.weatherObjects.length <= 20)
                    ) {
                      const x = Math.random() * 480 + 50;
@@ -397,7 +395,7 @@ export default class Weather {
                    this.c.fill();
 
                    this.ticker++;
-                   if (this.ticker % 50 === 0) {
+                   if (this.ticker % 10 === 0) {
                      this.degree += 11.25;
                    }
                    if (y === 250) {

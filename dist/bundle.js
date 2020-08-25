@@ -22518,7 +22518,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.weatherObjects.length === 0 || this.ticker % 250 && this.weatherObjects.length < 10) {
+      if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
         var rand_num = Math.floor(Math.random() * 9);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 50;
@@ -22537,7 +22537,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
+      if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
         var x = Math.random() * (450 - 100) + 100;
         var y = 180;
         this.weatherObjects.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](x, y, this.c, this.canvas));
@@ -22582,7 +22582,7 @@ var Weather = /*#__PURE__*/function () {
       this.c.fill();
       this.ticker++;
 
-      if (this.ticker % 50 === 0) {
+      if (this.ticker % 10 === 0) {
         this.degree += 11.25;
       }
 
