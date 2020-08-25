@@ -22560,12 +22560,6 @@ var Weather = /*#__PURE__*/function () {
         this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](x, y, this.c, this.canvas));
       }
 
-      if (this.thunders.length === 0) {
-        var startX = 60;
-        var startY = 180;
-        this.thunders.push(new _thunder__WEBPACK_IMPORTED_MODULE_3__["default"](startX, startY, this.c, this.canvas));
-      }
-
       this.renderTime();
     }
   }, {
@@ -22776,7 +22770,6 @@ function listenClick() {
   seoul.addEventListener('click', function () {
     city = "seoul";
     country = "kr";
-    debugger;
     callGetWeatherData(city, country);
   });
   pittsburgh.addEventListener('click', function () {
@@ -22939,8 +22932,8 @@ var Rain = /*#__PURE__*/function () {
   }, {
     key: "shatter",
     value: function shatter() {
-      var num = randomIntFromRange(1, 3);
-      var radius = randomIntFromRange(1, 2);
+      var num = randomIntFromRange(3, 5);
+      var radius = randomIntFromRange(2, 3);
 
       for (var i = 0; i < num; i++) {
         this.miniRains.push(new MiniRain(this.x, this.y, radius, this.c, this.canvas));
@@ -22967,8 +22960,7 @@ var MiniRain = /*#__PURE__*/function () {
     };
     this.friction = 0.2;
     this.gravity = 0.05;
-    this.ttl = 50; // they live 50 frames
-
+    this.ttl = 50;
     this.opacity = 1;
     this.c = c;
     this.canvas = canvas;
@@ -23124,7 +23116,7 @@ var Thunder = /*#__PURE__*/function () {
       x: 0,
       y: 0.1
     };
-    this.gravity = 0.01;
+    this.gravity = 0.005;
     this.size = 1;
     this.color = 'yellow';
     this.flag = true;
@@ -23174,8 +23166,10 @@ var Thunder = /*#__PURE__*/function () {
     value: function update() {
       if (this.y > this.canvas.height) {
         this.velocity.y = 0.1;
+        this.x = Math.random() * (450 - 100) + 100;
         this.y = 150;
         this.size = 1;
+        this.flag = true;
       } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
         this.size = 1.5;
 

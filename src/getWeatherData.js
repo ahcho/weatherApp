@@ -367,15 +367,7 @@ export default class Weather {
                      const y = 180;
                      this.thunders.push(new Thunder(x, y, this.c, this.canvas));
                    }
-
-                   if (this.thunders.length === 0) {
-                     const startX = 60;
-                     const startY = 180;
-
-                     this.thunders.push(
-                       new Thunder(startX, startY, this.c, this.canvas)
-                     );
-                   }
+                                      
                    this.renderTime();
                  }
 

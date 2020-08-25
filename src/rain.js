@@ -48,8 +48,8 @@ export default class Rain {
     }
 
     shatter() {
-        const num = randomIntFromRange(1, 3)
-        const radius = randomIntFromRange(1, 2)
+        const num = randomIntFromRange(3, 5)
+        const radius = randomIntFromRange(2, 3)
         for (let i = 0; i < num; i++) {
             this.miniRains.push(new MiniRain(this.x, this.y, radius, this.c, this.canvas))
         }
@@ -68,7 +68,7 @@ class MiniRain {
         }
         this.friction = 0.2
         this.gravity = 0.05
-        this.ttl = 50 // they live 50 frames
+        this.ttl = 50 
         this.opacity = 1
         this.c = c
         this.canvas = canvas

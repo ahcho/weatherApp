@@ -45,7 +45,6 @@ function listenClick() {
     seoul.addEventListener('click', () => {
         city = "seoul"
         country = "kr"    
-        debugger
         callGetWeatherData(city, country)        
     })
     pittsburgh.addEventListener('click', () => {

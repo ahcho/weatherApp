@@ -9,7 +9,7 @@ export default class Thunder {
       x: 0,
       y: 0.1,
     };
-    this.gravity = 0.01;
+    this.gravity = 0.005;
     this.size = 1;
     this.color = 'yellow'
     this.flag = true;
@@ -17,6 +17,7 @@ export default class Thunder {
 
   
   draw() {
+    
     this.c.beginPath();
     this.c.moveTo(this.x * this.size , this.y * this.size);
     this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
@@ -36,8 +37,10 @@ export default class Thunder {
 
 
   drawBigThunder() {
+   
     this.x = this.x * 0.667;
     this.y = this.y * 0.667;
+    
     this.c.beginPath();
     this.c.moveTo(this.x * this.size, this.y * this.size);
     this.c.lineTo((this.x + 20) * this.size, this.y * this.size);
@@ -52,14 +55,18 @@ export default class Thunder {
     this.c.fillStyle = this.color;
     this.c.fill();
     this.c.closePath();  
+    
   }
 
   // call draw function
   update() {
+
     if (this.y > this.canvas.height) {
       this.velocity.y = 0.1; 
+      this.x = Math.random() * (450 - 100) + 100;
       this.y = 150;
       this.size = 1;
+      this.flag = true;
     } else if (this.y + this.velocity.y + 45 > this.canvas.height) {
       this.size = 1.5;
       if (this.flag){
