@@ -20,11 +20,28 @@ function success(position){
 
 function error() {
     toggle();
-
-    listenClick();
     let city = "seoul";
     let country = "kr";
-    callGetWeatherData(city, country);
+    let weather = callGetWeatherData(city, country);
+    listenClick(weather);
+}
+
+function callGetWeatherData(city, country, prevWeather = false) {
+    const canvas = document.querySelector('canvas')
+    const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
+    canvas.width = 500
+    canvas.height = 500
+    const c = canvas.getContext('2d')
+    c.clearRect(0, 0, 500, 500);
+    if (prevWeather) {
+        prevWeather.clearAnimation();
+    }
+    const weather = new Weather(api, c, canvas, city);
+
+    weather.getData().then(() =>
+        weather.renderNotLocalCanvasBackground())
+
+    return weather;
 }
 
 function toggle() {
@@ -35,7 +52,7 @@ function toggle() {
     nav1.style.display = "none";
 }
 
-function listenClick() {
+function listenClick(weather) {
     const seoul = document.querySelector('.seoul');
     const pittsburgh = document.querySelector('.pittsburgh');
     const london = document.querySelector('.london');
@@ -45,36 +62,23 @@ function listenClick() {
     seoul.addEventListener('click', () => {
         city = "seoul"
         country = "kr"    
-        callGetWeatherData(city, country)        
+        callGetWeatherData(city, country, weather)        
     })
     pittsburgh.addEventListener('click', () => {
         city = "pittsburgh"
         country = "us"
-        callGetWeatherData(city, country)
+        callGetWeatherData(city, country, weather)
     })
     london.addEventListener('click', () => {
         city = "london"
         country = "uk"   
-        callGetWeatherData(city, country)   
+        callGetWeatherData(city, country, weather)   
     })
     rome.addEventListener('click', () => {
         city = "rome"
         country = "it"
-        callGetWeatherData(city, country)
+        callGetWeatherData(city, country, weather)
     })
-}
-
-function callGetWeatherData(city, country) {
-    const canvas = document.querySelector('canvas')
-    const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
-    canvas.width = 500
-    canvas.height = 500
-    const c = canvas.getContext('2d')
-    c.clearRect(0, 0, 500, 500);
-    const weather = new Weather(api, c, canvas, city, false);
-
-    weather.getData().then(() =>
-        weather.renderNotLocalCanvasBackground())
 }
 
 document.addEventListener("DOMContentLoaded", function () {

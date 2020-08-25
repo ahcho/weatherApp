@@ -22210,7 +22210,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Weather = /*#__PURE__*/function () {
   function Weather(api, c, canvas) {
     var city = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-    var requestId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
     _classCallCheck(this, Weather);
 
@@ -22218,7 +22217,6 @@ var Weather = /*#__PURE__*/function () {
     this.c = c;
     this.canvas = canvas;
     this.api = api;
-    this.requestId = requestId;
     this.temperatureDegree = document.querySelector(".temp-degree");
     this.temperatureDescription = document.querySelector(".temp-description");
     this.locationTimezone = document.querySelector(".location-timezone");
@@ -22264,11 +22262,21 @@ var Weather = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "resetRequestId",
-    value: function resetRequestId() {
+    key: "clearAnimation",
+    value: function clearAnimation() {
       if (this.requestId) {
         cancelAnimationFrame(this.requestId);
         this.requestId = undefined;
+      }
+
+      this.c.clearRect(0, 0, 500, 500);
+      this.stars = [];
+      this.weatherObjects = [];
+
+      if (!this.city) {
+        this.renderCanvasBackground();
+      } else {
+        this.renderNotLocalCanvasBackground();
       }
     }
   }, {
@@ -22276,48 +22284,35 @@ var Weather = /*#__PURE__*/function () {
     value: function listenClick() {
       var _this2 = this;
 
-      this.stars = [];
       this.sunSection.addEventListener("click", function () {
-        //  this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "01d";
+
+        _this2.clearAnimation();
       });
       this.cloudSection.addEventListener("click", function () {
-        // this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "03d";
+
+        _this2.clearAnimation();
       });
       this.rainSection.addEventListener("click", function () {
-        //  this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "09d";
+
+        _this2.clearAnimation();
       });
       this.snowSection.addEventListener("click", function () {
-        //  this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "13d";
+
+        _this2.clearAnimation();
       });
       this.starSection.addEventListener("click", function () {
-        //  this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "01n";
+
+        _this2.clearAnimation();
       });
       this.thunderSection.addEventListener("click", function () {
-        //  this.resetRequestId();
-        _this2.c.clearRect(0, 0, 500, 500);
-
-        _this2.weatherObjects = [];
         _this2.iconId = "11d";
+
+        _this2.clearAnimation();
       });
     }
   }, {
@@ -22418,7 +22413,7 @@ var Weather = /*#__PURE__*/function () {
         this.c.fillRect(0, 0, 500, 500);
       }
 
-      this.renderCurrentWeatherAnimation(this.iconId);
+      this.renderCurrentWeatherAnimation(this.iconId); //set interval ?
 
       if (this.city) {
         this.requestId = requestAnimationFrame(this.renderNotLocalCanvasBackground.bind(this));
@@ -22500,7 +22495,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.weatherObjects.length === 0 || this.ticker % 80 === 0 && this.weatherObjects.length < 20) {
+      if (this.weatherObjects.length === 0 || this.ticker % 60 === 0 && this.weatherObjects.length < 20) {
         var x = Math.random() * 490 + 30;
         var y = 150;
         var w = Math.random() * 5;
@@ -22662,8 +22657,7 @@ var Weather = /*#__PURE__*/function () {
       this.stars.forEach(function (star, i) {
         var factor = _this4.counter * i,
             opacity = star.getOpacity(factor),
-            randomColor = Math.floor(Math.random() * 360 + 1); //render stars
-
+            randomColor = Math.floor(Math.random() * 360 + 1);
         star.renderStar("hsla(".concat(randomColor, ", 30%, 80%, ").concat(opacity, ")"));
       });
 
@@ -22730,10 +22724,30 @@ function success(position) {
 
 function error() {
   toggle();
-  listenClick();
   var city = "seoul";
   var country = "kr";
-  callGetWeatherData(city, country);
+  var weather = callGetWeatherData(city, country);
+  listenClick(weather);
+}
+
+function callGetWeatherData(city, country) {
+  var prevWeather = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var canvas = document.querySelector('canvas');
+  var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
+  canvas.width = 500;
+  canvas.height = 500;
+  var c = canvas.getContext('2d');
+  c.clearRect(0, 0, 500, 500);
+
+  if (prevWeather) {
+    prevWeather.clearAnimation();
+  }
+
+  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, city);
+  weather.getData().then(function () {
+    return weather.renderNotLocalCanvasBackground();
+  });
+  return weather;
 }
 
 function toggle() {
@@ -22743,7 +22757,7 @@ function toggle() {
   nav1.style.display = "none";
 }
 
-function listenClick() {
+function listenClick(weather) {
   var seoul = document.querySelector('.seoul');
   var pittsburgh = document.querySelector('.pittsburgh');
   var london = document.querySelector('.london');
@@ -22753,35 +22767,22 @@ function listenClick() {
   seoul.addEventListener('click', function () {
     city = "seoul";
     country = "kr";
-    callGetWeatherData(city, country);
+    callGetWeatherData(city, country, weather);
   });
   pittsburgh.addEventListener('click', function () {
     city = "pittsburgh";
     country = "us";
-    callGetWeatherData(city, country);
+    callGetWeatherData(city, country, weather);
   });
   london.addEventListener('click', function () {
     city = "london";
     country = "uk";
-    callGetWeatherData(city, country);
+    callGetWeatherData(city, country, weather);
   });
   rome.addEventListener('click', function () {
     city = "rome";
     country = "it";
-    callGetWeatherData(city, country);
-  });
-}
-
-function callGetWeatherData(city, country) {
-  var canvas = document.querySelector('canvas');
-  var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
-  canvas.width = 500;
-  canvas.height = 500;
-  var c = canvas.getContext('2d');
-  c.clearRect(0, 0, 500, 500);
-  var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, city, false);
-  weather.getData().then(function () {
-    return weather.renderNotLocalCanvasBackground();
+    callGetWeatherData(city, country, weather);
   });
 }
 

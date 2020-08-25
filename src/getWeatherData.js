@@ -5,12 +5,11 @@ import Thunder from './thunder';
 import Cloud from './cloud';
 
 export default class Weather {
-                 constructor(api, c, canvas, city = false, requestId = false) {
+                 constructor(api, c, canvas, city = false) {
                    this.city = city;
                    this.c = c;
                    this.canvas = canvas;
                    this.api = api;
-                   this.requestId = requestId;
                    this.temperatureDegree = document.querySelector(
                      ".temp-degree"
                    );
@@ -63,51 +62,45 @@ export default class Weather {
                      });
                  }
 
-                 resetRequestId() {
+                 clearAnimation() {
                    if (this.requestId) {
                      cancelAnimationFrame(this.requestId);
                      this.requestId = undefined;
                    }
+                   this.c.clearRect(0, 0, 500, 500); 
+                   this.stars = [];
+                   this.weatherObjects = [];
+                   if (!this.city) {
+                     this.renderCanvasBackground(); 
+                   } else {
+                     this.renderNotLocalCanvasBackground();
+                   }
                  }
 
-                 listenClick() {
-                   this.stars = [];
-                   
+                listenClick() {  
                    this.sunSection.addEventListener("click", () => {
-                    //  this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "01d";
+                     this.clearAnimation();
                    });
                    this.cloudSection.addEventListener("click", () => {
-                    // this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "03d";
+                     this.clearAnimation();
                    });
                    this.rainSection.addEventListener("click", () => {
-                    //  this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "09d";
+                     this.clearAnimation();
                    });
                    this.snowSection.addEventListener("click", () => {
-                    //  this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "13d";
+                     this.clearAnimation();
                    });
                    this.starSection.addEventListener("click", () => {
-                    //  this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "01n";
+                     this.clearAnimation();
                    });
                    this.thunderSection.addEventListener("click", () => {
-                    //  this.resetRequestId();
-                     this.c.clearRect(0, 0, 500, 500);
-                     this.weatherObjects = [];
                      this.iconId = "11d";
+                     this.clearAnimation();
                    });
                  }
 
@@ -126,7 +119,7 @@ export default class Weather {
 
                  renderNotLocalCanvasBackground() {
                     this.getNotLocalTime();
-                    this.renderWeatherAnimation();
+                    this.renderWeatherAnimation(); 
                  }
 
                  renderCanvasBackground() {
@@ -201,8 +194,7 @@ export default class Weather {
                      this.c.fillRect(0, 0, 500, 500);
                    }
                    this.renderCurrentWeatherAnimation(this.iconId);
-
-
+                   //set interval ?
                    if (this.city) {
                      this.requestId = requestAnimationFrame(
                        this.renderNotLocalCanvasBackground.bind(this)
@@ -285,7 +277,7 @@ export default class Weather {
 
                    this.ticker++;
 
-                   if ( this.weatherObjects.length === 0 || (this.ticker % 80 === 0 && this.weatherObjects.length < 20)) {
+                   if ( this.weatherObjects.length === 0 || (this.ticker % 60 === 0 && this.weatherObjects.length < 20)) {
                         const x = Math.random() * 490 + 30;
                         const y = 150;
                         const w = Math.random() * 5;
@@ -511,14 +503,13 @@ export default class Weather {
                    this.c.fillStyle = "black";
                    this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
                    this.stars.forEach((star, i) => {
-                     const factor = this.counter * i,
-                       opacity = star.getOpacity(factor),
-                       randomColor = Math.floor(Math.random() * 360 + 1);
-                     //render stars
-                     star.renderStar(
-                       `hsla(${randomColor}, 30%, 80%, ${opacity})`
-                     );
-                   });
+                      const factor = this.counter * i,
+                      opacity = star.getOpacity(factor),
+                      randomColor = Math.floor(Math.random() * 360 + 1);
+                      star.renderStar(
+                        `hsla(${randomColor}, 30%, 80%, ${opacity})`
+                        );
+                      });
 
                    if (["01n", "02n"].includes(this.iconId)) {
                      this.renderMoon();
