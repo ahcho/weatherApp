@@ -37,10 +37,12 @@ export default class Rain {
     update() {
         this.draw()
         //when rain hits bottom of screen
-        if (this.y + this.velocity.y + 20 > this.canvas.height) {
+        if (this.y + this.velocity.y + 0 > this.canvas.height) {
             this.shatter();
             this.velocity.y = 1;
+            this.lineWidth = Math.random() * 5;
             this.y = 150;
+            this.x = Math.random() * 490 + 30;
         } else {
             this.velocity.y += this.gravity;
         }

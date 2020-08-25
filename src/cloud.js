@@ -3,10 +3,7 @@ export default class cloud {
         this.x = x
         this.y = y
         this.color = color
-        this.velocity = {
-            x: vx,
-            y: 0
-        }
+        this.velocity = vx
         this.friction = 0.8
         this.lineWidth = 1
         this.c = c
@@ -35,19 +32,20 @@ export default class cloud {
 
     // call draw function
     update() {
+    
         this.draw()
-        //when rain hits bottom of screen
-        if (this.x + this.velocity.x - 20 === this.canvas.width) {
-            this.x -= this.velocity.x 
-        } else if (this.x - 100 > this.canvas.width)   {
+    
+        if (this.x - this.size > this.canvas.width)   {
+            const CLOUD_COLOR = ["#dde0f2", "#cadae1", "#d6d9f0", "#ffeef7", "#a99da4",
+                "#dfe8fb", "lightgrey", "gray", "white"];
+            const rand_int = Math.floor(Math.random() * 9);
             this.x = Math.floor(Math.random() * 200) - 100;
-        }
-        else if ((this.x + this.velocity.x - 20 === 0)) {
-            this.x += this.velocity.x;
-        }
-        this.x += this.velocity.x;
-           
-        
+            this.y = Math.random() * 400 + 50;
+            this.velocity = (Math.floor(Math.random() * 40 + 1) * 1) / 50;
+            this.size = Math.floor(Math.random() * 10) + 3;
+            this.color = CLOUD_COLOR[rand_int]
+        } 
+        this.x += this.velocity;
     }
 }
 // const canvas = document.querySelector('canvas');
