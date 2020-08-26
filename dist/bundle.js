@@ -22195,6 +22195,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _night__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./night */ "./src/night.js");
 /* harmony import */ var _thunder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./thunder */ "./src/thunder.js");
 /* harmony import */ var _cloud__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cloud */ "./src/cloud.js");
+/* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../config/config */ "./config/config.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -22206,6 +22207,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
+var API_KEY = _config_config__WEBPACK_IMPORTED_MODULE_5__["config"].API_KEY;
 
 var Weather = /*#__PURE__*/function () {
   function Weather(api, c, canvas) {
@@ -22223,12 +22226,15 @@ var Weather = /*#__PURE__*/function () {
     this.degreeSection = document.querySelector(".weather-info-bottom");
     this.degreeSpan = document.querySelector(".weather-info-bottom span");
     this.iconSection = document.getElementById("temp-icon");
+    this.weatherTextSection = document.querySelector(".weather-text");
     this.sunSection = document.querySelector(".fa-sun");
     this.cloudSection = document.querySelector(".fa-cloud");
     this.rainSection = document.querySelector(".fa-tint");
     this.snowSection = document.querySelector(".fa-asterisk");
     this.starSection = document.querySelector(".fa-star");
     this.thunderSection = document.querySelector(".fa-bolt");
+    this.sampleSection = document.querySelector(".sample");
+    this.navRightIcons = document.querySelector('.topnav-right');
     this.stars = [];
     this.weatherObjects = [];
     this.ticker = 0;
@@ -22258,7 +22264,11 @@ var Weather = /*#__PURE__*/function () {
 
         _this.changeMetric(_this.temperature);
 
-        _this.listenClick();
+        if (_this.city) {
+          _this.listenCityClick();
+        } else {
+          _this.listenClick();
+        }
       });
     }
   }, {
@@ -22280,54 +22290,132 @@ var Weather = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "listenClick",
-    value: function listenClick() {
+    key: "navToggle",
+    value: function navToggle() {
+      this.sampleSection.style.display = "none";
+      this.navRightIcons.style.display = "flex";
+    }
+  }, {
+    key: "weatherToggle",
+    value: function weatherToggle() {
+      this.weatherTextSection.style.display = "none";
+    }
+  }, {
+    key: "renderCityWeather",
+    value: function renderCityWeather() {
       var _this2 = this;
 
-      this.sunSection.addEventListener("click", function () {
-        _this2.iconId = "01d";
+      this.api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(this.city, ",").concat(this.country, "&units=imperial&appid=").concat(API_KEY);
+      this.getData().then(function () {
+        return _this2.renderNotLocalCanvasBackground();
+      });
+    }
+  }, {
+    key: "listenCityClick",
+    value: function listenCityClick() {
+      var _this3 = this;
 
-        _this2.clearAnimation();
+      this.seoul = document.querySelector('.seoul');
+      this.pittsburgh = document.querySelector('.pittsburgh');
+      this.london = document.querySelector('.london');
+      this.rome = document.querySelector('.rome');
+      this.seoul.addEventListener('click', function () {
+        _this3.clearAnimation();
+
+        _this3.city = "seoul";
+        _this3.country = "kr";
+
+        _this3.renderCityWeather();
+      });
+      this.pittsburgh.addEventListener('click', function () {
+        _this3.clearAnimation();
+
+        _this3.city = "pittsburgh";
+        _this3.country = "us";
+
+        _this3.renderCityWeather();
+      });
+      this.london.addEventListener('click', function () {
+        _this3.clearAnimation();
+
+        _this3.city = "london";
+        _this3.country = "uk";
+
+        _this3.renderCityWeather();
+      });
+      this.rome.addEventListener('click', function () {
+        _this3.clearAnimation();
+
+        _this3.city = "rome";
+        _this3.country = "it";
+
+        _this3.renderCityWeather();
+      });
+    }
+  }, {
+    key: "listenClick",
+    value: function listenClick() {
+      var _this4 = this;
+
+      this.sampleSection.addEventListener("click", function () {
+        _this4.navToggle();
+      });
+      this.sunSection.addEventListener("click", function () {
+        _this4.iconId = "01d";
+
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
       this.cloudSection.addEventListener("click", function () {
-        _this2.iconId = "03d";
+        _this4.iconId = "03d";
 
-        _this2.clearAnimation();
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
       this.rainSection.addEventListener("click", function () {
-        _this2.iconId = "09d";
+        _this4.iconId = "09d";
 
-        _this2.clearAnimation();
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
       this.snowSection.addEventListener("click", function () {
-        _this2.iconId = "13d";
+        _this4.iconId = "13d";
 
-        _this2.clearAnimation();
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
       this.starSection.addEventListener("click", function () {
-        _this2.iconId = "01n";
+        _this4.iconId = "01n";
 
-        _this2.clearAnimation();
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
       this.thunderSection.addEventListener("click", function () {
-        _this2.iconId = "11d";
+        _this4.iconId = "11d";
 
-        _this2.clearAnimation();
+        _this4.weatherToggle();
+
+        _this4.clearAnimation();
       });
     }
   }, {
     key: "changeMetric",
     value: function changeMetric(temperature) {
-      var _this3 = this;
+      var _this5 = this;
 
       var celsius = (temperature - 32) * (5 / 9);
       this.degreeSection.addEventListener("click", function () {
-        if (_this3.degreeSpan.textContent === "°F") {
-          _this3.degreeSpan.textContent = "°C";
-          _this3.temperatureDegree.textContent = Math.floor(celsius);
+        if (_this5.degreeSpan.textContent === "°F") {
+          _this5.degreeSpan.textContent = "°C";
+          _this5.temperatureDegree.textContent = Math.floor(celsius);
         } else {
-          _this3.degreeSpan.textContent = "°F";
-          _this3.temperatureDegree.textContent = temperature;
+          _this5.degreeSpan.textContent = "°F";
+          _this5.temperatureDegree.textContent = temperature;
         }
       });
     }
@@ -22650,12 +22738,12 @@ var Weather = /*#__PURE__*/function () {
   }, {
     key: "animateNightSky",
     value: function animateNightSky() {
-      var _this4 = this;
+      var _this6 = this;
 
       this.c.fillStyle = "black";
       this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.stars.forEach(function (star, i) {
-        var factor = _this4.counter * i,
+        var factor = _this6.counter * i,
             opacity = star.getOpacity(factor),
             randomColor = Math.floor(Math.random() * 360 + 1);
         star.renderStar("hsla(".concat(randomColor, ", 30%, 80%, ").concat(opacity, ")"));
@@ -22722,32 +22810,20 @@ function success(position) {
   });
 }
 
-function error() {
+function noUserLocation() {
   toggle();
   var city = "seoul";
   var country = "kr";
-  var weather = callGetWeatherData(city, country);
-  listenClick(weather);
-}
-
-function callGetWeatherData(city, country) {
-  var prevWeather = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var canvas = document.querySelector('canvas');
   var api = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, ",").concat(country, "&units=imperial&appid=").concat(API_KEY);
   canvas.width = 500;
   canvas.height = 500;
   var c = canvas.getContext('2d');
   c.clearRect(0, 0, 500, 500);
-
-  if (prevWeather) {
-    prevWeather.clearAnimation();
-  }
-
   var weather = new _getWeatherData__WEBPACK_IMPORTED_MODULE_0__["default"](api, c, canvas, city);
   weather.getData().then(function () {
     return weather.renderNotLocalCanvasBackground();
   });
-  return weather;
 }
 
 function toggle() {
@@ -22757,37 +22833,8 @@ function toggle() {
   nav1.style.display = "none";
 }
 
-function listenClick(weather) {
-  var seoul = document.querySelector('.seoul');
-  var pittsburgh = document.querySelector('.pittsburgh');
-  var london = document.querySelector('.london');
-  var rome = document.querySelector('.rome');
-  var city = "",
-      country = "";
-  seoul.addEventListener('click', function () {
-    city = "seoul";
-    country = "kr";
-    callGetWeatherData(city, country, weather);
-  });
-  pittsburgh.addEventListener('click', function () {
-    city = "pittsburgh";
-    country = "us";
-    callGetWeatherData(city, country, weather);
-  });
-  london.addEventListener('click', function () {
-    city = "london";
-    country = "uk";
-    callGetWeatherData(city, country, weather);
-  });
-  rome.addEventListener('click', function () {
-    city = "rome";
-    country = "it";
-    callGetWeatherData(city, country, weather);
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-  navigator.geolocation.getCurrentPosition(success, error);
+  navigator.geolocation.getCurrentPosition(success, noUserLocation);
 });
 
 /***/ }),

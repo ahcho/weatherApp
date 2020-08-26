@@ -3,6 +3,8 @@ import Snow from './snow';
 import Star from './night';
 import Thunder from './thunder';
 import Cloud from './cloud';
+import { config } from '../config/config'
+const API_KEY = config.API_KEY;
 
 export default class Weather {
                  constructor(api, c, canvas, city = false) {
@@ -26,12 +28,15 @@ export default class Weather {
                      ".weather-info-bottom span"
                    );
                    this.iconSection = document.getElementById("temp-icon");
+                   this.weatherTextSection = document.querySelector(".weather-text")
                    this.sunSection = document.querySelector(".fa-sun");
                    this.cloudSection = document.querySelector(".fa-cloud");
                    this.rainSection = document.querySelector(".fa-tint");
                    this.snowSection = document.querySelector(".fa-asterisk");
                    this.starSection = document.querySelector(".fa-star");
                    this.thunderSection = document.querySelector(".fa-bolt");
+                   this.sampleSection = document.querySelector(".sample");
+                   this.navRightIcons = document.querySelector('.topnav-right');
                    this.stars = [];
                    this.weatherObjects = [];
                    this.ticker = 0;
@@ -58,48 +63,111 @@ export default class Weather {
                        this.locationTimezone.textContent = location;
                        this.iconSection.src = iconAdd;
                        this.changeMetric(this.temperature);
-                       this.listenClick();
-                     });
+                       if (this.city) {
+                         this.listenCityClick();
+                        } else {
+                         this.listenClick();
+                        }
+                      });
                  }
 
-                 clearAnimation() {
-                   if (this.requestId) {
-                     cancelAnimationFrame(this.requestId);
-                     this.requestId = undefined;
-                   }
-                   this.c.clearRect(0, 0, 500, 500); 
-                   this.stars = [];
-                   this.weatherObjects = [];
-                   if (!this.city) {
-                     this.renderCanvasBackground(); 
-                   } else {
-                     this.renderNotLocalCanvasBackground();
-                   }
-                 }
+                clearAnimation() {
+                  if (this.requestId) {
+                    cancelAnimationFrame(this.requestId);
+                    this.requestId = undefined;
+                  }
+                  this.c.clearRect(0, 0, 500, 500); 
+                  this.stars = [];
+                  this.weatherObjects = [];
+                  if (!this.city) {
+                    this.renderCanvasBackground(); 
+                  } else {
+                    this.renderNotLocalCanvasBackground();
+                  }
+                }
+
+                navToggle() {
+                  this.sampleSection.style.display = "none";
+                  this.navRightIcons.style.display = "flex";
+                }
+
+                weatherToggle() {
+                  this.weatherTextSection.style.display = "none";
+
+                }
+
+                renderCityWeather() {
+                  this.api = `https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&units=imperial&appid=${API_KEY}`;
+                  this.getData().then(() =>
+                    this.renderNotLocalCanvasBackground())
+                }
+
+                listenCityClick() {
+                  this.seoul = document.querySelector('.seoul');
+                  this.pittsburgh = document.querySelector('.pittsburgh');
+                  this.london = document.querySelector('.london');
+                  this.rome = document.querySelector('.rome');
+  
+
+                  this.seoul.addEventListener('click', () => {
+                    this.clearAnimation();
+                    this.city = "seoul"
+                    this.country = "kr"
+                    this.renderCityWeather();
+                  })
+                  this.pittsburgh.addEventListener('click', () => {
+                    this.clearAnimation();
+                    this.city = "pittsburgh"
+                    this.country = "us"
+                    this.renderCityWeather();
+                  })
+                  this.london.addEventListener('click', () => {
+                    this.clearAnimation();
+                    this.city = "london"
+                    this.country = "uk"
+                    this.renderCityWeather();
+                  })
+                  this.rome.addEventListener('click', () => {
+                    this.clearAnimation();
+                    this.city = "rome"
+                    this.country = "it"
+                    this.renderCityWeather();
+                  })
+                }
 
                 listenClick() {  
+
+                  this.sampleSection.addEventListener("click", () => {
+                    this.navToggle();
+                  })
                    this.sunSection.addEventListener("click", () => {
                      this.iconId = "01d";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.cloudSection.addEventListener("click", () => {
                      this.iconId = "03d";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.rainSection.addEventListener("click", () => {
                      this.iconId = "09d";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.snowSection.addEventListener("click", () => {
                      this.iconId = "13d";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.starSection.addEventListener("click", () => {
                      this.iconId = "01n";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.thunderSection.addEventListener("click", () => {
                      this.iconId = "11d";
+                     this.weatherToggle();
                      this.clearAnimation();
                    });
                  }
@@ -332,6 +400,7 @@ export default class Weather {
                    });
 
                    this.ticker++;
+                   
                    if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length < 10) {
                      const x = Math.random() * (450 - 100) + 100;
                      const y = 180;

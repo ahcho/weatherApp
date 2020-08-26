@@ -18,30 +18,20 @@ function success(position){
         weather.renderCanvasBackground()})
 }
 
-function error() {
+function noUserLocation() {
     toggle();
     let city = "seoul";
     let country = "kr";
-    let weather = callGetWeatherData(city, country);
-    listenClick(weather);
-}
-
-function callGetWeatherData(city, country, prevWeather = false) {
     const canvas = document.querySelector('canvas')
     const api = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=imperial&appid=${API_KEY}`;
     canvas.width = 500
     canvas.height = 500
     const c = canvas.getContext('2d')
     c.clearRect(0, 0, 500, 500);
-    if (prevWeather) {
-        prevWeather.clearAnimation();
-    }
     const weather = new Weather(api, c, canvas, city);
 
     weather.getData().then(() =>
         weather.renderNotLocalCanvasBackground())
-
-    return weather;
 }
 
 function toggle() {
@@ -52,36 +42,8 @@ function toggle() {
     nav1.style.display = "none";
 }
 
-function listenClick(weather) {
-    const seoul = document.querySelector('.seoul');
-    const pittsburgh = document.querySelector('.pittsburgh');
-    const london = document.querySelector('.london');
-    const rome = document.querySelector('.rome');
-    let city = "", country = "";
-
-    seoul.addEventListener('click', () => {
-        city = "seoul"
-        country = "kr"    
-        callGetWeatherData(city, country, weather)        
-    })
-    pittsburgh.addEventListener('click', () => {
-        city = "pittsburgh"
-        country = "us"
-        callGetWeatherData(city, country, weather)
-    })
-    london.addEventListener('click', () => {
-        city = "london"
-        country = "uk"   
-        callGetWeatherData(city, country, weather)   
-    })
-    rome.addEventListener('click', () => {
-        city = "rome"
-        country = "it"
-        callGetWeatherData(city, country, weather)
-    })
-}
 
 document.addEventListener("DOMContentLoaded", function () {
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.getCurrentPosition(success, noUserLocation);
 });
 

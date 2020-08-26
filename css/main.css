@@ -83,8 +83,11 @@ a {
     margin-left: 10px;
     font: 10px;
 }
-
-
+/* 
+.temp-degree {
+    display: flex;
+    align-content: flex-end;
+} */
 /**/
 .topnav {
   background-color: gray;
@@ -104,12 +107,20 @@ a {
   font-size: 17px;
 }
 
-
-.topnav-right {
+.sample {
     margin-right: 10px;
     display: flex;
     text-align: center;
+}
+.topnav-right {
+    margin-right: 10px;
+    display: none;
+    text-align: center;
 
+}
+
+.weather-text {
+    /* border: red solid 3px; */
 }
 
 .topnav i {

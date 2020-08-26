@@ -3,7 +3,6 @@ export default class Star {
         this.x = x;
         this.y = y;
         this.r = r;
-
         this.c = c;
         this.canvas = canvas;
     }
