@@ -18,7 +18,7 @@
     <div class="weather-container">
         <div class="topnav" id="main-nav">
             <div class="topnav-left">
-                <a class="active" href="">Weather</a>
+                <a href="">Current Weather</a>
             </div>
             
             <a class="sample">Sample Animations</a>
@@ -38,27 +38,33 @@
             <a class='london'>London</a>
             <a class='rome'>Rome</a>
         </div>
+        <div class="space-holder">
+            <p class="space-sun"> Sunny Day</p>
+            <p class="space-cloud">Cloudy Day</p>
+            <p class="space-rain"> Rainy Day</p>
+            <p class="space-snow">Snowy Day</p>
+            <p class="space-thunder">Thunder storm Day </p>
+            <p class="space-night">Night Sky</p>
+        </div>
         <div class="weather-info">
-            <div class="weather-text">
-            <div class="location">
-                <h1 class="location-timezone"></h1>
+            <div class="weather-info-left">
+                <img src="" id="temp-icon">
+                <div class="temp-description"></div>
             </div>
-            <div class="weather-info-bottom">
+            <div class="weather-info-right">
+                <div class="location">
+                    <h1 class="location-timezone"></h1>
+                </div>
                 <div class="degree-section">
                     <div class="temp-degree"></div>
                     <span>°F</span>
                 </div>
-                <div class="weather-info-bottom-left">
-                    <img src="" id="temp-icon">
-                    <div class="temp-description"></div>
-                </div>
-            </div>
-            </div>
-            <canvas class="animation" height=500 width=500>
-            </canvas>
-            <p class='made-mark'>animations are designed and created by 
-                <a href="https://annacho.me">Anna Cho</a></p>
+            </div>  
         </div>
+        <canvas class="animation" height=500 width=500>
+        </canvas>
+        <p id='made-mark'>animations are designed and created by
+            <a href="https://annacho.me">Anna Cho</a></p>
         <div class="footer">
             <a href="https://annacho.me">Portfolio</a>
             <a href="https://github.com/ahcho">Github</a>

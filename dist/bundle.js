@@ -22223,10 +22223,11 @@ var Weather = /*#__PURE__*/function () {
     this.temperatureDegree = document.querySelector(".temp-degree");
     this.temperatureDescription = document.querySelector(".temp-description");
     this.locationTimezone = document.querySelector(".location-timezone");
-    this.degreeSection = document.querySelector(".weather-info-bottom");
-    this.degreeSpan = document.querySelector(".weather-info-bottom span");
+    this.degreeSection = document.querySelector(".weather-info-right");
+    this.degreeSpan = document.querySelector(".weather-info-right span");
     this.iconSection = document.getElementById("temp-icon");
-    this.weatherTextSection = document.querySelector(".weather-text");
+    this.weatherTextSection = document.querySelector(".weather-info");
+    this.spaceSection = document.querySelector(".space-holder");
     this.sunSection = document.querySelector(".fa-sun");
     this.cloudSection = document.querySelector(".fa-cloud");
     this.rainSection = document.querySelector(".fa-tint");
@@ -22235,6 +22236,12 @@ var Weather = /*#__PURE__*/function () {
     this.thunderSection = document.querySelector(".fa-bolt");
     this.sampleSection = document.querySelector(".sample");
     this.navRightIcons = document.querySelector('.topnav-right');
+    this.sunLetter = document.querySelector(".space-sun");
+    this.cloudLetter = document.querySelector(".space-cloud");
+    this.rainLetter = document.querySelector(".space-rain");
+    this.snowLetter = document.querySelector(".space-snow");
+    this.starLetter = document.querySelector(".space-night");
+    this.thunderLetter = document.querySelector(".space-thunder");
     this.stars = [];
     this.weatherObjects = [];
     this.ticker = 0;
@@ -22299,6 +22306,7 @@ var Weather = /*#__PURE__*/function () {
     key: "weatherToggle",
     value: function weatherToggle() {
       this.weatherTextSection.style.display = "none";
+      this.spaceSection.style.display = "flex";
     }
   }, {
     key: "renderCityWeather",
@@ -22353,6 +22361,16 @@ var Weather = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "clearListenClick",
+    value: function clearListenClick() {
+      this.sunLetter.style.display = 'none';
+      this.cloudLetter.style.display = 'none';
+      this.rainLetter.style.display = 'none';
+      this.snowLetter.style.display = 'none';
+      this.thunderLetter.style.display = 'none';
+      this.starLetter.style.display = 'none';
+    }
+  }, {
     key: "listenClick",
     value: function listenClick() {
       var _this4 = this;
@@ -22361,6 +22379,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.navToggle();
       });
       this.sunSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.sunLetter.style.display = 'flex';
         _this4.iconId = "01d";
 
         _this4.weatherToggle();
@@ -22368,6 +22389,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.clearAnimation();
       });
       this.cloudSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.cloudLetter.style.display = 'flex';
         _this4.iconId = "03d";
 
         _this4.weatherToggle();
@@ -22375,6 +22399,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.clearAnimation();
       });
       this.rainSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.rainLetter.style.display = 'flex';
         _this4.iconId = "09d";
 
         _this4.weatherToggle();
@@ -22382,6 +22409,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.clearAnimation();
       });
       this.snowSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.snowLetter.style.display = 'flex';
         _this4.iconId = "13d";
 
         _this4.weatherToggle();
@@ -22389,6 +22419,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.clearAnimation();
       });
       this.starSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.starLetter.style.display = 'flex';
         _this4.iconId = "01n";
 
         _this4.weatherToggle();
@@ -22396,6 +22429,9 @@ var Weather = /*#__PURE__*/function () {
         _this4.clearAnimation();
       });
       this.thunderSection.addEventListener("click", function () {
+        _this4.clearListenClick();
+
+        _this4.thunderLetter.style.display = 'flex';
         _this4.iconId = "11d";
 
         _this4.weatherToggle();

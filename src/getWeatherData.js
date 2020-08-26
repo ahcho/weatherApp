@@ -22,13 +22,14 @@ export default class Weather {
                      ".location-timezone"
                    );
                    this.degreeSection = document.querySelector(
-                     ".weather-info-bottom"
+                     ".weather-info-right"
                    );
                    this.degreeSpan = document.querySelector(
-                     ".weather-info-bottom span"
+                     ".weather-info-right span"
                    );
                    this.iconSection = document.getElementById("temp-icon");
-                   this.weatherTextSection = document.querySelector(".weather-text")
+                   this.weatherTextSection = document.querySelector(".weather-info")
+                   this.spaceSection = document.querySelector(".space-holder");
                    this.sunSection = document.querySelector(".fa-sun");
                    this.cloudSection = document.querySelector(".fa-cloud");
                    this.rainSection = document.querySelector(".fa-tint");
@@ -37,6 +38,12 @@ export default class Weather {
                    this.thunderSection = document.querySelector(".fa-bolt");
                    this.sampleSection = document.querySelector(".sample");
                    this.navRightIcons = document.querySelector('.topnav-right');
+                   this.sunLetter = document.querySelector(".space-sun");
+                   this.cloudLetter = document.querySelector(".space-cloud");
+                   this.rainLetter = document.querySelector(".space-rain");
+                   this.snowLetter = document.querySelector(".space-snow");
+                   this.starLetter = document.querySelector(".space-night");
+                   this.thunderLetter = document.querySelector(".space-thunder");
                    this.stars = [];
                    this.weatherObjects = [];
                    this.ticker = 0;
@@ -93,6 +100,7 @@ export default class Weather {
 
                 weatherToggle() {
                   this.weatherTextSection.style.display = "none";
+                  this.spaceSection.style.display= "flex";
 
                 }
 
@@ -135,37 +143,57 @@ export default class Weather {
                   })
                 }
 
-                listenClick() {  
+                clearListenClick() {
+                  this.sunLetter.style.display = 'none';
+                  this.cloudLetter.style.display = 'none';
+                  this.rainLetter.style.display = 'none';
+                  this.snowLetter.style.display = 'none';
+                  this.thunderLetter.style.display = 'none';
+                  this.starLetter.style.display = 'none';
+                }
 
+                listenClick() {  
                   this.sampleSection.addEventListener("click", () => {
                     this.navToggle();
                   })
                    this.sunSection.addEventListener("click", () => {
+                     this.clearListenClick() 
+                     this.sunLetter.style.display = 'flex';
                      this.iconId = "01d";
                      this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.cloudSection.addEventListener("click", () => {
+                     this.clearListenClick() 
+                     this.cloudLetter.style.display = 'flex';
                      this.iconId = "03d";
                      this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.rainSection.addEventListener("click", () => {
+                     this.clearListenClick() 
+                     this.rainLetter.style.display = 'flex';
                      this.iconId = "09d";
                      this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.snowSection.addEventListener("click", () => {
+                     this.clearListenClick() 
+                     this.snowLetter.style.display = 'flex';
                      this.iconId = "13d";
                      this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.starSection.addEventListener("click", () => {
+                     this.clearListenClick() 
+                     this.starLetter.style.display = 'flex';
                      this.iconId = "01n";
                      this.weatherToggle();
                      this.clearAnimation();
                    });
                    this.thunderSection.addEventListener("click", () => {
+                     this.clearListenClick();
+                     this.thunderLetter.style.display = 'flex';
                      this.iconId = "11d";
                      this.weatherToggle();
                      this.clearAnimation();

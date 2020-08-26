@@ -29,15 +29,25 @@ body {
     min-height: 150px;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     color: gray;
     padding-top: 15px;
+    justify-content: space-between;
 }
 
-.weather-info-bottom {
-    flex-direction: row;
+.space-holder {
+    display: none;
+    min-height: 150px;
+    width: 100%;
+    padding-top: 15px;
+    color: gray;
 }
 
+.space-holder > p {
+    display: none;
+    color: gray;
+    padding-left: 17px;
+}
 
 canvas {
     z-index: 2;
@@ -48,10 +58,13 @@ canvas {
     height: 100%;
 }
 
-.made-mark {
+#made-mark {
+    display: flex;
+    justify-content: right;
     margin: 10px 5px 20px 0;
     font-size: 12px;
-    text-align: right;
+    /* text-align: right; */
+    color: gray;
 }
 
 a {
