@@ -115,6 +115,7 @@ export default class Weather {
                   this.pittsburgh = document.querySelector('.pittsburgh');
                   this.london = document.querySelector('.london');
                   this.rome = document.querySelector('.rome');
+                  this.clearAnimation()
   
 
                   this.seoul.addEventListener('click', () => {
@@ -156,8 +157,9 @@ export default class Weather {
                   this.sampleSection.addEventListener("click", () => {
                     this.navToggle();
                   })
+                  this.clearAnimation()
                    this.sunSection.addEventListener("click", () => {
-                     this.clearListenClick() 
+                     this.clearListenClick(); 
                      this.sunLetter.style.display = 'flex';
                      this.iconId = "01d";
                      this.weatherToggle();
@@ -290,7 +292,7 @@ export default class Weather {
                      this.c.fillRect(0, 0, 500, 500);
                    }
                    this.renderCurrentWeatherAnimation(this.iconId);
-                   //set interval ?
+                   
                    if (this.city) {
                      this.requestId = requestAnimationFrame(
                        this.renderNotLocalCanvasBackground.bind(this)
@@ -373,7 +375,7 @@ export default class Weather {
 
                    this.ticker++;
 
-                   if ( this.weatherObjects.length === 0 || (this.ticker % 60 === 0 && this.weatherObjects.length < 20)) {
+                   if ( this.weatherObjects.length === 0 || (this.ticker % 100 === 0 && this.weatherObjects.length < 20)) {
                         const x = Math.random() * 490 + 30;
                         const y = 150;
                         const w = Math.random() * 5;
@@ -405,7 +407,7 @@ export default class Weather {
                     const x = Math.floor(Math.random() * 200) - 100;
                     const y = Math.random() * 400 + 50;
                     const velocity =
-                      (Math.floor(Math.random() * 40 + 1) * 1) / 50;
+                      Math.floor(Math.random() * 20 + 3) / 50;
                     const size = Math.floor(Math.random() * 10) + 3;
                     this.weatherObjects.push(
                        new Cloud(
@@ -426,6 +428,7 @@ export default class Weather {
                    this.weatherObjects.forEach((thunder) => {
                      thunder.update();
                    });
+              
 
                    this.ticker++;
                    
@@ -446,13 +449,11 @@ export default class Weather {
                    this.ticker++;
 
                    if ( this.weatherObjects.length === 0 ||
-                     (this.ticker % 100 === 0 && this.weatherObjects.length <= 20)
-                   ) {
-                     const x = Math.random() * 480 + 50;
-                     const y = 180;
-                     this.weatherObjects.push(
-                       new Snow(x, y, 10, "white", this.c, this.canvas)
-                     );
+                      (this.ticker % 120 === 0 && this.weatherObjects.length <= 20)) {
+                        const x = Math.random() * 480 + 50;
+                        const y = 180;
+                        this.weatherObjects.push(new Snow(x, y, 10, "white", this.c, this.canvas));
+                    
                    }
                  }
 
@@ -484,7 +485,7 @@ export default class Weather {
                    this.c.fill();
 
                    this.ticker++;
-                   if (this.ticker % 10 === 0) {
+                   if (this.ticker % 30 === 0) {
                      this.degree += 11.25;
                    }
                    if (y === 250) {

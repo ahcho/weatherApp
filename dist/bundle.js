@@ -22327,6 +22327,7 @@ var Weather = /*#__PURE__*/function () {
       this.pittsburgh = document.querySelector('.pittsburgh');
       this.london = document.querySelector('.london');
       this.rome = document.querySelector('.rome');
+      this.clearAnimation();
       this.seoul.addEventListener('click', function () {
         _this3.clearAnimation();
 
@@ -22378,6 +22379,7 @@ var Weather = /*#__PURE__*/function () {
       this.sampleSection.addEventListener("click", function () {
         _this4.navToggle();
       });
+      this.clearAnimation();
       this.sunSection.addEventListener("click", function () {
         _this4.clearListenClick();
 
@@ -22537,7 +22539,7 @@ var Weather = /*#__PURE__*/function () {
         this.c.fillRect(0, 0, 500, 500);
       }
 
-      this.renderCurrentWeatherAnimation(this.iconId); //set interval ?
+      this.renderCurrentWeatherAnimation(this.iconId);
 
       if (this.city) {
         this.requestId = requestAnimationFrame(this.renderNotLocalCanvasBackground.bind(this));
@@ -22619,7 +22621,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.weatherObjects.length === 0 || this.ticker % 60 === 0 && this.weatherObjects.length < 20) {
+      if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length < 20) {
         var x = Math.random() * 490 + 30;
         var y = 150;
         var w = Math.random() * 5;
@@ -22641,7 +22643,7 @@ var Weather = /*#__PURE__*/function () {
         var rand_num = Math.floor(Math.random() * 9);
         var x = Math.floor(Math.random() * 200) - 100;
         var y = Math.random() * 400 + 50;
-        var velocity = Math.floor(Math.random() * 40 + 1) * 1 / 50;
+        var velocity = Math.floor(Math.random() * 20 + 3) / 50;
         var size = Math.floor(Math.random() * 10) + 3;
         this.weatherObjects.push(new _cloud__WEBPACK_IMPORTED_MODULE_4__["default"](x, y, CLOUD_COLOR[rand_num], velocity, this.c, this.canvas, size));
       }
@@ -22672,7 +22674,7 @@ var Weather = /*#__PURE__*/function () {
       });
       this.ticker++;
 
-      if (this.weatherObjects.length === 0 || this.ticker % 100 === 0 && this.weatherObjects.length <= 20) {
+      if (this.weatherObjects.length === 0 || this.ticker % 120 === 0 && this.weatherObjects.length <= 20) {
         var x = Math.random() * 480 + 50;
         var y = 180;
         this.weatherObjects.push(new _snow__WEBPACK_IMPORTED_MODULE_1__["default"](x, y, 10, "white", this.c, this.canvas));
@@ -22701,7 +22703,7 @@ var Weather = /*#__PURE__*/function () {
       this.c.fill();
       this.ticker++;
 
-      if (this.ticker % 10 === 0) {
+      if (this.ticker % 30 === 0) {
         this.degree += 11.25;
       }
 
@@ -22955,7 +22957,7 @@ var Rain = /*#__PURE__*/function () {
     this.color = color;
     this.velocity = {
       x: 0,
-      y: 1
+      y: 0.001
     };
     this.friction = 0.8;
     this.gravity = 0.05;
@@ -22993,6 +22995,7 @@ var Rain = /*#__PURE__*/function () {
         this.y = 150;
         this.x = Math.random() * 490 + 30;
       } else {
+        this.velocity.y = Math.random() * 2.5;
         this.velocity.y += this.gravity;
       }
 
@@ -23185,7 +23188,7 @@ var Thunder = /*#__PURE__*/function () {
       x: 0,
       y: 0.1
     };
-    this.gravity = 0.005;
+    this.gravity = 0.0005;
     this.size = 1;
     this.color = 'yellow';
     this.flag = true;

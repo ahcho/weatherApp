@@ -12,9 +12,7 @@ body {
 
 .weather-container {
     flex-direction: column;
-    /* min-height: 100%; */
     height: auto;
-    /* max-height: auto; */
     width: 100%;
     max-width: 500px;
     display: flex;
@@ -96,12 +94,7 @@ a {
     margin-left: 10px;
     font: 10px;
 }
-/* 
-.temp-degree {
-    display: flex;
-    align-content: flex-end;
-} */
-/**/
+
 .topnav {
   background-color: gray;
   width: 100%;
@@ -118,6 +111,9 @@ a {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+
+
+  margin-right: 0;
 }
 
 .sample {
@@ -130,10 +126,6 @@ a {
     display: none;
     text-align: center;
 
-}
-
-.weather-text {
-    /* border: red solid 3px; */
 }
 
 .topnav i {
@@ -171,7 +163,6 @@ i, a {
 } 
 
 .footer {
-
    width: 100%;
    max-width: 520px;
    background-color: gray;

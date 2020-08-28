@@ -9,7 +9,7 @@ export default class Rain {
         this.color = color
         this.velocity = {
             x: 0,
-            y: 1
+            y: 0.001
         }
         this.friction = 0.8
         this.gravity = 0.05
@@ -44,6 +44,7 @@ export default class Rain {
             this.y = 150;
             this.x = Math.random() * 490 + 30;
         } else {
+            this.velocity.y = Math.random() * 2.5;
             this.velocity.y += this.gravity;
         }
         this.y += this.velocity.y;
